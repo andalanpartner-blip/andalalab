@@ -27,10 +27,12 @@ import {
   generateConcepts,
   buildDesignRecipe,
   compilePromptSet,
+  auditDesign,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
-  type PromptSet
+  type PromptSet,
+  type DesignCriticReport
 } from "../engine";
 
 /**
@@ -290,6 +292,12 @@ export type RecipeOkResult = {
   readonly status: "OK";
   readonly recipe: DesignRecipe;
   readonly promptSet: PromptSet;
+  /**
+   * The P4.0 Design Critic verdict on this finished design. Deterministic,
+   * read-only, no model — additive diagnostics only. It never blocks the
+   * pipeline; a `BLOCK` verdict is advice for the reviewer, not an error.
+   */
+  readonly critic: DesignCriticReport;
 };
 export type RecipeFailureResult = { readonly status: "ERROR"; readonly message: string };
 export type RecipePipelineResult = RecipeOkResult | RecipeFailureResult;
@@ -333,11 +341,21 @@ export function runRecipePipeline(
     };
   }
 
+  const language = input.promptLanguage ?? "en";
   const promptSet = compilePromptSet({
     recipe: recipeResult.value,
     concept: conceptParsed.data,
-    language: input.promptLanguage ?? "en"
+    language
   });
 
-  return { status: "OK", recipe: recipeResult.value, promptSet };
+  const critic = auditDesign({
+    contract: contractParsed.data,
+    direction: directionParsed.data,
+    recipe: recipeResult.value,
+    promptSet,
+    promptLanguage: language,
+    concept: conceptParsed.data
+  });
+
+  return { status: "OK", recipe: recipeResult.value, promptSet, critic };
 }

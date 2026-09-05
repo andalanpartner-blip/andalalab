@@ -2,10 +2,10 @@
 
 *An AI graphic designer that thinks before it prompts.*
 
-**Through P3.0.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
-Design Recipe → bilingual prompt set, with a stereotype output guard on the compiled prompt. The
-only model call is the Brief Interpreter and the Creative Concept Engine (two calls, capped); every
-design decision is deterministic. No database.
+**Through P4.0.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
+Design Recipe → bilingual prompt set with a stereotype output guard, then a deterministic
+pre-generation Design Critic verdict. The only model call is the Brief Interpreter and the Creative
+Concept Engine (two calls, capped); every design decision is deterministic. No database.
 
 ## Commands
 
@@ -13,7 +13,7 @@ design decision is deterministic. No database.
 pnpm install
 pnpm validate:data   # dataset schema + referential integrity + stereotype self-consistency
 pnpm lint            # architectural boundary enforcement
-pnpm test            # 839 tests
+pnpm test            # 886 tests
 pnpm build           # tsc --noEmit && next build
 pnpm check           # all four, in order
 ```
@@ -25,7 +25,8 @@ Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resoluti
       → Creative Concepts → Selected Concept → Design Recipe
       → Prompt Compiler (+ Graphic Treatment, Photographic Character, Photographic Finish,
                           Visual Generation Adapter, Stereotype Output Guard)
-      → ready-to-copy PromptSet (English + Bahasa Indonesia)
+      → PromptSet (English + Bahasa Indonesia)
+      → Design Critic (deterministic PASS / REVIEW / BLOCK verdict, no AI)
 ```
 
 ## What exists
@@ -34,7 +35,7 @@ Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resoluti
 |---|---|
 | `types/` — Zod schemas, schema version registry | ✅ |
 | `data/` — versioned reference datasets + loader | ✅ |
-| `engine/` — pure, framework-free intelligence layer (P0 contract → P3.0 output guard) | ✅ |
+| `engine/` — pure, framework-free intelligence layer (P0 contract → P4.0 Design Critic) | ✅ |
 | `domain/` — entities and invariants | ✅ |
 | `ports/` — injected clock and id | ✅ |
 | `adapters/` — Gemini LLM adapter behind `ports/llm.port` | ✅ |
@@ -72,5 +73,5 @@ mutate old ones. A project built today must still be readable when the datasets 
 Per-engine design notes live in `docs/` (`decision-engine`, `recipe-engine`, `brief-interpreter`,
 `readiness-policy`, `creative-concept-engine`, `graphic-treatment-engine`,
 `photographic-character-engine`, `photographic-finish`, `visual-generation-adapter`,
-`smart-brief-classification`, `prompt-compiler`, `prompt-output-guard`) and the accepted
+`smart-brief-classification`, `prompt-compiler`, `prompt-output-guard`, `design-critic`) and the accepted
 architecture decisions in `docs/adr/`.

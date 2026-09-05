@@ -12,8 +12,9 @@ import { DesignDirectionPanel } from "../components/DesignDirectionPanel";
 import { ConceptBoard } from "../components/ConceptBoard";
 import { SelectedConcept } from "../components/SelectedConcept";
 import { RecipeBoard } from "../components/RecipeBoard";
+import { DesignReview } from "../components/DesignReview";
 import { PromptSection } from "../components/PromptSection";
-import type { ClarificationQuestion } from "../engine";
+import type { ClarificationQuestion, DesignCriticReport } from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 
@@ -57,6 +58,7 @@ export default function Page() {
 
   const [selectedConceptId, setSelectedConceptId] = useState<string | null>(null);
   const [recipe, setRecipe] = useState<DesignRecipe | null>(null);
+  const [critic, setCritic] = useState<DesignCriticReport | null>(null);
   const [recipeLoading, setRecipeLoading] = useState(false);
   const [recipeError, setRecipeError] = useState<string | null>(null);
 
@@ -71,6 +73,7 @@ export default function Page() {
       setResult(data);
       setSelectedConceptId(data.concepts.selected.id);
       setRecipe(null);
+      setCritic(null);
       setRecipeError(null);
       setClarify(null);
       setPhase("ready");
@@ -116,6 +119,7 @@ export default function Page() {
     setResult(null);
     setSelectedConceptId(null);
     setRecipe(null);
+    setCritic(null);
     setRecipeError(null);
   }, []);
 
@@ -124,6 +128,7 @@ export default function Page() {
       setSelectedConceptId((current) => {
         if (current === id) return current;
         setRecipe(null);
+        setCritic(null);
         setRecipeError(null);
         return id;
       });
@@ -147,6 +152,7 @@ export default function Page() {
 
     if (data.status === "OK") {
       setRecipe(data.recipe);
+      setCritic(data.critic);
     } else {
       setRecipeError(data.message);
     }
@@ -234,6 +240,7 @@ export default function Page() {
               <ErrorBanner message={recipeError} onRetry={() => void handleBuildRecipe()} />
             </div>
           ) : null}
+          {recipe && critic ? <DesignReview report={critic} /> : null}
           {recipe ? <RecipeBoard recipe={recipe} /> : null}
           {recipe ? <PromptSection recipe={recipe} concept={selectedConcept} /> : null}
           <div className={styles.footerSpace} />

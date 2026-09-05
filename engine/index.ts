@@ -224,6 +224,19 @@ export {
   type BannedTokenFinding,
   type PromptGuardReport
 } from "./prompt/guard";
+
+// --- P4.0: pre-generation Design Critic ----------------------------------
+export {
+  auditDesign,
+  MOVEMENT_INFLUENCE_FLOOR,
+  type AuditInput,
+  type AuditPromptSet,
+  type DesignCriticReport,
+  type CriticFinding,
+  type CriticVerdict,
+  type CriticSeverity,
+  type CriticArea
+} from "./critic/audit";
 export { resolveTextMode, TEXT_BEARING_ZONES } from "./prompt/text-mode";
 export { isUnsupportedConceptStatement, excludeUnsupportedConcepts } from "./prompt/unsupported-concepts";
 export { resolveVisualAdapter } from "./prompt/visual-adapter/resolve";
