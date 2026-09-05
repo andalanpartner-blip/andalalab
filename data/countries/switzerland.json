@@ -1,0 +1,201 @@
+{
+  "id": "switzerland",
+  "name": "Switzerland",
+  "schema_version": "1.0.0",
+
+  "visual_traits": [
+    "structure made visible — the grid is felt even when it is not seen",
+    "objectivity as a stance: the design does not perform, the information does",
+    "flush-left ragged-right setting as a default reading rhythm",
+    "whitespace used as structural material rather than as breathing room",
+    "photography treated as evidence rather than as mood",
+    "hierarchy achieved through size and position, almost never through decoration"
+  ],
+
+  "cultural_context": {
+    "social_values": [
+      "precision and reliability as baseline expectations",
+      "understatement over display of wealth or status",
+      "consensus and neutrality in public communication",
+      "multilingual coexistence as an everyday constraint"
+    ],
+    "communication_style": "Direct, factual and low-affect. Claims are expected to be verifiable, and emotional persuasion is treated with suspicion in public and institutional contexts. Clarity is itself the persuasive argument, so ornament that delays comprehension actively damages credibility.",
+    "spatial_philosophy": "Space is organised, measured and accounted for. Every position is a decision that can be justified relative to a system, and arbitrary placement is legible as a failure. The pleasure of the work comes from the correctness of relationships rather than from surprise.",
+    "formality_bias": 0.68,
+    "collectivism_bias": 0.45
+  },
+
+  "historical_influences": [
+    {
+      "period": "1920–1935",
+      "influence": "New Typography and the constructivist reordering of the printed page",
+      "visual_consequence": "Asymmetric layout replacing centred composition, functional typography replacing decorative, and the page understood as an organised field. Expressed as a permanent preference for justified structure over ornamental balance."
+    },
+    {
+      "period": "1945–1970",
+      "influence": "The Basel and Zurich design schools and the international typographic method",
+      "visual_consequence": "The modular grid, the objective photograph and the neutral sans-serif established as a complete working system. Expressed as mathematical column relationships and disciplined typographic scales that still underpin the visual culture."
+    },
+    {
+      "period": "1950–present",
+      "influence": "Federal multilingual communication across four national languages",
+      "visual_consequence": "The same message must be set three or four times in one space, which forces compact, neutral, extremely well-spaced typography and modular repeatable layout blocks. Expressed as systems that scale without redesign."
+    },
+    {
+      "period": "1980–2000",
+      "influence": "Post-grid experimentation from within the same schools",
+      "visual_consequence": "Deliberate rule-breaking by designers who had fully absorbed the rules, producing tension rather than chaos. Expressed as a permission structure: deviation is legitimate only when the underlying system is evident."
+    }
+  ],
+
+  "composition": {
+    "spatial_behavior": "Field-based. The surface is divided by a modular grid, and elements occupy whole modules rather than floating freely. Margins are wide and unequal by design, and the outer field is often the largest single area on the page.",
+    "density_bias": 0.34,
+    "whitespace_bias": 0.78,
+    "symmetry": "asymmetric",
+    "structure": "Multi-column modular grids, commonly six or twelve columns with a matching baseline grid. Alignment is absolute; optical fudging is not part of the tradition. Diagonal or rotated elements appear only as a single deliberate exception against otherwise strict orthogonal order."
+  },
+
+  "typography": {
+    "script_systems": [
+      "Latin script across German, French, Italian and Romansh"
+    ],
+    "relationships": [
+      "one neutral sans-serif family carrying the entire hierarchy",
+      "size and weight steps derived from a fixed numeric scale",
+      "flush-left setting with an even, unforced rag",
+      "tight but never cramped leading locked to a baseline grid"
+    ],
+    "hierarchy_behavior": "Few levels, sharply differentiated, and consistently applied across an entire system rather than tuned per page. Emphasis is created by scale and position; italics, colour and decoration are largely unused for hierarchy.",
+    "weight_bias": "medium",
+    "notes": "Neutrality here is a functional requirement, not an aesthetic preference — the typeface must carry four languages, technical terminology and long compound words without expressive interference. Word length in German is a real constraint that shapes column widths and headline scale."
+  },
+
+  "color": {
+    "relationships": [
+      "black, white and a single decisive accent",
+      "colour used to classify information rather than to decorate",
+      "flat unmodulated fields with no gradient",
+      "restrained neutral greys carrying secondary structure"
+    ],
+    "saturation_bias": 0.4,
+    "contrast_bias": 0.82,
+    "palette_logic": "Small closed palettes applied systematically. A colour is introduced because it has a job — marking a category, flagging a priority, separating a language version — and it keeps that job across the whole system. Colour that exists only for atmosphere is difficult to justify within this tradition.",
+    "notes": "Very high figure-ground contrast is the norm, which makes the tradition unusually well suited to small-screen legibility."
+  },
+
+  "imagery": {
+    "subject_treatment": "The subject is documented, not dramatised. Clear, well-lit, unambiguous and complete. Photographic manipulation that obscures the object is avoided; the image is expected to inform.",
+    "framing": "Straight-on or precisely angled, aligned to the grid, frequently cropped to a full module. Images sit inside the system rather than bleeding freely across it.",
+    "lighting_bias": "Even, neutral and shadow-controlled. Light describes form and material rather than creating atmosphere.",
+    "realism_bias": 0.85
+  },
+
+  "materiality": {
+    "surfaces": [
+      "matte uncoated paper",
+      "precision-machined metal",
+      "clear glass and neutral concrete",
+      "flat matte painted surfaces"
+    ],
+    "texture_bias": 0.22,
+    "print_traditions": [
+      "exacting offset lithography and colour proofing",
+      "large-format environmental and transport signage systems",
+      "long-lived corporate identity manuals"
+    ],
+    "notes": "Material choices are quiet and durable. Surface interest is deliberately low so that structure and information remain the dominant experience of the piece."
+  },
+
+  "graphic_language": {
+    "shape_logic": "Orthogonal fields, rules and precisely weighted lines. Shapes derive from the grid rather than being placed on top of it, so a rectangle is usually a module, not a decoration.",
+    "rhythm": "Even, measured and mathematically derived. Repetition at consistent intervals is the point rather than a limitation, and variation is introduced through scale of module rather than through spacing irregularity.",
+    "ornament_bias": 0.08,
+    "signage_traditions": [
+      "national transport wayfinding systems",
+      "modular exhibition and museum signage",
+      "pictogram systems designed for language-independent reading"
+    ]
+  },
+
+  "contemporary_traits": [
+    "quiet luxury positioning that avoids visible logos and overt signalling",
+    "environmental and wayfinding graphics as a mainstream commercial discipline",
+    "type foundries and revival typefaces as a live cultural export",
+    "system-first digital product design with strict spacing tokens",
+    "sustainability and provenance claims made in plain factual language"
+  ],
+
+  "style_variants": [
+    {
+      "id": "objective-system",
+      "name": "Objective System",
+      "description": "The orthodox position. Modular grid, one neutral family, black and white with a single accent, documentary photography and absolute alignment. Reads as credible, institutional and durable.",
+      "weights_override": {
+        "composition": 0.34,
+        "typography": 0.3,
+        "color": 0.12,
+        "imagery": 0.14,
+        "materiality": 0.06,
+        "graphic_language": 0.04
+      },
+      "suitable_for": ["technology-saas", "property", "fnb"]
+    },
+    {
+      "id": "quiet-material",
+      "name": "Quiet Material",
+      "description": "The same structural discipline with the objectivity relaxed. Warmer neutrals, richer material surfaces, more generous scale contrast and photography allowed some atmosphere. Reads as restrained premium rather than institutional.",
+      "weights_override": {
+        "composition": 0.28,
+        "typography": 0.22,
+        "color": 0.14,
+        "imagery": 0.18,
+        "materiality": 0.14,
+        "graphic_language": 0.04
+      },
+      "suitable_for": ["hospitality", "fashion", "beauty-skincare", "property"]
+    }
+  ],
+
+  "avoid_stereotypes": [
+    {
+      "token": "swiss flag",
+      "why": "The national cross is used as a quality stamp on work that has no connection to the country, and inside the country its commercial use is legally and culturally restricted.",
+      "instead": "Signal reliability through systematic structure, precise alignment and factual copy — the actual sources of the reputation."
+    },
+    {
+      "token": "alps",
+      "why": "Mountain imagery reduces a highly urban, service-and-industry economy to a tourism postcard and rarely relates to the subject being sold.",
+      "instead": "If place is relevant, use the built environment, materials and light of the actual context rather than landscape shorthand."
+    },
+    {
+      "token": "matterhorn",
+      "why": "A single silhouette used as a national stamp is decorative geography with no communicative role.",
+      "instead": "Use scale, clarity and precision as the expression of the same values the landmark is standing in for."
+    },
+    {
+      "token": "chocolate",
+      "why": "Product-category shorthand borrowed as a national marker adds an irrelevant association to unrelated categories.",
+      "instead": "If the product is food, photograph the product honestly and let the structural discipline carry the origin association."
+    },
+    {
+      "token": "cuckoo clock",
+      "why": "A tourist-souvenir object standing in for precision engineering is both inaccurate and quaint in a way that undercuts a serious claim.",
+      "instead": "Express precision through measurable design decisions — exact spacing, consistent scale steps, faultless alignment."
+    },
+    {
+      "token": "helvetica everything",
+      "why": "Reducing an entire method to one typeface is the most common misreading of this tradition; the grid, the scale system and the objectivity matter far more than the family name.",
+      "instead": "Apply the underlying method — modular grid, limited scale steps, flush-left setting, functional colour — with whatever family suits the brand."
+    }
+  ],
+
+  "weights": {
+    "composition": 0.32,
+    "typography": 0.28,
+    "color": 0.12,
+    "imagery": 0.16,
+    "materiality": 0.08,
+    "graphic_language": 0.04
+  }
+}

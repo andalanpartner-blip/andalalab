@@ -1,0 +1,99 @@
+{
+  "objective": {
+    "value": "launch",
+    "confidence": 0.9
+  },
+  "core_message": {
+    "value": "Coffee shop baru di Solo resmi buka dan ingin dikenal anak muda kota.",
+    "confidence": 0.82
+  },
+  "industry_id": {
+    "value": "fnb",
+    "confidence": 0.97
+  },
+  "visual_type_id": {
+    "value": "social-feed",
+    "confidence": 0.95
+  },
+  "platform": {
+    "channel": {
+      "value": "instagram-feed",
+      "confidence": 0.96
+    },
+    "aspect_ratio_id": {
+      "value": "portrait",
+      "confidence": 0.98
+    },
+    "viewing_context": {
+      "value": null,
+      "confidence": 0
+    }
+  },
+  "audience": {
+    "description": {
+      "value": "Anak muda di Solo yang aktif di Instagram dan mencari tempat nongkrong baru.",
+      "confidence": 0.88
+    },
+    "age_min": {
+      "value": 18,
+      "confidence": 0.6
+    },
+    "age_max": {
+      "value": 30,
+      "confidence": 0.6
+    },
+    "sophistication": {
+      "value": null,
+      "confidence": 0
+    },
+    "price_sensitivity": {
+      "value": null,
+      "confidence": 0
+    },
+    "attention_context": {
+      "value": null,
+      "confidence": 0
+    },
+    "cultural_context": [
+      "Solo",
+      "anak muda kota"
+    ]
+  },
+  "countries": [
+    {
+      "id": "indonesia",
+      "weight": 0.75,
+      "confidence": 0.93
+    },
+    {
+      "id": "japan",
+      "weight": 0.25,
+      "confidence": 0.8
+    }
+  ],
+  "movement_id": {
+    "value": null,
+    "confidence": 0
+  },
+  "brand_name": {
+    "value": null,
+    "confidence": 0
+  },
+  "deliverables": [
+    "Satu aset feed Instagram 4:5 untuk grand opening"
+  ],
+  "mandatories": [
+    "Sebutkan grand opening",
+    "Cantumkan diskon 50 persen",
+    "Tampilkan nomor WhatsApp"
+  ],
+  "prohibitions": [],
+  "style_notes": [
+    "modern Indonesia dengan sedikit nuansa Jepang"
+  ],
+  "visual_references": [],
+  "contradictions": [
+    "Klien meminta desain sangat minimalis tetapi juga meminta enam informasi promo.",
+    "Target disebut anak muda tetapi juga keluarga usia 50 tahun."
+  ]
+}

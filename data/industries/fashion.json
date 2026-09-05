@@ -1,0 +1,25 @@
+{
+  "id": "fashion",
+  "name": "Fashion",
+  "schema_version": "1.0.0",
+  "core_perception": "Clothing is bought for identity before utility. The audience judges whether the brand's world is one they want to be seen inside, so taste signalling and cultural currency outrank feature description almost entirely.",
+  "visual_traits": ["authored photography with a strong point of view", "generous space around the subject", "restrained or extreme palettes with little middle ground", "typographic confidence with minimal explanation"],
+  "communication_needs": ["establish a world and a taste level immediately", "show the garment in enough detail to judge material and fit", "signal seasonality and newness"],
+  "trust_pressure": 0.35,
+  "conversion_pressure": 0.6,
+  "emotion_pressure": 0.85,
+  "information_pressure": 0.25,
+  "aesthetic_pressure": 0.95,
+  "composition": "Image-dominant with type used sparingly and precisely. Full-bleed or wide-margin extremes both work; the uncommitted middle reads as catalogue. Cropping is expressive rather than descriptive.",
+  "typography": "Minimal, confident and often very small. A single wordmark with wide tracking can carry an entire asset. Explanatory copy weakens the register and should be pushed to caption or secondary surfaces.",
+  "color": "Either strictly controlled neutrals or a single decisive statement colour. Palettes are usually drawn from the collection rather than fixed by brand guidelines.",
+  "imagery": "Casting, styling and location carry more weight than technical polish. Movement, imperfection and atmosphere are assets rather than defects.",
+  "dkv_floor": { "contrast": 0.35, "hierarchy_strength": 0.3 },
+  "dkv_ceiling": { "visual_density": 0.55, "color_complexity": 0.5 },
+  "preferred_movements": ["editorial-modernism", "minimalism", "brutalism"],
+  "avoid": [
+    "Explanatory feature callouts and benefit bullets, which move the work into a retail register the audience discounts.",
+    "Stock-feeling photography with generic casting, which destroys the taste signal faster than any layout error.",
+    "Loud promotional badges over editorial imagery, which read as a markdown even when the price has not changed."
+  ]
+}

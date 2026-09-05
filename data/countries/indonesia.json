@@ -1,0 +1,256 @@
+{
+  "id": "indonesia",
+  "name": "Indonesia",
+  "schema_version": "1.0.0",
+
+  "visual_traits": [
+    "layered foreground-to-background depth rather than flat single-plane composition",
+    "tolerance for high information density without it reading as clutter",
+    "hierarchy established by scale contrast more than by isolation",
+    "warm luminance from strong ambient daylight and deep shade",
+    "hand-drawn lettering heritage surviving inside digital typesetting",
+    "material honesty: surfaces show their making",
+    "communal framing — subjects rarely isolated from social context"
+  ],
+
+  "cultural_context": {
+    "social_values": [
+      "relational and high-context communication",
+      "deference to seniority and social position",
+      "communal participation over individual assertion",
+      "hospitality as a form of respect"
+    ],
+    "communication_style": "High-context and indirect. Meaning is carried by warmth, framing and implication rather than by blunt assertion. Direct imperative commands read as rude; invitation and shared benefit read as persuasive. Visual communication follows the same logic — a claim is softened by context, and an offer is framed as something shared rather than something demanded.",
+    "spatial_philosophy": "Indoor and outdoor are continuous rather than opposed. Thresholds, verandas and covered edges create layered transitional space instead of hard boundaries. Translated to a 2D surface this becomes permeable framing, overlapping planes and compositions that feel entered rather than viewed.",
+    "formality_bias": 0.55,
+    "collectivism_bias": 0.78
+  },
+
+  "historical_influences": [
+    {
+      "period": "8th–14th century",
+      "influence": "Classical temple relief carving of Java and Sumatra",
+      "visual_consequence": "Continuous horizontal narrative reading, dense low-relief surfaces where figure and ground interlock, and storytelling that unfolds along a band rather than resolving in a single frame. Expressed today as sequential, register-based composition and comfort with sustained detail across a horizontal axis."
+    },
+    {
+      "period": "15th–19th century",
+      "influence": "Islamic aniconic abstraction and calligraphic surface treatment",
+      "visual_consequence": "Preference for abstraction, geometry and rhythmic repetition over figurative depiction in formal or civic contexts, plus a deep respect for lettering as an image in its own right. Expressed as typographic surfaces that carry meaning without illustration."
+    },
+    {
+      "period": "1900–1942",
+      "influence": "Dutch colonial architecture and early European modernism adapted to the tropics",
+      "visual_consequence": "Deep eaves, brise-soleil, high ceilings and shaded arcades — an aesthetic of managed light. Expressed as strong shadow structure, horizontal banding and a composition sensibility that treats shade as a positive element rather than an absence."
+    },
+    {
+      "period": "1945–1965",
+      "influence": "Post-independence nation-building modernism and poster culture",
+      "visual_consequence": "Bold condensed display lettering, monumental scale, optimistic geometry and high-contrast civic messaging. Expressed as confident headline dominance and a willingness to let type carry the whole surface."
+    },
+    {
+      "period": "1998–2010",
+      "influence": "Reformasi-era street printing, activist screen printing and independent music graphics",
+      "visual_consequence": "Raw registration, limited spot-colour printing, photocopy texture and hand-cut forms. Expressed as an accepted rough edge — imperfection reads as authenticity rather than as a defect."
+    },
+    {
+      "period": "2010–present",
+      "influence": "Modern tropical architecture and the independent café and craft economy",
+      "visual_consequence": "Exposed concrete against warm timber, generous negative space, restrained earth palettes and a quiet, material-led premium language that coexists with the dense vernacular rather than replacing it."
+    }
+  ],
+
+  "composition": {
+    "spatial_behavior": "Layered rather than flat. Depth is built through overlapping planes, framing edges and foreground occlusion, echoing the veranda-and-threshold experience of built space. Compositions tolerate a busy periphery if the centre holds a clear focal claim, and they read comfortably from the centre outward.",
+    "density_bias": 0.58,
+    "whitespace_bias": 0.45,
+    "symmetry": "mixed",
+    "structure": "Centred frontal address for authority and invitation; asymmetric layering for editorial and premium registers. Vertical stacking is natural because so much vernacular display space is tall and narrow. Hierarchy is carried by size jumps that are larger than European norms — a headline is expected to dominate decisively, not politely."
+  },
+
+  "typography": {
+    "script_systems": [
+      "Latin (primary, national and commercial)",
+      "Arabic-derived Pegon and Jawi (religious and traditional registers)",
+      "Javanese and Balinese scripts (ceremonial and place-identity registers)"
+    ],
+    "relationships": [
+      "one dominant display voice supported by a quiet neutral text face",
+      "large scale jumps between levels rather than subtle gradation",
+      "condensed display forms suited to tall narrow surfaces",
+      "hand-lettered warmth paired with neutral geometric sans for credibility",
+      "generous letterspacing in small supporting type to survive low-quality reproduction"
+    ],
+    "hierarchy_behavior": "Three clear levels maximum in public-facing work: a decisive headline, a short qualifier, and a compact information block. Anything read at speed is expected to resolve in under two seconds, which pushes contrast between levels upward rather than toward refinement.",
+    "weight_bias": "bold",
+    "notes": "Custom and hand-painted lettering has never been displaced by typesetting; it migrated into it. Display type that carries a trace of the hand reads as local and trustworthy, while purely geometric neutrality reads as imported, corporate or premium. Both are legitimate — the choice is a positioning decision, not a quality one."
+  },
+
+  "color": {
+    "relationships": [
+      "warm neutral base carrying one saturated accent",
+      "earth and clay tones against off-white and unbleached surfaces",
+      "deep shade greens read as natural rather than decorative",
+      "gold and deep green carry ceremonial and religious weight",
+      "high-chroma primaries belong to vernacular and mass-market registers"
+    ],
+    "saturation_bias": 0.52,
+    "contrast_bias": 0.68,
+    "palette_logic": "Two registers coexist. The vernacular register is high chroma and high contrast because it must survive sunlight, dust and distance. The contemporary premium register is warm-neutral and low chroma because it signals restraint against that noisy background. Choose the register deliberately — mixing them without intent produces work that reads as neither confident nor considered.",
+    "notes": "Ambient daylight is intense and warm. Colours that look balanced on a calibrated screen often read washed out in the physical environments where the work is actually seen."
+  },
+
+  "imagery": {
+    "subject_treatment": "People are shown in relation to others or to a place, rarely fully isolated. Warmth, ease and unforced expression read as authentic; posed perfection reads as advertising and is discounted accordingly. Hands, food, shared surfaces and gesture do a lot of communicative work.",
+    "framing": "Medium and medium-close framing with visible environmental context. Full-bleed environmental shots with a small human presence establish place. Extreme isolation on seamless backgrounds reads as imported premium and should be a deliberate positioning choice.",
+    "lighting_bias": "Strong directional daylight with real shadow structure, or diffused shade with warm bounce. Overcast neutrality feels foreign. Late-afternoon warmth is the most culturally legible light.",
+    "realism_bias": 0.72
+  },
+
+  "materiality": {
+    "surfaces": [
+      "unfinished and board-marked concrete",
+      "warm hardwood and reclaimed timber",
+      "woven and plaited natural fibre",
+      "terracotta and unglazed clay",
+      "galvanised metal and corrugated sheet",
+      "printed vinyl and tarpaulin",
+      "handmade paper with visible fibre"
+    ],
+    "texture_bias": 0.66,
+    "print_traditions": [
+      "screen printing with limited spot colours",
+      "large-format vinyl banner printing",
+      "hand-painted commercial signage",
+      "letterpress and stamp impression in official documents"
+    ],
+    "notes": "Surface texture is not decoration here; it is evidence of climate and making. Humidity, sun and dust age materials fast, so patina reads as normal rather than neglected. Perfectly clean digital surfaces can feel unrooted unless that sterility is the intended message."
+  },
+
+  "graphic_language": {
+    "shape_logic": "Rounded and softened geometry in warm registers; hard rectilinear structure in civic and institutional ones. Interlocking figure-ground relationships feel more natural than isolated floating elements. Curves read as hospitable, sharp angles as official.",
+    "rhythm": "Repetition with small variation rather than mechanical uniformity. Rhythm accumulates — a series of near-identical units reads as abundance and participation, which is why repetition is persuasive rather than monotonous in this context.",
+    "ornament_bias": 0.48,
+    "signage_traditions": [
+      "hand-painted shop fascia lettering",
+      "tall narrow vertical banners at street edges",
+      "stacked multi-language information panels",
+      "temporary event gateways and arch structures"
+    ]
+  },
+
+  "contemporary_traits": [
+    "specialty coffee and craft retail branding using restrained warm neutrals and generous space",
+    "modern tropical architecture pairing raw concrete with timber and planting",
+    "mobile-first vertical composition as the default rather than an adaptation",
+    "regional-pride typography and local-language wordplay used as a premium signal",
+    "creator-led product photography that favours evident realism over studio polish",
+    "religious and family calendar events driving major seasonal campaign rhythms"
+  ],
+
+  "style_variants": [
+    {
+      "id": "modern-tropical",
+      "name": "Modern Tropical",
+      "description": "Restrained, material-led and quiet. Warm neutrals, exposed structural surfaces, generous negative space and a single confident type voice. Signals considered premium without importing a foreign visual identity.",
+      "weights_override": {
+        "composition": 0.24,
+        "typography": 0.14,
+        "color": 0.16,
+        "imagery": 0.16,
+        "materiality": 0.22,
+        "graphic_language": 0.08
+      },
+      "suitable_for": ["hospitality", "property", "fnb", "beauty-skincare"]
+    },
+    {
+      "id": "urban-vernacular",
+      "name": "Urban Vernacular",
+      "description": "Dense, high-contrast and immediate. Condensed display lettering, saturated accents, layered information and a rough printed edge. Reads as local, energetic and honest about being commercial.",
+      "weights_override": {
+        "composition": 0.2,
+        "typography": 0.26,
+        "color": 0.22,
+        "imagery": 0.1,
+        "materiality": 0.12,
+        "graphic_language": 0.1
+      },
+      "suitable_for": ["fnb", "fashion"]
+    },
+    {
+      "id": "civic-modernist",
+      "name": "Civic Modernist",
+      "description": "Monumental and optimistic. Bold condensed type, strong geometry, decisive scale jumps and a limited palette. Inherits the confidence of post-independence public communication without its period styling.",
+      "weights_override": {
+        "composition": 0.24,
+        "typography": 0.24,
+        "color": 0.16,
+        "imagery": 0.14,
+        "materiality": 0.1,
+        "graphic_language": 0.12
+      },
+      "suitable_for": ["property", "technology-saas", "fnb"]
+    }
+  ],
+
+  "avoid_stereotypes": [
+    {
+      "token": "batik",
+      "why": "Applying a textile pattern as a background or border is the single most common shortcut to signalling this country, and it substitutes surface decoration for actual cultural reasoning. It also flattens a regionally specific craft into a generic texture.",
+      "instead": "Carry the underlying logic — dense figure-ground interlock, rhythmic repetition with variation, and reserved negative space — into composition and shape language without reproducing a textile."
+    },
+    {
+      "token": "wayang",
+      "why": "Shadow-puppet silhouettes are used as instant cultural shorthand in work that has nothing to do with the tradition, which reads as costume rather than identity.",
+      "instead": "Use the structural ideas — dramatic silhouette, strong backlight, layered depth planes and narrative sequencing — as lighting and composition decisions."
+    },
+    {
+      "token": "borobudur",
+      "why": "Monument imagery imported into unrelated commercial work signals tourism, not brand, and immediately dates the piece to a heritage-campaign register.",
+      "instead": "Draw on the relief tradition instead: horizontal narrative bands, stepped hierarchy and dense low-relief surface rhythm."
+    },
+    {
+      "token": "rice terrace",
+      "why": "Terraced landscape imagery reduces a large and largely urban country to a single agricultural postcard, and it is almost never true to the audience being addressed.",
+      "instead": "Use the contour logic — stepped horizontal registers, layered depth and graduated tonal bands — as a composition device."
+    },
+    {
+      "token": "gamelan",
+      "why": "Instrument imagery and its associated ornament are deployed as generic exotic seasoning, disconnected from the ceremonial contexts where they carry real meaning.",
+      "instead": "Translate the musical structure — interlocking repeated cycles, layered rhythm at different speeds — into visual rhythm and pattern behaviour."
+    },
+    {
+      "token": "kebaya",
+      "why": "Traditional dress used as a costume signal in contemporary commercial work implies a heritage positioning the brand usually has not earned and does not want.",
+      "instead": "Address formality and respect through posture, framing, colour restraint and typographic register instead of through costume."
+    },
+    {
+      "token": "garuda",
+      "why": "The national emblem carries specific state and legal meaning; using it decoratively is both lazy and inappropriate outside official contexts.",
+      "instead": "Signal national confidence through scale, civic typographic language and the optimism of post-independence public design."
+    },
+    {
+      "token": "tropical paradise",
+      "why": "The island-paradise framing is an outsider's tourism lens applied to a diverse, urban, fast-moving market, and domestic audiences read it as being sold to rather than spoken to.",
+      "instead": "Ground the work in the actual visual environment of the audience — urban density, managed light, real materials and shared social space."
+    },
+    {
+      "token": "tribal",
+      "why": "Generic ethnographic pattern flattens hundreds of distinct regional cultures into an undifferentiated texture and frequently misappropriates ceremonial forms.",
+      "instead": "If a specific regional culture is genuinely relevant, name it, research it and let it inform structure. Otherwise leave it out."
+    },
+    {
+      "token": "spice",
+      "why": "Spice-trade imagery is a colonial-era framing of the region as a source of raw exotic goods, and it carries that history whether or not it is intended.",
+      "instead": "If the subject is food, work from the contemporary eating environment — shared tables, hands, steam, everyday tableware."
+    }
+  ],
+
+  "weights": {
+    "composition": 0.22,
+    "typography": 0.18,
+    "color": 0.16,
+    "imagery": 0.16,
+    "materiality": 0.16,
+    "graphic_language": 0.12
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "social-feed",
+  "name": "Social Feed",
+  "schema_version": "1.0.0",
+  "category": "social",
+  "aspect_ratios": [
+    {
+      "id": "square",
+      "label": "1:1 Square",
+      "width": 1080,
+      "height": 1080
+    },
+    {
+      "id": "portrait",
+      "label": "4:5 Portrait",
+      "width": 1080,
+      "height": 1350
+    }
+  ],
+  "default_aspect_ratio": "portrait",
+  "safe_area": {
+    "top": 0.06,
+    "bottom": 0.1,
+    "left": 0.06,
+    "right": 0.06,
+    "reason": "Feed interfaces overlay account headers, captions and action controls near the edges, and the lower band is the most frequently obscured. Anything load-bearing placed outside this area risks being cropped or covered depending on the client application."
+  },
+  "structural_rules": {
+    "max_text_blocks": 3,
+    "min_text_scale_px_at_1080": 34,
+    "focal_requirement": "One unambiguous focal element that resolves at thumbnail size. The asset is first seen at roughly a tenth of its rendered dimensions while scrolling, so anything that depends on reading two competing elements will fail before it is ever opened.",
+    "viewing_distance": "thumb",
+    "scroll_context": true
+  },
+  "allowed_zones": [
+    "hero",
+    "headline",
+    "body",
+    "product",
+    "image",
+    "offer",
+    "data",
+    "cta",
+    "brand"
+  ],
+  "required_zones": [
+    "headline",
+    "brand"
+  ],
+  "default_layouts": [
+    "hero-visual",
+    "headline-dominant",
+    "image-text-split",
+    "typographic"
+  ],
+  "text_render_risk": 0.72,
+  "dkv_bias": {
+    "focal_dominance": 0.75,
+    "hierarchy_strength": 0.7,
+    "contrast": 0.6,
+    "typographic_scale_ratio": 1.6
+  }
+}

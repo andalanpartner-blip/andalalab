@@ -1,0 +1,28 @@
+.button {
+  flex: none;
+  padding: 8px 16px;
+  font-size: 12.5px;
+  font-weight: 560;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+  min-width: 84px;
+}
+
+.button:hover {
+  background: var(--surface-2);
+  transform: translateY(-1px);
+}
+
+.inverted {
+  color: var(--ink-on);
+  background: transparent;
+  border-color: color-mix(in srgb, var(--ink-on) 35%, transparent);
+}
+
+.inverted:hover {
+  background: color-mix(in srgb, var(--ink-on) 12%, transparent);
+}

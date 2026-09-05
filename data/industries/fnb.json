@@ -1,0 +1,25 @@
+{
+  "id": "fnb",
+  "name": "Food & Beverage",
+  "schema_version": "1.0.0",
+  "core_perception": "Appetite is decided before reason engages. The category is judged on freshness, craft and the promise of a specific sensory experience, and it is bought frequently at low consideration, so recognisability across repeated exposures matters more than a single perfect execution.",
+  "visual_traits": ["appetite-led imagery with visible texture", "warm colour temperature", "close framing on the product", "human presence implied through hands and shared settings"],
+  "communication_needs": ["make the product physically desirable within one second", "state the occasion and the price position clearly", "signal freshness and preparation quality"],
+  "trust_pressure": 0.55,
+  "conversion_pressure": 0.78,
+  "emotion_pressure": 0.82,
+  "information_pressure": 0.45,
+  "aesthetic_pressure": 0.7,
+  "composition": "The product occupies the dominant area and is rarely subordinated to type. Compositions resolve fast, and a single hero item outperforms an assortment except when abundance is itself the message.",
+  "typography": "Legible at a glance with a warm or characterful display voice. Price and offer information must be readable at thumbnail scale, which caps how delicate the type can be.",
+  "color": "Warm, saturated and appetising. Cool blue and grey suppress appetite response and should be reserved for packaging structure or premium positioning rather than for the food itself.",
+  "imagery": "Texture is the single most important variable — steam, gloss, crumb, condensation and char. Even lighting flattens food; directional light with real shadow is close to mandatory.",
+  "dkv_floor": { "contrast": 0.5, "hierarchy_strength": 0.55 },
+  "dkv_ceiling": { "visual_density": 0.75, "color_complexity": 0.7 },
+  "preferred_movements": ["contemporary-digital", "editorial-modernism", "bauhaus"],
+  "avoid": [
+    "Desaturated or cool-toned food photography, which reads as stale regardless of how well composed the frame is.",
+    "Minimal compositions that hide the product behind typography or empty space when the objective is conversion or promotion.",
+    "Overlaying more than two offer messages on a single feed asset, which destroys the appetite response the image is doing the work to create."
+  ]
+}

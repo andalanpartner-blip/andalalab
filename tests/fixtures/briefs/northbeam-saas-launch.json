@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_northbeam_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Launch post for the scheduling feature. Needs to convert — free trial signups.",
+  "objective": "conversion",
+  "core_message": "Scheduling now happens inside the tool, so teams stop rebuilding the same shift plan in a spreadsheet every week.",
+  "audience": {
+    "description": "Operations managers aged 28 to 45 at companies of fifty to five hundred people who already use a workforce tool and are evaluating whether to consolidate.",
+    "age_range": [28, 45],
+    "sophistication": 0.75,
+    "price_sensitivity": 0.4,
+    "attention_context": "scroll",
+    "cultural_context": ["North American mid-market operations teams"]
+  },
+  "industry_id": "technology-saas",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": { "united-states": 0.6, "switzerland": 0.4 },
+  "movement_id": "contemporary-digital",
+  "layout_id": "headline-dominant",
+  "platform": {
+    "channel": "linkedin-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "thumb",
+    "localised_text": false
+  },
+  "deliverables": ["One 1:1 feed asset"],
+  "mandatories": ["Show the actual scheduling interface", "Free trial call to action"],
+  "prohibitions": ["No abstract network or circuit imagery"],
+  "confidence": { "objective": 0.92, "industry": 0.99 },
+  "missing_fields": []
+}

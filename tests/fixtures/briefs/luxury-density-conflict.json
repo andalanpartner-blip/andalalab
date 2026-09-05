@@ -1,0 +1,51 @@
+{
+  "brief_id": "brief_luxury_density_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Six-step service explained in one restrained asset.",
+  "objective": "consideration",
+  "core_message": "The atelier's made-to-order service is explained in six steps, and every step has to be legible in a single asset.",
+  "audience": {
+    "description": "Affluent buyers aged 35 to 60 who expect restraint but will not book without understanding the full process.",
+    "age_range": [
+      35,
+      60
+    ],
+    "sophistication": 0.9,
+    "price_sensitivity": 0.15,
+    "attention_context": "dwell",
+    "cultural_context": [
+      "luxury made-to-order"
+    ]
+  },
+  "industry_id": "fashion",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "japan": 0.5,
+    "switzerland": 0.5
+  },
+  "movement_id": "minimalism",
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 feed asset covering the full service"
+  ],
+  "mandatories": [
+    "Name all six steps",
+    "Show the fitting stage",
+    "State the lead time",
+    "Show the fabric selection",
+    "Name the atelier location",
+    "State the deposit terms"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

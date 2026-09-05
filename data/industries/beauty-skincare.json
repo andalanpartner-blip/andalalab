@@ -1,0 +1,25 @@
+{
+  "id": "beauty-skincare",
+  "name": "Beauty & Skincare",
+  "schema_version": "1.0.0",
+  "core_perception": "A category built on the tension between efficacy and sensory pleasure. The audience is simultaneously sceptical of claims and highly responsive to texture, light and skin quality, so evidence and beauty have to arrive together.",
+  "visual_traits": ["soft controlled lighting with clean falloff", "high skin and texture fidelity", "restrained neutral or single-accent palettes", "clinical clarity balanced with tactile warmth"],
+  "communication_needs": ["make the sensory experience visible", "support efficacy claims without regulatory overreach", "communicate ingredient and formulation credibility"],
+  "trust_pressure": 0.8,
+  "conversion_pressure": 0.65,
+  "emotion_pressure": 0.72,
+  "information_pressure": 0.6,
+  "aesthetic_pressure": 0.88,
+  "composition": "Calm, centred or gently asymmetric, with the product given clean isolation. Texture close-ups and product shots frequently pair as a two-part composition. Clutter directly undermines the cleanliness claim the category rests on.",
+  "typography": "Light to regular weights, wide spacing, and clear separation between claim, ingredient and instruction. Numbers and percentages must be exact and legible because they carry the efficacy argument.",
+  "color": "Extended neutrals with one accent drawn from the formulation or packaging. Very high saturation reads as mass-market, and heavy contrast fights the softness the imagery is establishing.",
+  "imagery": "Skin must be rendered honestly — over-retouching now reads as dishonest to a large part of the audience. Product texture, drip, absorption and finish do the persuasive work.",
+  "dkv_floor": { "contrast": 0.4, "hierarchy_strength": 0.5 },
+  "dkv_ceiling": { "visual_density": 0.5, "color_complexity": 0.45 },
+  "preferred_movements": ["minimalism", "editorial-modernism", "contemporary-digital"],
+  "avoid": [
+    "Dense promotional layouts, which contradict the calm and clinical positioning the category depends on.",
+    "Heavy retouching that removes all skin texture, which now signals a lack of confidence in the product.",
+    "Medical-looking claim treatments that imply regulated efficacy the product does not hold."
+  ]
+}

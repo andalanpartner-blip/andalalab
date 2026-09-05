@@ -1,0 +1,34 @@
+.main {
+  min-height: 100vh;
+}
+
+.toolbar {
+  padding-top: var(--space-6);
+}
+
+.toolbarInner {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.newBrief {
+  font-size: 13px;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.newBrief:hover {
+  color: var(--ink);
+}
+
+.recipeError {
+  padding-top: var(--space-4);
+}
+
+.footerSpace {
+  height: var(--space-9);
+}

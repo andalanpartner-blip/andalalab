@@ -1,0 +1,46 @@
+{
+  "brief_id": "brief_tech_contemporary_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Free tier now includes reporting, drive signups.",
+  "objective": "conversion",
+  "core_message": "The free tier now includes the reporting module and signing up takes under a minute.",
+  "audience": {
+    "description": "Founders and operators aged 24 to 40 who will try a product immediately if the barrier is low enough.",
+    "age_range": [
+      24,
+      40
+    ],
+    "sophistication": 0.7,
+    "price_sensitivity": 0.6,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "startup tooling"
+    ]
+  },
+  "industry_id": "technology-saas",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "united-states": 1
+  },
+  "movement_id": "contemporary-digital",
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 1:1 conversion asset"
+  ],
+  "mandatories": [
+    "State that the tier is free",
+    "Show the reporting module"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

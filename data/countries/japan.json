@@ -1,0 +1,209 @@
+{
+  "id": "japan",
+  "name": "Japan",
+  "schema_version": "1.0.0",
+
+  "visual_traits": [
+    "negative space treated as an active interval rather than leftover area",
+    "asymmetric balance held by precise optical weight",
+    "two coexisting registers: extreme reduction and extreme information density",
+    "modular character-grid thinking inherited from mixed-script typesetting",
+    "confident edge cropping — subjects allowed to leave the frame",
+    "material and print quality carrying as much meaning as the image"
+  ],
+
+  "cultural_context": {
+    "social_values": [
+      "precision and finish as forms of respect",
+      "restraint read as confidence rather than absence",
+      "situational register — the same message is styled differently by context",
+      "attention to seasonal and temporal appropriateness"
+    ],
+    "communication_style": "Understated and context-dependent. Overclaiming damages credibility, so persuasion works through evident quality, specificity and completeness of detail rather than through volume. The unsaid part of a message is expected to be constructed by the reader, which makes suggestion more powerful than assertion.",
+    "spatial_philosophy": "Interval is a designed element. The gap between two things carries meaning and rhythm, so space is composed as deliberately as form. Thresholds and framed views are used to stage an experience in sequence rather than reveal everything at once.",
+    "formality_bias": 0.72,
+    "collectivism_bias": 0.7
+  },
+
+  "historical_influences": [
+    {
+      "period": "9th–12th century",
+      "influence": "Court aesthetics of layered garments, papers and seasonal reference",
+      "visual_consequence": "Sensitivity to layered translucency, subtle tonal adjacency and colour combinations that index a moment in time. Expressed as restrained palettes with narrow value steps rather than strong hue contrast."
+    },
+    {
+      "period": "17th–19th century",
+      "influence": "Woodblock print composition and flat colour-plane construction",
+      "visual_consequence": "Bold cropping, high-placed horizons, flat unmodelled colour areas, and outline carrying form. Expressed as graphic flatness and decisive framing that European composition arrived at much later."
+    },
+    {
+      "period": "1868–1930",
+      "influence": "Rapid absorption and reworking of Western typography and printing",
+      "visual_consequence": "A dual-script setting problem that never went away: reconciling dense logographic characters with Latin letterforms on one line. Expressed as exceptional attention to optical size, spacing and baseline negotiation."
+    },
+    {
+      "period": "1950–1990",
+      "influence": "Post-war corporate identity and poster modernism",
+      "visual_consequence": "Systematic identity design fused with poetic imagery — rigorous structure carrying an emotionally ambiguous idea. Expressed as work that is simultaneously very organised and not literal."
+    }
+  ],
+
+  "composition": {
+    "spatial_behavior": "Off-centre focal placement with deliberately unequal margins. Emptiness is loaded: a large void is read as intentional and confident, not as an unfinished area. Vertical and horizontal reading axes both remain available, so stacked vertical arrangements feel native rather than experimental.",
+    "density_bias": 0.42,
+    "whitespace_bias": 0.74,
+    "symmetry": "asymmetric",
+    "structure": "Modular underlying grid derived from character-square proportion, then broken at one deliberate point. Alignment discipline is high and violations are read as errors rather than as expression, so any asymmetry must look chosen. Fine detail is permitted at small sizes because reproduction quality and reading conventions support it."
+  },
+
+  "typography": {
+    "script_systems": [
+      "Kanji, hiragana and katakana in mixed setting",
+      "Latin script for brand and technical registers",
+      "vertical (tategaki) and horizontal (yokogaki) composition"
+    ],
+    "relationships": [
+      "mixed-script optical balancing rather than metric alignment",
+      "very small supporting type used confidently",
+      "wide letterspacing in Latin display type to sit beside character forms",
+      "restrained weight contrast with strong size contrast"
+    ],
+    "hierarchy_behavior": "Hierarchy is built with size and position more than with weight or colour. A quiet, small, precisely placed line can hold top-level importance if the space around it is generous, which is the opposite of a headline-dominance strategy.",
+    "weight_bias": "regular",
+    "notes": "Latin type used here is chosen for how it behaves next to character forms, not for how it looks alone. Wide tracking, lighter weights and reduced cap heights are common adjustments. Treating Latin display type as the primary voice without that adjustment is the most common failure of imported design."
+  },
+
+  "color": {
+    "relationships": [
+      "narrow value steps within a single family",
+      "ink black and unbleached paper as a structural pair",
+      "single low-chroma accent against extended neutrals",
+      "seasonal indexing rather than fixed brand colour"
+    ],
+    "saturation_bias": 0.34,
+    "contrast_bias": 0.55,
+    "palette_logic": "Restraint by default, with contrast delivered through value and material rather than hue. The commercial register inverts this completely — saturated, high-density and competitive — so the register choice must be explicit. A muted palette signals considered quality; a saturated one signals immediacy and mass availability.",
+    "notes": "Paper white, ink density and print finish are treated as colour decisions, not production details."
+  },
+
+  "imagery": {
+    "subject_treatment": "Objects and details are given the same importance as people. A fragment — a hand, a surface, an edge — is accepted as a complete subject. Human subjects are often turned slightly away or shown mid-action rather than addressing the camera directly.",
+    "framing": "Tight crops and unexpected cuts, or wide compositions with a very small subject. Middle-distance conventional framing is the least characteristic choice.",
+    "lighting_bias": "Soft, even and directionless light for product and editorial work; deep contrast reserved for dramatic or nocturnal registers. Shadow is used for shape, not for mood by default.",
+    "realism_bias": 0.68
+  },
+
+  "materiality": {
+    "surfaces": [
+      "uncoated and textured paper stock",
+      "precisely joined untreated wood",
+      "matte ceramic and stone",
+      "brushed and anodised metal",
+      "translucent layers and diffusing screens"
+    ],
+    "texture_bias": 0.48,
+    "print_traditions": [
+      "high-precision offset with fine registration",
+      "foil stamping and blind embossing",
+      "packaging engineering as a design discipline in its own right"
+    ],
+    "notes": "Finish quality is a message. A slightly wrong paper weight or an imprecise fold undermines a premium claim more than a weak image would. Packaging is not a container for the product; it is part of it."
+  },
+
+  "graphic_language": {
+    "shape_logic": "Simple primary forms held in precise relationships. Circles, straight rules and rectangular fields do most of the work, with contrast created by placement and interval rather than by decoration.",
+    "rhythm": "Irregular but controlled intervals. Even spacing reads as mechanical; varied spacing that still resolves reads as designed. Repetition is used sparingly and deliberately.",
+    "ornament_bias": 0.22,
+    "signage_traditions": [
+      "vertical hanging shop banners",
+      "dense stacked wayfinding in transport environments",
+      "single-character shop marks"
+    ]
+  },
+
+  "contemporary_traits": [
+    "reduction-led retail branding that removes rather than adds",
+    "extremely dense convenience-retail packaging as a parallel legitimate register",
+    "strong editorial magazine culture influencing commercial layout",
+    "vertical mobile composition as a native rather than adapted format",
+    "craft revival positioned as contemporary quality rather than heritage"
+  ],
+
+  "style_variants": [
+    {
+      "id": "reductive-editorial",
+      "name": "Reductive Editorial",
+      "description": "Quiet, spacious and precise. Small type, generous margins, one focal element and material-led restraint. Signals confidence through what is left out.",
+      "weights_override": {
+        "composition": 0.28,
+        "typography": 0.22,
+        "color": 0.12,
+        "imagery": 0.14,
+        "materiality": 0.18,
+        "graphic_language": 0.06
+      },
+      "suitable_for": ["beauty-skincare", "fashion", "hospitality", "property"]
+    },
+    {
+      "id": "commercial-density",
+      "name": "Commercial Density",
+      "description": "Saturated, layered and information-rich. Multiple type sizes, competitive colour and full-surface coverage. Signals availability, value and immediacy rather than restraint.",
+      "weights_override": {
+        "composition": 0.2,
+        "typography": 0.26,
+        "color": 0.24,
+        "imagery": 0.14,
+        "materiality": 0.08,
+        "graphic_language": 0.08
+      },
+      "suitable_for": ["fnb", "technology-saas"]
+    }
+  ],
+
+  "avoid_stereotypes": [
+    {
+      "token": "cherry blossom",
+      "why": "Seasonal blossom imagery is applied as a universal cultural marker regardless of subject or season, which signals an outsider's view and dates the work instantly.",
+      "instead": "Use the underlying idea of seasonal indexing — a palette or subject that is specific to a moment in time and would be wrong in another month."
+    },
+    {
+      "token": "geisha",
+      "why": "A costumed figure used as a cultural signal reduces a contemporary market to a historical performance role and reads as exoticising.",
+      "instead": "Communicate refinement through precision, restraint, framing and material quality rather than through a period figure."
+    },
+    {
+      "token": "samurai",
+      "why": "Warrior imagery is imported shorthand for discipline or strength that has no relationship to most commercial subjects.",
+      "instead": "Express discipline through structural rigour, exact alignment and an uncompromising reduction of elements."
+    },
+    {
+      "token": "mount fuji",
+      "why": "A single landmark silhouette used as a stamp of national origin is decorative geography with no communicative function.",
+      "instead": "If place matters, use the actual environment relevant to the audience — urban, domestic or retail — rather than a symbol of the country."
+    },
+    {
+      "token": "torii",
+      "why": "A religious structure used as a graphic device to mean the country is both inaccurate and disrespectful of its actual function.",
+      "instead": "Use the spatial principle it embodies — a threshold that frames and stages a view — as a compositional framing device."
+    },
+    {
+      "token": "kanji tattoo",
+      "why": "Decorative character forms placed for visual effect without regard to meaning are a well-known marker of design produced from outside the culture.",
+      "instead": "If characters appear, they must be correct, purposeful and set with proper mixed-script spacing, or they should not appear at all."
+    },
+    {
+      "token": "neon cyberpunk",
+      "why": "The rain-slick neon night-city look is a cinematic invention exported back as national identity, and it now reads as a film reference rather than as a place.",
+      "instead": "If a dense urban register is genuinely wanted, build it from real contemporary signage density, layered information and commercial colour behaviour."
+    }
+  ],
+
+  "weights": {
+    "composition": 0.26,
+    "typography": 0.2,
+    "color": 0.14,
+    "imagery": 0.14,
+    "materiality": 0.18,
+    "graphic_language": 0.08
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "concepts": [
+    {
+      "name": "Threshold of the First Cup",
+      "type": "cultural_reinterpretation",
+      "big_idea": "The grand opening is staged as a doorway built from the warung counter itself, so the first cup passes through the shop rather than sitting in front of it.",
+      "creative_tension": "A new business must feel established on its first day, so permanence is borrowed from the counter while the cup remains a first arrival.",
+      "visual_metaphor": "The serving counter is framed as an architectural threshold, its edge acting as a lintel above the waiting cup.",
+      "why": "A launch needs recognition before appetite; showing the shop as a place already standing tells passersby the counter will be there tomorrow.",
+      "visual_world": "Early morning inside a narrow Solo storefront, teak counter edge, condensation on steel, daylight arriving from the street side.",
+      "emotional_direction": "calm",
+      "subject_strategy": "place-as-subject",
+      "narrative_strategy": "single-moment",
+      "composition_intent": "single-object-focus",
+      "human_presence": "implied",
+      "abstraction_level": "symbolic",
+      "temporal_strategy": "anticipation",
+      "interaction_strategy": "invited",
+      "best_for": [
+        "establishing permanence on launch day"
+      ],
+      "risk": "Reads as quiet and may lose against louder promotional posts in a scroll."
+    },
+    {
+      "name": "Queue as the Announcement",
+      "type": "human_story",
+      "big_idea": "The opening is told through the students who arrive first, their waiting bodies forming the headline the shop cannot yet claim for itself.",
+      "creative_tension": "A shop nobody knows must borrow credibility from the people willing to stand in it.",
+      "visual_metaphor": "A line of young customers curves along the counter, their posture spelling the shape of the word opening.",
+      "why": "Young buyers trust peers over claims; showing the crowd converts the launch into social proof rather than an assertion.",
+      "visual_world": "Street kerb outside the shop at mid morning, uniform bags, motorbike helmets held in hands, tiled pavement.",
+      "emotional_direction": "warm",
+      "subject_strategy": "person-as-subject",
+      "narrative_strategy": "documentary",
+      "composition_intent": "figure-in-environment",
+      "human_presence": "crowd",
+      "abstraction_level": "literal",
+      "temporal_strategy": "instant",
+      "interaction_strategy": "observed",
+      "best_for": [
+        "social proof at launch"
+      ],
+      "risk": "Requires real people on the day and cannot be shot before opening."
+    },
+    {
+      "name": "Measured Pour",
+      "type": "minimal_statement",
+      "big_idea": "One uninterrupted pour is held in a tall column of empty space, reducing the whole opening to a single unhurried gesture.",
+      "creative_tension": "A launch shouts, but the product is made by patience, so the gesture must slow the surface down.",
+      "visual_metaphor": "A thin stream of coffee descends through a vertical void, meeting the cup near the lower edge.",
+      "why": "Restraint separates the shop from promotional noise and states that quality precedes volume.",
+      "visual_world": "Bare plaster wall, single steel kettle, narrow table, morning shade with no props.",
+      "emotional_direction": "reverent",
+      "subject_strategy": "process-as-subject",
+      "narrative_strategy": "statement",
+      "composition_intent": "typographic-field",
+      "human_presence": "partial",
+      "abstraction_level": "stylised",
+      "temporal_strategy": "ritual-repetition",
+      "interaction_strategy": "addressed",
+      "best_for": [
+        "signalling craft"
+      ],
+      "risk": "Quiet enough that the opening date must carry weight in the layout."
+    }
+  ]
+}

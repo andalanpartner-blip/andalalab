@@ -1,0 +1,22 @@
+{
+  "id": "image-text-split",
+  "name": "Image + Text Split",
+  "schema_version": "1.0.0",
+  "description": "The surface is divided into a clean image field and a clean type field. The most legible and most reproducible structure, and the safest choice when the message carries information that must survive at small scale.",
+  "grid": { "columns": 6, "rows": 8, "gutter_ratio": 0.02, "margin_ratio": 0.06 },
+  "zones": [
+    { "id": "image", "priority": 1, "area_share": 0.5, "required": true },
+    { "id": "headline", "priority": 2, "area_share": 0.18, "required": true },
+    { "id": "body", "priority": 3, "area_share": 0.12, "required": false },
+    { "id": "offer", "priority": 4, "area_share": 0.08, "required": false },
+    { "id": "brand", "priority": 5, "area_share": 0.05, "required": true },
+    { "id": "cta", "priority": 6, "area_share": 0.07, "required": false }
+  ],
+  "flow": "f-pattern",
+  "density": 0.5,
+  "complexity": 0.45,
+  "spacing": "A hard division between the two fields with no overlap. Internal spacing within the text field follows a single consistent step so the block reads as one structured unit.",
+  "responsive_behavior": "The split ratio shifts between the square and portrait formats while the division stays on a grid line. The image field never drops below forty percent or the composition loses its anchor.",
+  "dkv_bias": { "alignment": 0.9, "hierarchy_strength": 0.75, "visual_density": 0.5, "whitespace": 0.5 },
+  "suitable_visual_types": ["social-feed"]
+}

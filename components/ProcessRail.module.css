@@ -1,0 +1,68 @@
+.wrap {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.rail {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  flex: none;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.label {
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+
+.connector {
+  width: clamp(24px, 6vw, 64px);
+  height: 1px;
+  background: var(--border-strong);
+  margin: 0 12px;
+  flex: none;
+}
+
+.step[data-status="done"] .dot {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.step[data-status="done"] .label {
+  color: var(--muted);
+}
+
+.step[data-status="active"] .dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.step[data-status="active"] .label {
+  color: var(--ink);
+  font-weight: 620;
+}

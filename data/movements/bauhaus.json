@@ -1,0 +1,79 @@
+{
+  "id": "bauhaus",
+  "name": "Bauhaus",
+  "schema_version": "1.0.0",
+  "period": "1919–1933, continuous influence since",
+  "core_principles": [
+    "form follows function — every element must justify its presence",
+    "unity of art, craft and industrial production",
+    "reduction to primary geometry and primary colour",
+    "the workshop method: design tested through making",
+    "rejection of applied ornament as a legitimate device"
+  ],
+  "visual_traits": [
+    "circle, square and triangle as a complete vocabulary",
+    "strong diagonal and rotational tension against orthogonal structure",
+    "geometric sans-serif lettering, frequently lowercase",
+    "flat primary colour against black and white",
+    "visible construction — the assembly logic is left legible"
+  ],
+  "composition": "Dynamic and constructed. Elements are positioned to create tension and movement while remaining rigorously geometric. Diagonals and rotations are structural decisions rather than expressive flourishes, and the composition reads as an assembled machine.",
+  "grid": {
+    "logic": "Geometric division of the surface, often with a dominant diagonal axis cutting across an orthogonal base structure. The grid is a construction device rather than a containment device.",
+    "preferred_columns": [
+      3,
+      4,
+      6
+    ],
+    "modularity": 0.75
+  },
+  "typography": {
+    "logic": "Geometric sans-serif built from circles and straight lines. Lowercase setting used as a rational simplification. Type is treated as a constructional element that can be rotated, stacked or run vertically.",
+    "scale_ratio": 1.8,
+    "case_bias": "lower",
+    "weight_bias": "bold"
+  },
+  "color": {
+    "logic": "Primary red, yellow and blue against black, white and grey. Colour is assigned to form by function, following the workshop colour theory rather than by taste.",
+    "palette_size": 4,
+    "saturation_bias": 0.8
+  },
+  "imagery": "Constructed and experimental — photomontage, high-contrast photography and abstraction. The image is built rather than captured, and manipulation is honest rather than hidden.",
+  "materiality": "Industrial and unapologetic. Steel, glass, plywood and flat paint, with production method left visible rather than disguised.",
+  "shape_language": "Primary geometry used at large scale. Overlapping transparent planes, hard edges and rotational placement. No decorative or organic forms.",
+  "dkv_bias": {
+    "whitespace": 0.5,
+    "alignment": 0.82,
+    "visual_density": 0.5,
+    "hierarchy_strength": 0.85,
+    "color_complexity": 0.4,
+    "contrast": 0.85,
+    "focal_dominance": 0.75,
+    "typographic_scale_ratio": 1.8
+  },
+  "suitable_industries": [
+    "technology-saas",
+    "property",
+    "fnb",
+    "fashion"
+  ],
+  "suitable_objectives": [
+    "launch",
+    "awareness",
+    "brand-building",
+    "event",
+    "promotion"
+  ],
+  "compatibility": {
+    "swiss-international": 0.9,
+    "minimalism": 0.6,
+    "brutalism": 0.6,
+    "editorial-modernism": 0.55,
+    "contemporary-digital": 0.65
+  },
+  "anti_stereotype": [
+    "Three primary-coloured shapes scattered on a cream background is a decorative quotation, not the movement. The geometry must be doing structural work — organising, dividing or directing the eye.",
+    "This was a school with a functional programme, not a palette. Applying red-yellow-blue to a layout that has no functional argument produces costume rather than design.",
+    "The lowercase geometric lettering is a consequence of a rationalist position on language and production. Used purely as a period signal it reads as retro styling."
+  ]
+}

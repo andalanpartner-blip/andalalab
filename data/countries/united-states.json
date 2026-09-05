@@ -1,0 +1,201 @@
+{
+  "id": "united-states",
+  "name": "United States",
+  "schema_version": "1.0.0",
+
+  "visual_traits": [
+    "headline-first hierarchy built around a single stated benefit",
+    "large scale jumps and confident use of oversized display type",
+    "explicit calls to action treated as a normal part of the composition",
+    "aspirational photography showing outcome rather than product detail",
+    "regional and subcultural pluralism rather than one national visual code",
+    "commercial vernacular signage feeding continuously into formal design"
+  ],
+
+  "cultural_context": {
+    "social_values": [
+      "individual choice and self-determination",
+      "optimism about improvement and change",
+      "informality as a form of approachability",
+      "openness to explicit self-promotion"
+    ],
+    "communication_style": "Direct, benefit-led and comfortable with assertion. Saying plainly what something does and why it is better is expected rather than boastful, and the audience anticipates being asked to act. Understatement is often read as vagueness rather than as confidence.",
+    "spatial_philosophy": "Space is expansive and available to be filled or left open as a deliberate statement. Scale itself is expressive — making something very large is an accepted rhetorical move rather than an excess, which is why display type and full-bleed imagery carry so much of the work.",
+    "formality_bias": 0.32,
+    "collectivism_bias": 0.25
+  },
+
+  "historical_influences": [
+    {
+      "period": "1830–1900",
+      "influence": "Wood type broadsides and commercial job printing",
+      "visual_consequence": "Stacked lines of wildly mixed display faces, each sized to the importance of its message rather than to a typographic system. Expressed today as comfort with dramatic scale contrast within a single composition."
+    },
+    {
+      "period": "1955–1975",
+      "influence": "The advertising creative revolution and the corporate identity era",
+      "visual_consequence": "The single big idea, headline and image working as one unit, and simultaneously the rise of rigorous mark-based identity systems. Expressed as a permanent split between conceptual advertising thinking and systematic brand thinking."
+    },
+    {
+      "period": "1985–2000",
+      "influence": "Postmodern deconstruction and independent music and skate graphics",
+      "visual_consequence": "Layering, distressed type, rule-breaking and subcultural authenticity as commercial currency. Expressed as an accepted rough register that reads as credible rather than unfinished."
+    },
+    {
+      "period": "2008–present",
+      "influence": "Platform and product design culture from the technology sector",
+      "visual_consequence": "System-driven flat interfaces, component libraries and conversion-optimised layouts exported far beyond software. Expressed as a strong default toward clean sans-serif, generous padding and evidence-driven layout decisions."
+    }
+  ],
+
+  "composition": {
+    "spatial_behavior": "Front-loaded and hierarchical. The main claim occupies the strongest position and the largest area, and everything else supports it in descending order. Full-bleed imagery with overlaid type is a native construction rather than a special treatment.",
+    "density_bias": 0.48,
+    "whitespace_bias": 0.55,
+    "symmetry": "mixed",
+    "structure": "Centred symmetry for broad-appeal and mass-market messaging; asymmetric editorial structure for premium and cultural positioning. Composition tends to resolve within one screen or one glance, and a clear terminal action point at the lower edge is expected."
+  },
+
+  "typography": {
+    "script_systems": [
+      "Latin script, with Spanish-language versioning common in many markets"
+    ],
+    "relationships": [
+      "one very large display voice against a small functional text face",
+      "condensed and extended widths used expressively",
+      "sentence-case conversational copy alongside upper-case emphasis",
+      "vernacular script and slab faces borrowed for warmth and authenticity"
+    ],
+    "hierarchy_behavior": "Steep and unambiguous. The reader is told exactly what matters first, and the drop between level one and level two is large. Supporting information is compressed rather than balanced against the headline.",
+    "weight_bias": "bold",
+    "notes": "Typographic register carries class and subculture signals precisely. A condensed gothic, a geometric sans and a hand-lettered script address noticeably different audiences even with identical copy, so the choice is a positioning decision before it is an aesthetic one."
+  },
+
+  "color": {
+    "relationships": [
+      "high-contrast brand colour used as an ownable asset",
+      "warm optimistic mid-tones in lifestyle contexts",
+      "saturated single accents driving action elements",
+      "muted desaturated palettes signalling premium restraint"
+    ],
+    "saturation_bias": 0.6,
+    "contrast_bias": 0.7,
+    "palette_logic": "Colour is a competitive asset rather than a compositional one. Brands aim to own a hue and repeat it relentlessly across every surface, and action elements are given the highest-contrast colour available. The premium register works by inverting this — deliberately withholding saturation to signal that the brand does not need to shout.",
+    "notes": "Accessibility contrast standards are widely enforced in digital work and effectively set a floor on figure-ground contrast."
+  },
+
+  "imagery": {
+    "subject_treatment": "People shown experiencing the outcome rather than examining the product. Expression is open and direct, eye contact is common, and diversity of casting is an explicit expectation rather than an option.",
+    "framing": "Wide aspirational environmental shots or tight energetic crops, frequently full-bleed with type laid over. Neutral middle-distance framing is the least used option.",
+    "lighting_bias": "Bright, warm and optimistic with golden directional light for lifestyle work; hard high-contrast light for sport and energy registers.",
+    "realism_bias": 0.6
+  },
+
+  "materiality": {
+    "surfaces": [
+      "painted metal and enamel signage",
+      "coated glossy print stock",
+      "screen-printed cotton and apparel",
+      "corrugated shipping board as a brand surface"
+    ],
+    "texture_bias": 0.42,
+    "print_traditions": [
+      "large-format outdoor and highway advertising",
+      "direct mail and coupon printing",
+      "apparel and merchandise screen printing"
+    ],
+    "notes": "Merchandise is a primary brand surface rather than an afterthought, so identities are designed from the outset to survive being screen printed at one colour on fabric."
+  },
+
+  "graphic_language": {
+    "shape_logic": "Bold containing forms — badges, banners, rounded buttons and enclosing shapes that package a message into a graspable unit. Elements are assembled as discrete confident objects rather than dissolved into a field.",
+    "rhythm": "Punctuated and accelerating. A strong opening beat, compressed supporting information and a distinct terminal accent at the action point.",
+    "ornament_bias": 0.38,
+    "signage_traditions": [
+      "highway-scale roadside advertising",
+      "painted brick wall advertising in city centres",
+      "illuminated storefront and diner signage"
+    ]
+  },
+
+  "contemporary_traits": [
+    "creator-led and user-generated content outperforming polished studio work",
+    "conversion-optimised layout conventions imported from software into all categories",
+    "direct-to-consumer brand language built on friendly sans-serif and warm neutrals",
+    "sport and streetwear typography as a mainstream commercial idiom",
+    "explicit values and provenance statements as brand differentiators"
+  ],
+
+  "style_variants": [
+    {
+      "id": "direct-commercial",
+      "name": "Direct Commercial",
+      "description": "Benefit-led and unembarrassed. Large headline, single clear claim, full-bleed lifestyle image and a high-contrast action element. Optimised for a scrolling audience deciding in under a second.",
+      "weights_override": {
+        "composition": 0.22,
+        "typography": 0.28,
+        "color": 0.22,
+        "imagery": 0.18,
+        "materiality": 0.04,
+        "graphic_language": 0.06
+      },
+      "suitable_for": ["fnb", "technology-saas", "property", "beauty-skincare"]
+    },
+    {
+      "id": "restrained-premium",
+      "name": "Restrained Premium",
+      "description": "Withheld and editorial. Desaturated palette, generous margins, smaller type and imagery that suggests rather than demonstrates. Signals that the brand is not competing on volume.",
+      "weights_override": {
+        "composition": 0.26,
+        "typography": 0.22,
+        "color": 0.14,
+        "imagery": 0.24,
+        "materiality": 0.08,
+        "graphic_language": 0.06
+      },
+      "suitable_for": ["fashion", "hospitality", "beauty-skincare"]
+    }
+  ],
+
+  "avoid_stereotypes": [
+    {
+      "token": "stars and stripes",
+      "why": "Flag graphics attached to unrelated products read as either political positioning or lazy patriotism, and in a divided market that association is a commercial risk rather than a neutral signal.",
+      "instead": "Express confidence and directness through scale, clear benefit copy and decisive hierarchy — the actual mechanics of the visual culture."
+    },
+    {
+      "token": "bald eagle",
+      "why": "National symbolism used decoratively is both generic and politically loaded, and it narrows the audience without adding meaning.",
+      "instead": "If strength or heritage is the message, build it from typographic weight, material honesty and specific brand history."
+    },
+    {
+      "token": "statue of liberty",
+      "why": "A landmark used as a national stamp is decorative geography that tells the viewer nothing about the offer.",
+      "instead": "Use the actual environment of the audience — regional, urban or domestic — rather than a monument."
+    },
+    {
+      "token": "cowboy",
+      "why": "Western imagery represents one narrow regional myth and is routinely applied to brands with no connection to it, which reads as costume.",
+      "instead": "If ruggedness or independence is the point, express it through material texture, vernacular lettering and unpolished photography."
+    },
+    {
+      "token": "route 66",
+      "why": "Mid-century roadside nostalgia is a heavily worn shortcut for authenticity that now signals a theme rather than a brand.",
+      "instead": "Draw on the underlying sign-painting craft — hand-lettered display forms, enamel surfaces, layered painted signage — without the period reference."
+    },
+    {
+      "token": "apple pie",
+      "why": "Wholesome nostalgia shorthand flattens a diverse market into a single narrow cultural image that most of the audience does not see themselves in.",
+      "instead": "Show the actual audience and the actual occasion, with casting and setting specific enough to be recognisable."
+    }
+  ],
+
+  "weights": {
+    "composition": 0.2,
+    "typography": 0.26,
+    "color": 0.2,
+    "imagery": 0.2,
+    "materiality": 0.06,
+    "graphic_language": 0.08
+  }
+}

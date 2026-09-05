@@ -1,0 +1,45 @@
+{
+  "brief_id": "brief_cascade_house_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Shoulder season feed post for the ranch property.",
+  "objective": "consideration",
+  "core_message": "The hotel is a working ranch that happens to have rooms, and the point is the landscape rather than the lobby.",
+  "audience": {
+    "description": "Domestic travellers aged 30 to 55 planning a shoulder-season trip who compare several properties before booking.",
+    "age_range": [
+      30,
+      55
+    ],
+    "sophistication": 0.6,
+    "price_sensitivity": 0.5,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "US domestic travel"
+    ]
+  },
+  "industry_id": "hospitality",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "united-states": 1
+  },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 feed asset for the shoulder season"
+  ],
+  "mandatories": [
+    "Show the landscape rather than the interior"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

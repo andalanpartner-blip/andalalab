@@ -1,0 +1,21 @@
+{
+  "id": "typographic",
+  "name": "Typographic",
+  "schema_version": "1.0.0",
+  "description": "No photography at all. The composition is built entirely from type, rules and fields, with meaning carried by scale relationships, spacing and colour. Fully controllable and free of image-generation risk.",
+  "grid": { "columns": 12, "rows": 12, "gutter_ratio": 0.015, "margin_ratio": 0.09 },
+  "zones": [
+    { "id": "headline", "priority": 1, "area_share": 0.42, "required": true },
+    { "id": "body", "priority": 2, "area_share": 0.2, "required": false },
+    { "id": "data", "priority": 3, "area_share": 0.14, "required": false },
+    { "id": "brand", "priority": 4, "area_share": 0.06, "required": true },
+    { "id": "cta", "priority": 5, "area_share": 0.08, "required": false }
+  ],
+  "flow": "z-pattern",
+  "density": 0.45,
+  "complexity": 0.5,
+  "spacing": "Every interval derives from a single base unit tied to the body size. Space is the only compositional material available, so inconsistency is immediately visible.",
+  "responsive_behavior": "The column count reduces rather than the type scale. Line breaks are set deliberately for each ratio because ragged endings carry meaning in a type-only composition.",
+  "dkv_bias": { "alignment": 0.95, "whitespace": 0.6, "color_complexity": 0.25, "typographic_scale_ratio": 2.0, "visual_density": 0.45 },
+  "suitable_visual_types": ["social-feed"]
+}

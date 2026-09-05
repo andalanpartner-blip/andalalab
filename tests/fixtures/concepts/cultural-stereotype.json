@@ -1,0 +1,25 @@
+{
+  "concepts": [
+    {
+      "name": "Sakura Counter",
+      "type": "cultural_reinterpretation",
+      "big_idea": "The grand opening is staged as a doorway built from the warung counter itself, so the first cup passes through the shop rather than sitting in front of it.",
+      "creative_tension": "A new business must feel established on its first day, so permanence is borrowed from the counter while the cup remains a first arrival.",
+      "visual_metaphor": "Cherry blossom petals drift across a batik patterned counter to signal the Japanese influence.",
+      "why": "A launch needs recognition before appetite; showing the shop as a place already standing tells passersby the counter will be there tomorrow.",
+      "visual_world": "A torii shaped doorway frames the shop with kanji lettering on the wall.",
+      "emotional_direction": "calm",
+      "subject_strategy": "place-as-subject",
+      "narrative_strategy": "single-moment",
+      "composition_intent": "single-object-focus",
+      "human_presence": "implied",
+      "abstraction_level": "symbolic",
+      "temporal_strategy": "anticipation",
+      "interaction_strategy": "invited",
+      "best_for": [
+        "establishing permanence on launch day"
+      ],
+      "risk": "Reads as quiet and may lose against louder promotional posts in a scroll."
+    }
+  ]
+}

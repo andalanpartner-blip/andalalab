@@ -1,0 +1,45 @@
+{
+  "brief_id": "brief_property_editorial_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Delivery record post for the developer.",
+  "objective": "trust",
+  "core_message": "The developer has completed eleven buildings on schedule and the record is the argument.",
+  "audience": {
+    "description": "Investors and buyers aged 35 to 60 who evaluate developers on delivery history before design.",
+    "age_range": [
+      35,
+      60
+    ],
+    "sophistication": 0.8,
+    "price_sensitivity": 0.35,
+    "attention_context": "dwell",
+    "cultural_context": [
+      "property investment"
+    ]
+  },
+  "industry_id": "property",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "switzerland": 1
+  },
+  "movement_id": "editorial-modernism",
+  "layout_id": null,
+  "platform": {
+    "channel": "linkedin-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "arm",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 1:1 asset on the delivery record"
+  ],
+  "mandatories": [
+    "State the number of completed buildings"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

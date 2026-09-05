@@ -1,0 +1,45 @@
+{
+  "brief_id": "brief_helvetica_labs_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Explain the consolidation clearly for an operations audience.",
+  "objective": "education",
+  "core_message": "The platform replaces four separate reporting tools with one, and the saving is measured in hours per week.",
+  "audience": {
+    "description": "Operations managers aged 30 to 50 evaluating tooling on evidence, who distrust marketing language and read specifications closely.",
+    "age_range": [
+      30,
+      50
+    ],
+    "sophistication": 0.8,
+    "price_sensitivity": 0.4,
+    "attention_context": "search",
+    "cultural_context": [
+      "B2B software evaluation"
+    ]
+  },
+  "industry_id": "technology-saas",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "switzerland": 1
+  },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "linkedin-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "arm",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 1:1 feed asset explaining the consolidation"
+  ],
+  "mandatories": [
+    "State the four tools being replaced"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

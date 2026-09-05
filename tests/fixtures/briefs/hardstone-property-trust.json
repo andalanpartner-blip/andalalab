@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_hardstone_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Feed post for the new low-rise development. We need people to believe we will actually finish it on time.",
+  "objective": "trust",
+  "core_message": "Every unit in the first block is finished and handed over, and the second block is on the same schedule.",
+  "audience": {
+    "description": "First-time buyers and small investors aged 30 to 48 who have been burned by delayed developments and are checking whether this one is real.",
+    "age_range": [30, 48],
+    "sophistication": 0.6,
+    "price_sensitivity": 0.5,
+    "attention_context": "search",
+    "cultural_context": ["Greater Jakarta", "family purchase decision"]
+  },
+  "industry_id": "property",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": { "indonesia": 0.7, "japan": 0.3 },
+  "movement_id": "swiss-international",
+  "layout_id": "image-text-split",
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": ["One 1:1 feed asset"],
+  "mandatories": ["Handover date must be visible", "Use photography of the completed block, not a render"],
+  "prohibitions": [],
+  "confidence": { "objective": 0.95 },
+  "missing_fields": []
+}

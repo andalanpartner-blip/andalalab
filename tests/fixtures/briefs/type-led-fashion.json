@@ -1,0 +1,46 @@
+{
+  "brief_id": "brief_type_led_fashion_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Let the name carry it, typographic feed post.",
+  "objective": "awareness",
+  "core_message": "The collection is named after a printing term and the name should carry the whole asset.",
+  "audience": {
+    "description": "Style-aware followers aged 20 to 34 who screenshot and reshare typographic work.",
+    "age_range": [
+      20,
+      34
+    ],
+    "sophistication": 0.75,
+    "price_sensitivity": 0.45,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "fashion social sharing"
+    ]
+  },
+  "industry_id": "fashion",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "switzerland": 0.6,
+    "united-states": 0.4
+  },
+  "movement_id": null,
+  "layout_id": "typographic",
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 typographic asset"
+  ],
+  "mandatories": [
+    "Set the collection name as the dominant element"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

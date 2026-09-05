@@ -1,0 +1,46 @@
+{
+  "concepts": [
+    {
+      "name": "Threshold of the First Cup",
+      "type": "cultural_reinterpretation",
+      "big_idea": "The grand opening is staged as a doorway built from the warung counter itself, so the first cup passes through the shop rather than sitting in front of it.",
+      "creative_tension": "A new business must feel established on its first day, so permanence is borrowed from the counter while the cup remains a first arrival.",
+      "visual_metaphor": "The serving counter is framed as an architectural threshold, its edge acting as a lintel above the waiting cup.",
+      "why": "A launch needs recognition before appetite; showing the shop as a place already standing tells passersby the counter will be there tomorrow.",
+      "visual_world": "Early morning inside a narrow Solo storefront, teak counter edge, condensation on steel, daylight arriving from the street side.",
+      "emotional_direction": "calm",
+      "subject_strategy": "place-as-subject",
+      "narrative_strategy": "single-moment",
+      "composition_intent": "single-object-focus",
+      "human_presence": "implied",
+      "abstraction_level": "symbolic",
+      "temporal_strategy": "anticipation",
+      "interaction_strategy": "invited",
+      "best_for": [
+        "establishing permanence on launch day"
+      ],
+      "risk": "Reads as quiet and may lose against louder promotional posts in a scroll."
+    },
+    {
+      "name": "Threshold of the First Cup, Cream",
+      "type": "cultural_reinterpretation",
+      "big_idea": "The grand opening is staged as a doorway built from the warung counter itself, so the first cup passes through the shop rather than sitting in front of it.",
+      "creative_tension": "A new business must feel established on its first day, so permanence is borrowed from the counter while the cup remains a first arrival.",
+      "visual_metaphor": "The serving counter is framed as an architectural threshold, its edge acting as a lintel above the waiting cup.",
+      "why": "A launch needs recognition before appetite; showing the shop as a place already standing tells passersby the counter will be there tomorrow.",
+      "visual_world": "Early morning inside a narrow Solo storefront, teak counter edge, condensation on steel, daylight arriving from the street side, cream background and softbox lighting with a bold serif typeface.",
+      "emotional_direction": "calm",
+      "subject_strategy": "place-as-subject",
+      "narrative_strategy": "single-moment",
+      "composition_intent": "single-object-focus",
+      "human_presence": "implied",
+      "abstraction_level": "symbolic",
+      "temporal_strategy": "anticipation",
+      "interaction_strategy": "invited",
+      "best_for": [
+        "establishing permanence on launch day"
+      ],
+      "risk": "Reads as quiet and may lose against louder promotional posts in a scroll."
+    }
+  ]
+}

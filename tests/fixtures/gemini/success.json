@@ -1,0 +1,22 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"objective\": {\n    \"value\": \"launch\",\n    \"confidence\": 0.9\n  },\n  \"core_message\": {\n    \"value\": \"Coffee shop baru di Solo resmi buka dan ingin dikenal anak muda kota.\",\n    \"confidence\": 0.82\n  },\n  \"industry_id\": {\n    \"value\": \"fnb\",\n    \"confidence\": 0.97\n  },\n  \"visual_type_id\": {\n    \"value\": \"social-feed\",\n    \"confidence\": 0.95\n  },\n  \"platform\": {\n    \"channel\": {\n      \"value\": \"instagram-feed\",\n      \"confidence\": 0.96\n    },\n    \"aspect_ratio_id\": {\n      \"value\": \"portrait\",\n      \"confidence\": 0.98\n    },\n    \"viewing_context\": {\n      \"value\": null,\n      \"confidence\": 0\n    }\n  },\n  \"audience\": {\n    \"description\": {\n      \"value\": \"Anak muda di Solo yang aktif di Instagram dan mencari tempat nongkrong baru.\",\n      \"confidence\": 0.88\n    },\n    \"age_min\": {\n      \"value\": 18,\n      \"confidence\": 0.6\n    },\n    \"age_max\": {\n      \"value\": 30,\n      \"confidence\": 0.6\n    },\n    \"sophistication\": {\n      \"value\": null,\n      \"confidence\": 0\n    },\n    \"price_sensitivity\": {\n      \"value\": null,\n      \"confidence\": 0\n    },\n    \"attention_context\": {\n      \"value\": null,\n      \"confidence\": 0\n    },\n    \"cultural_context\": [\n      \"Solo\",\n      \"anak muda kota\"\n    ]\n  },\n  \"countries\": [\n    {\n      \"id\": \"indonesia\",\n      \"weight\": 0.75,\n      \"confidence\": 0.93\n    },\n    {\n      \"id\": \"japan\",\n      \"weight\": 0.25,\n      \"confidence\": 0.8\n    }\n  ],\n  \"movement_id\": {\n    \"value\": null,\n    \"confidence\": 0\n  },\n  \"brand_name\": {\n    \"value\": null,\n    \"confidence\": 0\n  },\n  \"deliverables\": [\n    \"Satu aset feed Instagram 4:5 untuk grand opening\"\n  ],\n  \"mandatories\": [\n    \"Sebutkan grand opening\"\n  ],\n  \"prohibitions\": [],\n  \"style_notes\": [\n    \"modern Indonesia dengan sedikit nuansa Jepang\"\n  ],\n  \"visual_references\": [],\n  \"contradictions\": []\n}\n"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1683,
+    "candidatesTokenCount": 512,
+    "totalTokenCount": 2195
+  },
+  "modelVersion": "gemini-2.5-flash"
+}

@@ -1,0 +1,47 @@
+{
+  "brief_id": "brief_warung_vernacular_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Promo makan siang harga tetap sampai jam tiga.",
+  "objective": "promotion",
+  "core_message": "Lunch is fixed price until three in the afternoon and the portion does not change.",
+  "audience": {
+    "description": "Office workers aged 22 to 40 in a dense Javanese city choosing lunch in under a minute on a phone.",
+    "age_range": [
+      22,
+      40
+    ],
+    "sophistication": 0.4,
+    "price_sensitivity": 0.85,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "urban Java",
+      "weekday lunch"
+    ]
+  },
+  "industry_id": "fnb",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "indonesia": 1
+  },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 promotional asset"
+  ],
+  "mandatories": [
+    "State the fixed price",
+    "State the cut-off time"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "coffee-grand-opening",
+    "brief": "Jadi kami buka coffee shop di Solo, namanya Kopiko Craft. Lokasi strategis, target audience anak muda yang suka kopi specialty. Butuh konten untuk Instagram feed, format 4:5 atau square, untuk launching awal bulan. Vibe nya mau modern, tapi tetap ada sentuhan budaya Indonesia, kombinasi dengan estetika Jepang juga boleh. Grand opening sale promo untuk 100 pengunjung pertama. Fokus nya sih di craft quality dan atmospheric experience.",
+    "expected": {
+      "objective": "launch",
+      "industry_id": "fnb",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 0.75, "japan": 0.25},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Millennial and Gen Z coffee enthusiasts in Solo, urban professionals with high taste sophistication"
+    }
+  },
+  {
+    "id": "fashion-collection-launch",
+    "brief": "Koleksi fashion terbaru dari brand lokal kami 'Bawah Tanah' launching bulan depan. Koleksi kali ini inspired dari bauhaus dan Swiss design, minimalis banget tapi tetap punya personality. Target market nya high-end consumer, usia 25-40 tahun, yang aware dengan design trends. Kami perlu konten untuk Instagram dan juga web. Vibe nya sophisticated, classy, tapi tetap accessible. Ready to wear collection, mid-to-premium price point.",
+    "expected": {
+      "objective": "launch",
+      "industry_id": "fashion",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "square"
+      },
+      "audience": "High-income urban professionals, design-conscious consumers aged 25-40"
+    }
+  },
+  {
+    "id": "property-cluster-promotion",
+    "brief": "Perumahan baru kami 'Harmoni Heights' di area berkembang Jakarta Selatan. Unit mulai dari 500 juta, lokasi strategis deket mall, sekolah, area hijau. Target buyer nya keluarga muda dengan anak, professional couple. Butuh campaign untuk Facebook dan Instagram, kalo bisa cerita tentang lifestyle dan community benefits. Timeline launching dalam 2 minggu. Marketing angle nya tentang investasi dan kualitas hidup. Ada beberapa unit sample sudah siap di-tour.",
+    "expected": {
+      "objective": "promotion",
+      "industry_id": "property",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "facebook-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Young families and professionals aged 30-50 seeking quality residential investment"
+    }
+  },
+  {
+    "id": "beauty-skincare-campaign",
+    "brief": "Skincare brand kami 'Dermora' sedang campaign produk baru untuk perawatan barrier skin. Produk organik, halal certified, cocok untuk kulit tropis. Campaign theme nya tentang self-care dan natural beauty. Target audience wanita usia 20-45, urban Indonesia, yang peduli skincare quality. Konten di Instagram feed, TikTok juga. Budget terbatas jadi butuh creative approach. Maksimalkan user generated content dan testimonial. Produk mulai launching bulan ini.",
+    "expected": {
+      "objective": "awareness",
+      "industry_id": "beauty-skincare",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Urban women aged 20-45 interested in skincare and natural beauty, middle to upper income"
+    }
+  },
+  {
+    "id": "hotel-promotion",
+    "brief": "Hotel butik di Ubud, Bali 'Warung Kafe Hotel' mau promote special package mereka untuk honeymoon dan couple getaway. 30 kamar, infinity pool dengan rice field view. Harga per malam 1.5-2 juta, targeted ke couple usia 25-40. Aesthetic nya romantic, modern-rustic, banyak kayu dan local art. Buatkan campaign untuk Instagram dan sedikit untuk Google Ads. Campaign dimulai bulan depan untuk high season preparation.",
+    "expected": {
+      "objective": "promotion",
+      "industry_id": "hospitality",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Affluent couples aged 25-45 seeking romantic getaways and cultural experiences in Bali"
+    }
+  },
+  {
+    "id": "wellness-pilates-campaign",
+    "brief": "Studio Pilates kami 'FlexFlow' di Jakarta mau grow member base. Sekarang ada 50 member aktif, target naik jadi 150 dalam 3 bulan. Class untuk semua level, fokus pada flexibility dan core strength. Target market nya wanita 25-55, professional, yang peduli kesehatan dan wellness. Campaign message tentang transformasi tubuh dan mental wellness. Konten di Instagram dan Facebook, mix dari class footage, member testimonial, sama tips. Studio baru buka 6 bulan lalu.",
+    "expected": {
+      "objective": "promotion",
+      "industry_id": "wellness",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Health-conscious women professionals aged 25-55 interested in fitness and wellness"
+    }
+  },
+  {
+    "id": "saas-product-launch",
+    "brief": "SaaS startup kami 'DataFlow ID' launch product untuk business intelligence, targeting SME Indonesia. Dashboard untuk track penjualan, inventory, customer behavior dengan AI-powered insights. Harga kompetitif, free trial 30 hari. Target audience owner dan manager dari retail dan e-commerce business, usia 30-55. Campaign di LinkedIn, Instagram, sama direct B2B approach. Technical tapi tetap accessible messaging. Timeline launching end of month.",
+    "expected": {
+      "objective": "launch",
+      "industry_id": "technology-saas",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "linkedin-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "SME owners and business managers aged 30-55 interested in business intelligence and digital transformation"
+    }
+  },
+  {
+    "id": "public-event-campaign",
+    "brief": "Kami organize 'Jakarta Design Festival 2025', event tahunan yang showcase local dan international design. Event scale nya besar, expected 5000+ pengunjung. Tiga hari di convention center, ada workshop, exhibition, talk series, networking. Targetnya designer, creative professional, sama design enthusiasts. Konten campaign di Instagram, TikTok, dan event listing platform. Vibe nya forward-thinking, creative, inspirational. Early bird ticket launching bulan depan.",
+    "expected": {
+      "objective": "awareness",
+      "industry_id": "event",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Design professionals, creatives, and design enthusiasts aged 20-50 in Jakarta"
+    }
+  },
+  {
+    "id": "community-organization-campaign",
+    "brief": "NGO kami 'Rumah Baca Nusantara' promote program literasi untuk anak-anak dari low-income families di Jakarta dan Bandung. Program includes library access, tutoring, dan vocational training. Mau increase awareness dan donor support. Campaign message tentang hope, education, future. Konten untuk Instagram, Facebook, dan YouTube. Target audience nya educated middle-upper class yang peduli social impact. Mau launch campaign sebelum year-end fundraising drive.",
+    "expected": {
+      "objective": "awareness",
+      "industry_id": "organization",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Educated middle to upper-class Indonesians concerned with social impact and education"
+    }
+  },
+  {
+    "id": "retail-product-promotion",
+    "brief": "Retail chain kami 'Zona Elektronik' buka flagship store baru di Bandung. Toko luasnya 1500 m2, product range comprehensive dari gadget, laptop, accessories. Grand opening promo dengan diskon besar-besaran, bundling deals. Target market nya tech-savvy urban consumer, student, professional, usia 15-50. Campaign untuk Instagram, Facebook, dengan focus pada promotion deals dan store experience. Launching promotional campaign 1 minggu sebelum store opening.",
+    "expected": {
+      "objective": "promotion",
+      "industry_id": "retail",
+      "visual_type_id": "social-feed",
+      "country": {"indonesia": 1.0},
+      "platform": {
+        "channel": "instagram-feed",
+        "aspect_ratio_id": "portrait"
+      },
+      "audience": "Tech-savvy urban consumers and students aged 15-50 interested in electronics and gadgets"
+    }
+  }
+]

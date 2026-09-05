@@ -1,0 +1,156 @@
+.section {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-9);
+}
+
+.head {
+  margin-bottom: var(--space-6);
+}
+
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: var(--space-2);
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.title {
+  font-size: clamp(22px, 2.8vw, 28px);
+  letter-spacing: -0.01em;
+  font-weight: 610;
+}
+
+.sub {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: var(--space-2);
+}
+
+.langSwitch {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+}
+
+.langButton {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 540;
+  color: var(--muted);
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.langButton + .langButton {
+  border-left: 1px solid var(--border-strong);
+}
+
+.langButton:hover {
+  color: var(--ink);
+}
+
+.langActive {
+  background: var(--ink);
+  color: var(--ink-on);
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.cardTitle {
+  font-size: 13px;
+  font-weight: 620;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.text {
+  margin: 0;
+  padding: var(--space-5);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+/* Master Prompt is the production handoff — it gets the dominant treatment. */
+.dominant {
+  border-color: var(--border-strong);
+  background: var(--ink);
+}
+
+.dominant .cardHead {
+  border-bottom-color: color-mix(in srgb, var(--ink-on) 18%, transparent);
+}
+
+.dominant .cardTitle {
+  color: color-mix(in srgb, var(--ink-on) 65%, transparent);
+}
+
+.dominant .text {
+  color: var(--ink-on);
+  font-size: 15.5px;
+  max-height: 640px;
+}
+
+/* P2.7 — the subtle "Visual character" metadata line above the prompt cards. */
+.visualCharacter {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.visualCharacterKicker {
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.visualCharacterValue {
+  font-size: 13px;
+  font-weight: 560;
+  color: var(--ink);
+}
+
+.visualCharacterDesc {
+  font-size: 12.5px;
+  color: var(--muted);
+}

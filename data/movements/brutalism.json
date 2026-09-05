@@ -1,0 +1,77 @@
+{
+  "id": "brutalism",
+  "name": "Brutalism",
+  "schema_version": "1.0.0",
+  "period": "1950s architecture, graphic revival 2015 onward",
+  "core_principles": [
+    "honesty of material and structure — nothing is disguised",
+    "scale and mass used as the primary expressive tools",
+    "rawness preferred to refinement",
+    "confrontation with the viewer rather than accommodation",
+    "rejection of polish as a marker of value"
+  ],
+  "visual_traits": [
+    "oversized type that breaks or exceeds the frame",
+    "extreme contrast with hard unmodulated edges",
+    "exposed structural elements — rules, borders, visible containers",
+    "deliberate density and collision between elements",
+    "unrefined default forms used without apology"
+  ],
+  "composition": "Confrontational and heavy. Elements are large, close and structurally tense, with collisions treated as intentional. The composition asserts rather than invites, and comfort is deliberately withheld.",
+  "grid": {
+    "logic": "A visible, often exposed grid used as a structural statement — borders and dividing rules left on show. Elements may deliberately break the structure at a single point of maximum tension.",
+    "preferred_columns": [
+      2,
+      3,
+      4
+    ],
+    "modularity": 0.55
+  },
+  "typography": {
+    "logic": "Enormous scale contrast between one dominant word and everything else. Heavy weights, tight tracking, type allowed to crop against edges. Legibility is pushed to its limit but not past it.",
+    "scale_ratio": 2.6,
+    "case_bias": "upper",
+    "weight_bias": "bold"
+  },
+  "color": {
+    "logic": "Stark high-contrast pairs, frequently monochrome with one aggressive accent. Colour is used as force rather than as classification or mood.",
+    "palette_size": 3,
+    "saturation_bias": 0.55
+  },
+  "imagery": "High contrast, coarse and unretouched. Visible grain, hard shadow and mechanical reproduction artefacts are kept rather than corrected.",
+  "materiality": "Raw and unfinished. Board-marked concrete, exposed fixings, coarse paper, visible print registration and screen texture.",
+  "shape_language": "Heavy blocks, thick rules and hard rectangles. Nothing rounded, nothing softened, no gradient or shadow used for comfort.",
+  "dkv_bias": {
+    "whitespace": 0.3,
+    "alignment": 0.6,
+    "visual_density": 0.72,
+    "hierarchy_strength": 0.95,
+    "color_complexity": 0.25,
+    "contrast": 0.95,
+    "focal_dominance": 0.9,
+    "typographic_scale_ratio": 2.6
+  },
+  "suitable_industries": [
+    "fashion",
+    "fnb"
+  ],
+  "suitable_objectives": [
+    "awareness",
+    "launch",
+    "event",
+    "brand-building",
+    "promotion"
+  ],
+  "compatibility": {
+    "bauhaus": 0.6,
+    "editorial-modernism": 0.5,
+    "swiss-international": 0.45,
+    "contemporary-digital": 0.4,
+    "minimalism": 0.3
+  },
+  "anti_stereotype": [
+    "Ugliness is not the principle. The movement is about structural honesty and mass; deliberately bad spacing and clashing colour without a structural argument is just poor craft using the name as cover.",
+    "This is a high-risk choice against trust pressure. In categories where credibility is the primary job — healthcare, finance, property investment — the confrontational register works against the communication objective and doctrine requires it to lose.",
+    "Default system fonts and unstyled borders are a web-era mannerism of the revival, not the movement itself. The underlying idea is exposed structure, which can be executed with great precision."
+  ]
+}

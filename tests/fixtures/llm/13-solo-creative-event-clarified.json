@@ -1,0 +1,94 @@
+{
+  "objective": {
+    "value": "event",
+    "confidence": 0.92
+  },
+  "core_message": {
+    "value": null,
+    "confidence": 0
+  },
+  "industry_id": {
+    "value": "fnb",
+    "confidence": 0.9
+  },
+  "visual_type_id": {
+    "value": "social-feed",
+    "confidence": 0.94
+  },
+  "platform": {
+    "channel": {
+      "value": "instagram-feed",
+      "confidence": 0.96
+    },
+    "aspect_ratio_id": {
+      "value": "portrait",
+      "confidence": 0.93
+    },
+    "viewing_context": {
+      "value": null,
+      "confidence": 0
+    }
+  },
+  "audience": {
+    "description": {
+      "value": "anak muda di Solo yang tertarik dengan kegiatan kreatif",
+      "confidence": 0.9
+    },
+    "age_min": {
+      "value": null,
+      "confidence": 0
+    },
+    "age_max": {
+      "value": null,
+      "confidence": 0
+    },
+    "sophistication": {
+      "value": null,
+      "confidence": 0
+    },
+    "price_sensitivity": {
+      "value": null,
+      "confidence": 0
+    },
+    "attention_context": {
+      "value": null,
+      "confidence": 0
+    },
+    "cultural_context": []
+  },
+  "countries": [
+    {
+      "id": "indonesia",
+      "weight": 1,
+      "confidence": 0.9
+    }
+  ],
+  "movement_id": {
+    "value": null,
+    "confidence": 0
+  },
+  "brand_name": {
+    "value": null,
+    "confidence": 0
+  },
+  "deliverables": [],
+  "mandatories": [],
+  "prohibitions": [
+    "desain generik",
+    "stock-photo look",
+    "template Canva",
+    "terlalu banyak ornamen",
+    "layout berantakan",
+    "visual hierarchy yang lemah"
+  ],
+  "style_notes": [
+    "graphic poster yang berani",
+    "tipografi besar",
+    "geometric shapes",
+    "layering dan visual rhythm",
+    "editorial poster, asymmetric balance, strong focal point",
+    "warna bold dan kontras tetapi tetap terkontrol"
+  ],
+  "visual_references": [],
+  "contradictions": []
+}

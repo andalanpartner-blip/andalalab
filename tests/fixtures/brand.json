@@ -1,0 +1,18 @@
+{
+  "brand_id": "brand_kopi_lawas",
+  "schema_version": "1.0.0",
+  "name": "Kopi Lawas",
+  "snapshot_of_version": 3,
+  "palette": [
+    { "role": "primary", "hex": "#2E1F16", "name": "Espresso" },
+    { "role": "background", "hex": "#F4EFE6", "name": "Unbleached" },
+    { "role": "accent", "hex": "#B8562F", "name": "Clay" }
+  ],
+  "typography": { "primary": "Editorial serif", "secondary": "Neutral grotesque", "fallback_class": "serif" },
+  "tone": ["warm", "unhurried", "specific"],
+  "positioning": "A neighbourhood roaster that treats everyday coffee seriously without turning it into a ceremony.",
+  "formality": 0.4,
+  "brand_rules": ["The wordmark always sits at the lower edge, never over a face."],
+  "prohibitions": ["Never show the product in disposable cups."],
+  "preferred_movements": ["editorial-modernism", "minimalism"]
+}

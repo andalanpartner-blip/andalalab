@@ -1,0 +1,25 @@
+{
+  "id": "hospitality",
+  "name": "Hospitality",
+  "schema_version": "1.0.0",
+  "core_perception": "The audience is buying an anticipated experience of a place, so the work must make a specific location feel both desirable and real. Generic luxury imagery is actively counterproductive because the buyer is trying to judge whether this particular place suits them.",
+  "visual_traits": ["environmental photography with strong sense of place", "warm directional light", "material and texture detail at close range", "restrained typography that does not compete with the space"],
+  "communication_needs": ["establish the specific character of the place", "show the experience rather than the facilities list", "make practical information easy to find"],
+  "trust_pressure": 0.62,
+  "conversion_pressure": 0.6,
+  "emotion_pressure": 0.85,
+  "information_pressure": 0.55,
+  "aesthetic_pressure": 0.85,
+  "composition": "Image-led with generous space and quiet type. Wide establishing views paired with intimate detail shots is the strongest pattern, because the audience needs both the promise and the evidence.",
+  "typography": "Understated and well-spaced, frequently a refined serif or a quiet neutral sans. Type should feel like signage within the space rather than advertising laid over it.",
+  "color": "Drawn from the actual materials and light of the property. Imposed brand colour that contradicts the physical space undermines the credibility of the whole piece.",
+  "imagery": "Real light at real times of day. Empty perfect rooms feel sterile; traces of use, food, hands and movement make a space feel inhabitable.",
+  "dkv_floor": { "contrast": 0.4, "hierarchy_strength": 0.45 },
+  "dkv_ceiling": { "visual_density": 0.55, "color_complexity": 0.5 },
+  "preferred_movements": ["editorial-modernism", "minimalism", "swiss-international"],
+  "avoid": [
+    "Interchangeable luxury imagery that could belong to any property in any country, which defeats the specificity the category sells on.",
+    "Dense promotional overlays on environmental photography, which convert an aspirational image into a discount advertisement.",
+    "Heavy graphic treatment competing with the architecture and light of the space itself."
+  ]
+}

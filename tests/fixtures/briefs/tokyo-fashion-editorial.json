@@ -1,0 +1,47 @@
+{
+  "brief_id": "brief_tokyo_fashion_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Autumn line feed post, quiet and material-led.",
+  "objective": "brand-building",
+  "core_message": "The autumn line is built around restraint, and the clothes should be allowed to speak without being shouted about.",
+  "audience": {
+    "description": "Design-literate shoppers aged 25 to 40 in Tokyo who follow independent labels and read fashion as material and cut rather than as logo.",
+    "age_range": [
+      25,
+      40
+    ],
+    "sophistication": 0.85,
+    "price_sensitivity": 0.3,
+    "attention_context": "dwell",
+    "cultural_context": [
+      "Tokyo independent retail"
+    ]
+  },
+  "industry_id": "fashion",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "japan": 1
+  },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 feed asset for the autumn line"
+  ],
+  "mandatories": [
+    "Show the fabric texture at close range"
+  ],
+  "prohibitions": [
+    "No visible logo treatment"
+  ],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

@@ -1,0 +1,21 @@
+{
+  "id": "headline-dominant",
+  "name": "Headline Dominant",
+  "schema_version": "1.0.0",
+  "description": "Type carries the surface. A short, decisive headline occupies the majority of the area, with imagery reduced to a supporting fragment or removed entirely. Built for a message that can be understood without a picture.",
+  "grid": { "columns": 4, "rows": 6, "gutter_ratio": 0.025, "margin_ratio": 0.08 },
+  "zones": [
+    { "id": "headline", "priority": 1, "area_share": 0.5, "required": true },
+    { "id": "body", "priority": 2, "area_share": 0.15, "required": false },
+    { "id": "image", "priority": 3, "area_share": 0.2, "required": false },
+    { "id": "brand", "priority": 4, "area_share": 0.06, "required": true },
+    { "id": "cta", "priority": 5, "area_share": 0.08, "required": false }
+  ],
+  "flow": "top-down",
+  "density": 0.4,
+  "complexity": 0.35,
+  "spacing": "Tight internal leading within the headline block against generous space around it, so the type reads as one mass rather than as separate lines.",
+  "responsive_behavior": "Headline reflows by line count rather than by size reduction. If the message cannot hold at the minimum legible scale the copy must be cut, never the type size.",
+  "dkv_bias": { "hierarchy_strength": 0.9, "typographic_scale_ratio": 2.2, "visual_density": 0.4, "focal_dominance": 0.8 },
+  "suitable_visual_types": ["social-feed"]
+}

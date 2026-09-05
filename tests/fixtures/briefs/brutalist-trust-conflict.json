@@ -1,0 +1,46 @@
+{
+  "brief_id": "brief_brutalist_trust_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Client insists on the raw concrete brutalist look for the tower launch.",
+  "objective": "launch",
+  "core_message": "The tower's first release is priced below the district average and the specification is published in full.",
+  "audience": {
+    "description": "First-time buyers aged 28 to 42 comparing developments on price per square metre and completion record.",
+    "age_range": [
+      28,
+      42
+    ],
+    "sophistication": 0.5,
+    "price_sensitivity": 0.75,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "urban first-time buyers"
+    ]
+  },
+  "industry_id": "property",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "united-states": 1
+  },
+  "movement_id": "brutalism",
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 1:1 launch asset"
+  ],
+  "mandatories": [
+    "State the price per square metre",
+    "Name the completion quarter"
+  ],
+  "prohibitions": [],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}

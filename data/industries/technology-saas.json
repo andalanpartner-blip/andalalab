@@ -1,0 +1,25 @@
+{
+  "id": "technology-saas",
+  "name": "Technology & SaaS",
+  "schema_version": "1.0.0",
+  "core_perception": "An abstract product judged on clarity, competence and whether the buyer believes it will work with what they already use. The main enemy is vagueness — the audience wants to know exactly what it does and what it costs before it will look at anything else.",
+  "visual_traits": ["systematic component-based layout", "screen and interface content as primary imagery", "restrained palette with a single semantic accent", "very high alignment discipline"],
+  "communication_needs": ["state the function in plain language before any benefit claim", "show the product rather than describe it abstractly", "signal reliability, security and continuity"],
+  "trust_pressure": 0.75,
+  "conversion_pressure": 0.72,
+  "emotion_pressure": 0.35,
+  "information_pressure": 0.85,
+  "aesthetic_pressure": 0.55,
+  "composition": "Modular and stacked with a strong opening statement and a visible next action. Interface fragments used as evidence outperform abstract technology imagery by a wide margin.",
+  "typography": "Neutral sans across the hierarchy with a compact scale. Technical terms and product nouns must be set precisely; expressive display type reduces perceived competence in this category.",
+  "color": "Neutral surfaces with semantic accent roles. Colour is used to indicate state and action rather than to create atmosphere, and contrast floors are set by accessibility requirements.",
+  "imagery": "Real interface content, diagrams and data views. Abstract glowing-network imagery is the category's most persistent cliché and communicates nothing verifiable.",
+  "dkv_floor": { "contrast": 0.6, "hierarchy_strength": 0.7 },
+  "dkv_ceiling": { "visual_density": 0.65, "color_complexity": 0.4 },
+  "preferred_movements": ["contemporary-digital", "swiss-international", "minimalism"],
+  "avoid": [
+    "Abstract technology metaphors — glowing nodes, circuit patterns, floating holograms — which carry no information and are indistinguishable between competitors.",
+    "Emotional lifestyle imagery with no product presence, which delays the only question the buyer is actually asking.",
+    "Decorative or confrontational typography, which reads as a lack of engineering seriousness."
+  ]
+}

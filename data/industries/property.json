@@ -1,0 +1,25 @@
+{
+  "id": "property",
+  "name": "Property & Real Estate",
+  "schema_version": "1.0.0",
+  "core_perception": "The single largest financial decision most of the audience will make, evaluated over months. Credibility, location specificity and evidence of delivery outrank atmosphere, and vagueness is read as concealment.",
+  "visual_traits": ["architectural photography with corrected verticals", "generous space signalling calm and quality", "restrained institutional palette", "clear factual information blocks"],
+  "communication_needs": ["establish location and specification without ambiguity", "prove the developer can deliver what is shown", "distinguish the actual offer from an aspirational render"],
+  "trust_pressure": 0.92,
+  "conversion_pressure": 0.5,
+  "emotion_pressure": 0.55,
+  "information_pressure": 0.8,
+  "aesthetic_pressure": 0.65,
+  "composition": "Structured and calm. A dominant architectural image with a disciplined information block beneath or beside it. Composition should feel measured, because instability in the layout transfers directly to perceived risk in the offer.",
+  "typography": "Clear hierarchy with unambiguous numbers. Prices, sizes, unit types and locations must be immediately findable. Decorative display faces undermine the credibility the category depends on.",
+  "color": "Restrained and cool-to-neutral, with warmth introduced through material and light rather than through saturated brand colour. High-chroma palettes read as speculative.",
+  "imagery": "Real photography beats rendering wherever it exists, and renders must be honest about being renders. Light quality does most of the aspirational work; wide-angle distortion undermines trust.",
+  "dkv_floor": { "contrast": 0.55, "hierarchy_strength": 0.7 },
+  "dkv_ceiling": { "visual_density": 0.6, "color_complexity": 0.45 },
+  "preferred_movements": ["swiss-international", "editorial-modernism", "minimalism"],
+  "avoid": [
+    "Confrontational or deliberately raw treatments, which read as instability in a category where the audience is assessing risk.",
+    "Aspirational lifestyle imagery with no specification, which the audience has learned to treat as a warning sign.",
+    "Overcrowded assets carrying every unit type at once, which suppress the single strongest selling fact."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "hero-visual",
+  "name": "Hero Visual",
+  "schema_version": "1.0.0",
+  "description": "A single dominant image carrying the whole surface, with type placed into a quiet region of the image rather than into a reserved band. The image does the persuading and the type only names and directs.",
+  "grid": { "columns": 6, "rows": 6, "gutter_ratio": 0.02, "margin_ratio": 0.07 },
+  "zones": [
+    { "id": "image", "priority": 1, "area_share": 0.72, "required": true },
+    { "id": "headline", "priority": 2, "area_share": 0.14, "required": true },
+    { "id": "brand", "priority": 3, "area_share": 0.05, "required": true },
+    { "id": "cta", "priority": 4, "area_share": 0.07, "required": false }
+  ],
+  "flow": "centre-out",
+  "density": 0.35,
+  "complexity": 0.3,
+  "spacing": "Wide uniform margins with the type block set inside the safe area. Space between the headline and the brand mark is at least twice the internal leading of the headline itself.",
+  "responsive_behavior": "Crops from the long edge toward the focal point. The focal element must sit within the central sixty percent so that square and portrait ratios both survive the crop without repositioning the type.",
+  "dkv_bias": { "focal_dominance": 0.85, "visual_density": 0.3, "whitespace": 0.55 },
+  "suitable_visual_types": ["social-feed"]
+}

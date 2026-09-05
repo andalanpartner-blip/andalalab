@@ -1,0 +1,46 @@
+{
+  "concepts": [
+    {
+      "name": "Modern Premium Coffee",
+      "type": "cultural_reinterpretation",
+      "big_idea": "Create a modern premium coffee campaign with an elegant look.",
+      "creative_tension": "Modern and beautiful yet simple but elegant.",
+      "visual_metaphor": "A clean and elegant premium lifestyle scene that is visually appealing.",
+      "why": "It will be eye-catching design that feels stylish and sophisticated.",
+      "visual_world": "A sleek and modern aesthetic and engaging atmosphere with a premium feel.",
+      "emotional_direction": "calm",
+      "subject_strategy": "place-as-subject",
+      "narrative_strategy": "single-moment",
+      "composition_intent": "single-object-focus",
+      "human_presence": "implied",
+      "abstraction_level": "symbolic",
+      "temporal_strategy": "anticipation",
+      "interaction_strategy": "invited",
+      "best_for": [
+        "establishing permanence on launch day"
+      ],
+      "risk": "Reads as quiet and may lose against louder promotional posts in a scroll."
+    },
+    {
+      "name": "Elegant Vibes",
+      "type": "human_story",
+      "big_idea": "A unique and modern look that feels fresh and modern for the brand.",
+      "creative_tension": "Stylish yet simple.",
+      "visual_metaphor": "Beautiful and inviting imagery with stunning visuals.",
+      "why": "It captures attention and stands out from the crowd.",
+      "visual_world": "A warm and inviting atmosphere with a luxury feel.",
+      "emotional_direction": "warm",
+      "subject_strategy": "person-as-subject",
+      "narrative_strategy": "documentary",
+      "composition_intent": "figure-in-environment",
+      "human_presence": "crowd",
+      "abstraction_level": "literal",
+      "temporal_strategy": "instant",
+      "interaction_strategy": "observed",
+      "best_for": [
+        "social proof at launch"
+      ],
+      "risk": "Requires real people on the day and cannot be shot before opening."
+    }
+  ]
+}

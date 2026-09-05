@@ -1,0 +1,48 @@
+{
+  "brief_id": "brief_jakarta_tokyo_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Introduce the line, made in Java to Japanese standards.",
+  "objective": "brand-building",
+  "core_message": "The skincare line is made in Java with Japanese formulation standards, and neither origin is decoration.",
+  "audience": {
+    "description": "Women aged 25 to 38 in Indonesian cities who read ingredient lists and compare local brands against imported ones.",
+    "age_range": [
+      25,
+      38
+    ],
+    "sophistication": 0.7,
+    "price_sensitivity": 0.5,
+    "attention_context": "scroll",
+    "cultural_context": [
+      "Indonesian skincare buyers"
+    ]
+  },
+  "industry_id": "beauty-skincare",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": {
+    "indonesia": 0.7,
+    "japan": 0.3
+  },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": [
+    "One 4:5 feed asset introducing the line"
+  ],
+  "mandatories": [
+    "Show the product in daylight"
+  ],
+  "prohibitions": [
+    "No batik pattern as background"
+  ],
+  "confidence": {
+    "objective": 1.0
+  },
+  "missing_fields": []
+}
