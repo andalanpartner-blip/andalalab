@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_batik_heritage_01",
+  "schema_version": "1.0.0",
+  "raw_input": "We are a heritage batik house. The batik itself is the product and must be shown as batik, not as an abstract print.",
+  "objective": "brand-building",
+  "core_message": "The batik is hand-drawn and the pattern is the point, so it should be shown as batik rather than reduced to a texture.",
+  "audience": {
+    "description": "Buyers aged 30 to 55 in Indonesian cities who collect hand-drawn batik and can tell tulis from cap.",
+    "age_range": [30, 55],
+    "sophistication": 0.8,
+    "price_sensitivity": 0.3,
+    "attention_context": "dwell",
+    "cultural_context": ["Indonesian batik collectors"]
+  },
+  "industry_id": "fashion",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": { "indonesia": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "portrait",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": ["One 4:5 feed asset for the heritage batik line"],
+  "mandatories": ["Show the batik pattern in full, hand-drawn detail"],
+  "prohibitions": ["No stock-photo studio backdrop"],
+  "confidence": { "objective": 1.0 },
+  "missing_fields": []
+}

@@ -2,8 +2,10 @@
 
 *An AI graphic designer that thinks before it prompts.*
 
-**Phase P0 — Foundation.** Schemas, versioned datasets, loader, architectural boundaries and the
-Design Contract builder. No UI, no database, no model integration, no prompt compiler, no critic.
+**Through P3.0.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
+Design Recipe → bilingual prompt set, with a stereotype output guard on the compiled prompt. The
+only model call is the Brief Interpreter and the Creative Concept Engine (two calls, capped); every
+design decision is deterministic. No database.
 
 ## Commands
 
@@ -11,9 +13,19 @@ Design Contract builder. No UI, no database, no model integration, no prompt com
 pnpm install
 pnpm validate:data   # dataset schema + referential integrity + stereotype self-consistency
 pnpm lint            # architectural boundary enforcement
-pnpm test            # 86 tests
+pnpm test            # 839 tests
 pnpm build           # tsc --noEmit && next build
 pnpm check           # all four, in order
+```
+
+## Pipeline
+
+```
+Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resolution)
+      → Creative Concepts → Selected Concept → Design Recipe
+      → Prompt Compiler (+ Graphic Treatment, Photographic Character, Photographic Finish,
+                          Visual Generation Adapter, Stereotype Output Guard)
+      → ready-to-copy PromptSet (English + Bahasa Indonesia)
 ```
 
 ## What exists
@@ -21,12 +33,14 @@ pnpm check           # all four, in order
 | Layer | Status |
 |---|---|
 | `types/` — Zod schemas, schema version registry | ✅ |
-| `data/` — 21 versioned reference datasets + loader | ✅ |
-| `engine/` — pure, framework-free intelligence layer | ✅ contract stage only |
+| `data/` — versioned reference datasets + loader | ✅ |
+| `engine/` — pure, framework-free intelligence layer (P0 contract → P3.0 output guard) | ✅ |
 | `domain/` — entities and invariants | ✅ |
 | `ports/` — injected clock and id | ✅ |
-| `app/` — placeholder route so the build compiles | ⛔ no UI by design |
-| `services/`, `adapters/`, `supabase/` | ⛔ not started (P2–P4) |
+| `adapters/` — Gemini LLM adapter behind `ports/llm.port` | ✅ |
+| `services/` — orchestration (`pipeline.service.ts`), cost ledger | ✅ |
+| `app/`, `components/` — Next.js UI for the whole flow | ✅ |
+| `supabase/` — persistence | ⛔ not started (deliberately no database yet) |
 
 ## The three rules that hold this together
 
@@ -48,12 +62,15 @@ mutate old ones. A project built today must still be readable when the datasets 
 | Suite | Proves |
 |---|---|
 | `tests/data` | Every dataset validates; cross-file references resolve; a bad file fails the build; a new country needs no code |
-| `tests/anti-stereotype` | Doctrine §5 is enforced, not requested — guards exist, files don't contradict themselves, guards reach the contract, and the brief can override them explicitly |
-| `tests/golden` | Three real briefs → contracts with the right floors, anchors, constraints and a stable hash |
-| `tests/unit` | Doctrine precedence, blending, DKV merging, immutability, and every failure path |
+| `tests/anti-stereotype` | Doctrine §5 is enforced, not requested — guards exist, files don't contradict themselves, guards reach the contract, the brief can override them explicitly, and (P3.0) any that survive into a compiled prompt are stripped or flagged |
+| `tests/golden` | Real briefs → contract / direction / recipe / prompt set with the right floors, anchors, constraints and stable hashes |
+| `tests/unit` | Doctrine precedence, blending, DKV merging, immutability, brief interpretation, readiness, every additive P2.x layer, and every failure path |
 | `tests/lint` | The architecture rule itself works |
 
-## Next
+## Docs
 
-P1 — the deterministic core: candidate scoring, conflict detection, doctrine resolution and the
-Design Recipe builder. Still no AI, still no UI.
+Per-engine design notes live in `docs/` (`decision-engine`, `recipe-engine`, `brief-interpreter`,
+`readiness-policy`, `creative-concept-engine`, `graphic-treatment-engine`,
+`photographic-character-engine`, `photographic-finish`, `visual-generation-adapter`,
+`smart-brief-classification`, `prompt-compiler`, `prompt-output-guard`) and the accepted
+architecture decisions in `docs/adr/`.

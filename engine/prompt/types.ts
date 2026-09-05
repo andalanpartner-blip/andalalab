@@ -1,6 +1,7 @@
 import type { CreativeConcept } from "../../types/schemas/concept.schema";
 import type { DesignRecipe } from "../../types/schemas/recipe.schema";
 import type { VisualAdapterId, VisualAdapterVocabulary } from "./visual-adapter/types";
+import type { PromptGuardReport } from "./guard";
 
 /**
  * The Prompt Compiler.
@@ -375,6 +376,14 @@ export type PromptSet = {
     readonly label: string;
     readonly description: string;
   };
+  /**
+   * The P3.0 stereotype / banned-token output guard result for THIS language's
+   * five prompt strings. `clean` is true when no `recipe.culture.banned_tokens`
+   * entry reached any tier. Findings that were `stripped` are already removed
+   * from the strings above; `flagged` findings are preserved verbatim and left
+   * for a reviewer. See `docs/prompt-output-guard.md`.
+   */
+  readonly guard: PromptGuardReport;
 };
 
 export type CompilePromptInput = {
@@ -392,5 +401,9 @@ export type CompilePromptInput = {
   readonly visualAdapter?: VisualAdapterId | null;
 };
 
-/** A renderer turns language-neutral blocks into one language's five prompt strings. */
-export type PromptRenderer = (blocks: PromptBlocks) => Omit<PromptSet, "language">;
+/**
+ * A renderer turns language-neutral blocks into one language's five prompt
+ * strings. The P3.0 output guard is applied afterwards, in `compilePromptSet`,
+ * so renderers never produce the `guard` field.
+ */
+export type PromptRenderer = (blocks: PromptBlocks) => Omit<PromptSet, "language" | "guard">;

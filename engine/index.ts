@@ -215,6 +215,15 @@ export { ok, err, isOk, isErr, unwrap, type Result } from "./util/result";
 // --- P2.3: prompt compiler -------------------------------------------------
 export { compilePromptSet } from "./prompt/compile";
 export { buildPromptBlocks, type BuildPromptBlocksInput } from "./prompt/blocks";
+// --- P3.0: stereotype / banned-token prompt output guard ------------------
+export {
+  guardPromptSet,
+  GUARDED_PROMPT_TIERS,
+  type GuardedPromptTier,
+  type GuardAction,
+  type BannedTokenFinding,
+  type PromptGuardReport
+} from "./prompt/guard";
 export { resolveTextMode, TEXT_BEARING_ZONES } from "./prompt/text-mode";
 export { isUnsupportedConceptStatement, excludeUnsupportedConcepts } from "./prompt/unsupported-concepts";
 export { resolveVisualAdapter } from "./prompt/visual-adapter/resolve";

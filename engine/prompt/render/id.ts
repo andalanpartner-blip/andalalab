@@ -535,7 +535,7 @@ function buildNegativePrompt(blocks: PromptBlocks): string {
   return `Hindari: ${items.join("; ")}.`;
 }
 
-export function renderIndonesian(blocks: PromptBlocks): Omit<PromptSet, "language"> {
+export function renderIndonesian(blocks: PromptBlocks): Omit<PromptSet, "language" | "guard"> {
   const conceptSection = formatConcept(blocks);
 
   const masterSections = [

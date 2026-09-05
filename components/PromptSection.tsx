@@ -26,7 +26,9 @@ type Copy = {
   readonly negative: string;
 };
 
-const COPY: Record<PromptLanguage, Copy> = {
+type GuardCopy = { readonly label: string; readonly stripped: (n: number) => string; readonly flagged: (n: number) => string };
+
+const COPY: Record<PromptLanguage, Copy & { readonly guard: GuardCopy }> = {
   en: {
     kicker: "Ready to generate",
     title: "Prompt for Visual Generation",
@@ -38,7 +40,13 @@ const COPY: Record<PromptLanguage, Copy> = {
     quick: "Quick Prompt",
     imageOnly: "Image-Only Prompt",
     designLayout: "Design / Layout Prompt",
-    negative: "Negative Prompt"
+    negative: "Negative Prompt",
+    guard: {
+      label: "Stereotype guard",
+      stripped: (n) => `${n} guarded motif ${n === 1 ? "mention" : "mentions"} removed from a positive list.`,
+      flagged: (n) =>
+        `${n} guarded motif ${n === 1 ? "mention was" : "mentions were"} left in place — each sits inside an “avoid / no” instruction, so the prompt is telling the generator NOT to use it.`
+    }
   },
   id: {
     kicker: "Siap digunakan",
@@ -51,7 +59,13 @@ const COPY: Record<PromptLanguage, Copy> = {
     quick: "Quick Prompt",
     imageOnly: "Image-Only Prompt",
     designLayout: "Design / Layout Prompt",
-    negative: "Negative Prompt"
+    negative: "Negative Prompt",
+    guard: {
+      label: "Penjaga stereotip",
+      stripped: (n) => `${n} penyebutan motif terjaga dihapus dari daftar positif.`,
+      flagged: (n) =>
+        `${n} penyebutan motif terjaga dibiarkan — semuanya berada di dalam instruksi “hindari / jangan”, jadi prompt justru menyuruh generator untuk TIDAK memakainya.`
+    }
   }
 };
 
@@ -91,6 +105,11 @@ export function PromptSection({ recipe, concept }: PromptSectionProps) {
   );
   const copy = COPY[language];
 
+  const guard = promptSet.guard;
+  const strippedTokens = new Set(guard.findings.filter((f) => f.action === "stripped").map((f) => f.token));
+  const flaggedTokens = new Set(guard.findings.filter((f) => f.action === "flagged").map((f) => f.token));
+  const flaggedContexts = [...new Set(guard.findings.filter((f) => f.action === "flagged").map((f) => f.context))];
+
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="prompt-heading">
       <div className={styles.head}>
@@ -124,6 +143,23 @@ export function PromptSection({ recipe, concept }: PromptSectionProps) {
           <span className={styles.visualCharacterValue}>{promptSet.visualCharacter.label}</span>
           <span className={styles.visualCharacterDesc}>{promptSet.visualCharacter.description}</span>
         </p>
+
+        {!guard.clean ? (
+          <div className={styles.guardNote}>
+            <span className={styles.guardNoteLabel}>{copy.guard.label}</span>{" "}
+            {strippedTokens.size > 0 ? copy.guard.stripped(strippedTokens.size) : null}{" "}
+            {flaggedTokens.size > 0 ? copy.guard.flagged(flaggedTokens.size) : null}
+            {flaggedContexts.length > 0 ? (
+              <ul>
+                {flaggedContexts.map((context) => (
+                  <li key={context}>
+                    <code>{context}</code>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
       <div className={styles.board}>

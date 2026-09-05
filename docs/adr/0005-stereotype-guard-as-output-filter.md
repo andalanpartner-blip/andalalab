@@ -1,6 +1,6 @@
 # ADR 0005 — The stereotype guard is an output filter, not a prompt instruction
 
-**Status:** accepted (P0)
+**Status:** accepted (P0) · **implemented (P3.0)** — see `docs/prompt-output-guard.md`
 
 ## Context
 Doctrine §5 forbids the country layer from becoming a motif engine. Language models have strong
@@ -9,8 +9,11 @@ in a system prompt.
 
 ## Decision
 Every country file declares `avoid_stereotypes` as structured `{token, why, instead}` entries. The
-tokens are aggregated onto the Design Contract as `banned_tokens` and will be applied in P3 as a
-**post-compile string filter on the generated prompt**, not as a request to the model.
+tokens are aggregated onto the Design Contract as `banned_tokens` and are applied (P3.0,
+`engine/prompt/guard.ts`) as a **post-compile string filter on the generated prompt**, not as a
+request to the model. A banned token that appears as a standalone positive list item is stripped;
+every other occurrence — inside a sentence, or inside an "avoid / no" instruction — is preserved
+and surfaced as a structured finding on `PromptSet.guard`.
 
 The guard is a default, not a censor: a token the brief explicitly asks for is released, and the
 release is recorded as a visible constraint on the contract rather than happening silently.

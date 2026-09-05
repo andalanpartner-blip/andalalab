@@ -483,7 +483,7 @@ function buildNegativePrompt(blocks: PromptBlocks): string {
   return `Avoid: ${items.join("; ")}.`;
 }
 
-export function renderEnglish(blocks: PromptBlocks): Omit<PromptSet, "language"> {
+export function renderEnglish(blocks: PromptBlocks): Omit<PromptSet, "language" | "guard"> {
   const conceptSection = formatConcept(blocks);
 
   const masterSections = [
