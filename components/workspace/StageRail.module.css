@@ -19,6 +19,7 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
+  min-height: 40px;
   padding: 9px 10px;
   border: none;
   border-radius: var(--radius);
@@ -84,6 +85,32 @@
 .blockedTag {
   color: var(--critical);
   border-color: var(--critical);
+}
+
+/* ============================ collapsed icon strip (900–1200) ========== */
+@media (max-width: 1200px) and (min-width: 901px) {
+  .step {
+    justify-content: center;
+    gap: 4px;
+    padding: 9px 4px;
+  }
+
+  .label,
+  .future,
+  .blockedTag {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .index {
+    width: auto;
+  }
 }
 
 /* ============================ mobile stepper =========================== */

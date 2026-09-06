@@ -22,12 +22,19 @@
   font-size: var(--fs-body-sm);
   color: var(--ink);
   padding: 9px 11px;
+  min-height: 40px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--surface);
   outline: none;
   transition: border-color var(--dur-fast) var(--ease);
   width: 100%;
+}
+
+@media (max-width: 640px) {
+  .control {
+    min-height: 44px;
+  }
 }
 
 .control:focus {

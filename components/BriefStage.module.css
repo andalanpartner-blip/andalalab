@@ -89,7 +89,8 @@
 }
 
 .chip {
-  padding: 7px 13px;
+  padding: 8px 14px;
+  min-height: 36px;
   font-size: var(--fs-body-sm);
   color: var(--muted);
   background: var(--surface);
@@ -98,6 +99,12 @@
   cursor: pointer;
   transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
     background var(--dur-fast) var(--ease);
+}
+
+@media (max-width: 640px) {
+  .chip {
+    min-height: 44px;
+  }
 }
 
 .chip:hover {

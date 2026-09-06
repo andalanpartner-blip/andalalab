@@ -7,6 +7,14 @@
   align-items: start;
 }
 
+/* 900–1200px: the rail collapses to an icon strip. */
+@media (max-width: 1200px) and (min-width: 901px) {
+  .shell {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+}
+
 @media (max-width: 900px) {
   .shell {
     grid-template-columns: 1fr;

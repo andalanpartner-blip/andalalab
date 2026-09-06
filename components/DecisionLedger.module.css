@@ -32,6 +32,7 @@
 
 .filter {
   padding: 6px 11px;
+  min-height: 36px;
   font-size: var(--fs-caption);
   font-weight: 500;
   color: var(--muted);
@@ -39,6 +40,14 @@
   border: none;
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+@media (max-width: 640px) {
+  .filter {
+    min-height: 44px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 }
 
 .filter + .filter {

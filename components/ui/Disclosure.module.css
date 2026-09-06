@@ -18,6 +18,7 @@
   justify-content: space-between;
   gap: var(--gap-stack);
   padding: var(--space-4) var(--pad-panel);
+  min-height: 44px;
   cursor: pointer;
   list-style: none;
   user-select: none;

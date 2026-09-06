@@ -29,6 +29,18 @@ function StepList({ states, active, onNavigate, onPick }: StageRailProps & { onP
       {STAGE_LIST.map((meta) => {
         const state = states[meta.id];
         const reachable = state !== "locked";
+        const stateWord =
+          state === "active"
+            ? "current"
+            : state === "done"
+              ? "done"
+              : state === "blocked"
+                ? "blocked"
+                : reachable
+                  ? "available"
+                  : meta.future
+                    ? "coming with P8"
+                    : "locked";
         return (
           <li key={meta.id}>
             <button
@@ -37,6 +49,8 @@ function StepList({ states, active, onNavigate, onPick }: StageRailProps & { onP
               data-state={state}
               data-active={meta.id === active || undefined}
               aria-current={meta.id === active ? "step" : undefined}
+              aria-label={`Stage ${meta.index} of ${STAGE_LIST.length}, ${meta.label}, ${stateWord}`}
+              title={meta.label}
               disabled={!reachable}
               onClick={() => {
                 onNavigate(meta.id);

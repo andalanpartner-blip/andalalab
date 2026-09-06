@@ -25,6 +25,14 @@
   font-size: 13px;
 }
 
+/* Comfortable touch targets on small screens (not the inline link variant). */
+@media (max-width: 640px) {
+  .md,
+  .sm {
+    min-height: 44px;
+  }
+}
+
 .label {
   display: inline-flex;
   align-items: center;

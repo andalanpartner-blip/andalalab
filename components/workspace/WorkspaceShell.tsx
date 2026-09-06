@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import styles from "./WorkspaceShell.module.css";
 import { StageRail } from "./StageRail";
 import { Button } from "../ui/Button";
@@ -37,17 +37,25 @@ export function WorkspaceShell({
   children
 }: WorkspaceShellProps) {
   const setLedgerOpen = onLedgerOpenChange;
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   // Close the ledger on stage change and on Escape.
   useEffect(() => setLedgerOpen(false), [active, setLedgerOpen]);
   useEffect(() => {
-    if (!ledgerOpen) return;
+    if (!ledgerOpen) {
+      returnFocusRef.current?.focus?.();
+      returnFocusRef.current = null;
+      return;
+    }
+    returnFocusRef.current = (document.activeElement as HTMLElement) ?? null;
+    closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLedgerOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [ledgerOpen]);
+  }, [ledgerOpen, setLedgerOpen]);
 
   return (
     <div className={`container ${styles.shell}`}>
@@ -79,10 +87,11 @@ export function WorkspaceShell({
           aria-label="Decision ledger"
           onClick={() => setLedgerOpen(false)}
         >
-          <aside className={styles.ledger} onClick={(e) => e.stopPropagation()}>
+          <aside className={styles.ledger} onClick={(e) => e.stopPropagation()} aria-modal="true">
             <div className={styles.ledgerHead}>
               <span className={styles.ledgerTitle}>Decision ledger</span>
               <button
+                ref={closeRef}
                 type="button"
                 className={styles.ledgerClose}
                 onClick={() => setLedgerOpen(false)}
