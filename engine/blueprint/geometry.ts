@@ -9,6 +9,7 @@ import type {
   GeometryGrid,
   GeometryResult,
   GeometrySafeArea,
+  GridCellSpan,
   Rect,
   ZoneBand
 } from "./types";
@@ -23,8 +24,11 @@ import type {
  * `aspectRatio`, or a documented function of those.
  *
  * Coordinates are normalised 0..1 in canvas space (origin top-left, y grows
- * down). Zone rectangles are placed inside the margin box and every edge is
- * snapped to a grid line, so the geometry is grid-aligned by construction.
+ * down). Load-bearing zones are placed inside the CONTENT BOX — the tighter of
+ * the layout margin and the platform safe area — and each edge lands on a grid
+ * line, so the geometry is both grid-aligned and safe by construction. In a
+ * split column the priority-1 (image/hero) zone is allowed to bleed to the
+ * margin box.
  *
  * No randomness, no clock, no I/O — enforced by the `engine/**` lint boundary.
  */
@@ -81,6 +85,7 @@ export function resolveArrangement(layout: LayoutSystem): BlueprintArrangement {
 // --- zone placement --------------------------------------------------
 
 type Level = DesignRecipe["hierarchy"]["levels"][number];
+type Placed = { zone: ZoneId; rect: Rect; grid_span: GridCellSpan };
 
 const rectArea = (rect: Rect): number => rect.w * rect.h;
 
@@ -93,148 +98,203 @@ function withinSafeArea(rect: Rect, safe: GeometrySafeArea): boolean {
   );
 }
 
+type Box = { top: number; bottom: number; left: number; right: number };
+
+/** The content box: the tighter of the layout margin and the platform safe area. */
+function contentBox(margin: number, safe: GeometrySafeArea): Box {
+  return {
+    top: Math.max(margin, safe.top),
+    bottom: Math.max(margin, safe.bottom),
+    left: Math.max(margin, safe.left),
+    right: Math.max(margin, safe.right)
+  };
+}
+
 /**
- * Continuous cumulative band edges (0..extent) for a set of shares, each edge
- * snapped to the nearest grid line and forced strictly monotonic with a
- * one-line minimum gap. Returns `n + 1` edges.
+ * Split `total` integer grid rows among `shares`, each zone getting at least one
+ * row, the remainder handed out by largest fractional part (ties → lower index).
+ * Deterministic. `total` is assumed `>= shares.length` (the caller guarantees it).
  */
-function snappedEdges(
+function allocateRows(shares: readonly number[], total: number): number[] {
+  const n = shares.length;
+  if (n === 0) return [];
+  if (total <= n) return shares.map(() => 1);
+
+  const sum = shares.reduce((acc, share) => acc + share, 0) || 1;
+  const ideal = shares.map((share) => (share / sum) * (total - n) + 1);
+  const alloc = ideal.map((value) => Math.max(1, Math.floor(value)));
+  let remainder = total - alloc.reduce((acc, value) => acc + value, 0);
+
+  const byFraction = ideal
+    .map((value, index) => ({ index, frac: value - Math.floor(value) }))
+    .sort((a, b) => b.frac - a.frac || a.index - b.index);
+  for (let cursor = 0; remainder > 0; cursor += 1) {
+    const target = byFraction[cursor % n]!.index;
+    alloc[target] = alloc[target]! + 1;
+    remainder -= 1;
+  }
+  while (remainder < 0) {
+    const largest = alloc
+      .map((value, index) => ({ index, value }))
+      .filter((entry) => entry.value > 1)
+      .sort((a, b) => b.value - a.value || a.index - b.index)[0];
+    if (!largest) break;
+    alloc[largest.index] = alloc[largest.index]! - 1;
+    remainder += 1;
+  }
+  return alloc;
+}
+
+/**
+ * Stack `zones` as full-width bands inside a grid-line window
+ * [rowStart, rowEnd) x [colStart, colEnd), heights proportional to `shares`.
+ * When there are more zones than window rows, band height is compressed evenly
+ * and the caller has already recorded a `zone_overflow` issue.
+ */
+function stackBands(
+  zones: readonly ZoneId[],
   shares: readonly number[],
-  extent: number,
-  unit: number,
-  issues: BlueprintIssue[],
-  path: string
-): number[] {
-  const total = shares.reduce((sum, share) => sum + share, 0) || 1;
-  const raw: number[] = [0];
-  let acc = 0;
-  for (const share of shares) {
-    acc += (share / total) * extent;
-    raw.push(acc);
-  }
-  raw[raw.length - 1] = extent;
+  window: { rowStart: number; rowEnd: number; colStart: number; colEnd: number },
+  grid: GeometryGrid
+): Placed[] {
+  const margin = grid.margin_ratio;
+  const usable = 1 - 2 * margin;
+  const rowUnit = usable / grid.rows;
+  const colUnit = usable / grid.columns;
+  const { rowStart, rowEnd, colStart, colEnd } = window;
 
-  const snapped = raw.map((edge, index) => {
-    if (index === 0) return 0;
-    if (index === raw.length - 1) return extent;
-    return round(Math.round(edge / unit) * unit, 6);
+  const windowRows = rowEnd - rowStart;
+  const availRows = Math.max(zones.length, windowRows);
+  const bandUnit = (windowRows * rowUnit) / availRows;
+  const alloc = allocateRows(shares, availRows);
+
+  const x = round(margin + colStart * colUnit, 6);
+  const w = round((colEnd - colStart) * colUnit, 6);
+  const top = margin + rowStart * rowUnit;
+
+  let cursor = 0;
+  return zones.map((zone, index) => {
+    const y = round(top + cursor * bandUnit, 6);
+    const h = round(alloc[index]! * bandUnit, 6);
+    cursor += alloc[index]!;
+    const gridRow = Math.max(0, Math.min(grid.rows - 1, Math.round((y - margin) / rowUnit)));
+    return {
+      zone,
+      rect: { x, y, w, h },
+      grid_span: {
+        col: colStart,
+        row: gridRow,
+        cols: colEnd - colStart,
+        rows: Math.max(1, Math.min(grid.rows - gridRow, Math.round(h / rowUnit) || 1))
+      }
+    };
   });
+}
 
-  for (let index = 1; index < snapped.length; index += 1) {
-    const floor = snapped[index - 1]! + unit;
-    if (snapped[index]! < floor) snapped[index] = round(floor, 6);
+function placeStacked(levels: readonly Level[], grid: GeometryGrid, safe: GeometrySafeArea, issues: BlueprintIssue[]): Placed[] {
+  const margin = grid.margin_ratio;
+  const usable = 1 - 2 * margin;
+  const rowUnit = usable / grid.rows;
+  const colUnit = usable / grid.columns;
+  const box = contentBox(margin, safe);
+
+  // Round toward the interior — a load-bearing band must not straddle the safe edge.
+  let rowStart = Math.max(0, Math.min(grid.rows - 1, Math.ceil((box.top - margin) / rowUnit - EPS)));
+  let rowEnd = Math.max(rowStart + 1, Math.min(grid.rows, grid.rows - Math.ceil((box.bottom - margin) / rowUnit - EPS)));
+  if (rowEnd - rowStart < levels.length) {
+    rowStart = 0;
+    rowEnd = grid.rows;
   }
-
-  if (snapped[snapped.length - 1]! > extent + EPS) {
-    // Too many bands for the row count — pull the tail back onto the grid and
-    // record it rather than emitting an invalid rectangle.
+  if (rowEnd - rowStart < levels.length) {
     issues.push({
       code: "zone_overflow",
       severity: "P1",
-      path,
+      path: "geometry.bands",
       message:
         "The zone set needs more grid rows than the layout grid provides; band heights were compressed to fit the frame.",
       zone: null
     });
-    for (let index = snapped.length - 1; index >= 1; index -= 1) {
-      const ceiling = index === snapped.length - 1 ? extent : snapped[index + 1]! - unit;
-      if (snapped[index]! > ceiling) snapped[index] = round(Math.max(0, ceiling), 6);
-    }
   }
+  const colStart = Math.max(0, Math.min(grid.columns - 1, Math.ceil((box.left - margin) / colUnit - EPS)));
+  const colEnd = Math.max(colStart + 1, Math.min(grid.columns, grid.columns - Math.ceil((box.right - margin) / colUnit - EPS)));
 
-  return snapped;
-}
-
-function spanFor(
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  colUnit: number,
-  rowUnit: number,
-  margin: number,
-  columns: number,
-  rows: number
-) {
-  const col = Math.max(0, Math.min(columns - 1, Math.round((x - margin) / colUnit)));
-  const row = Math.max(0, Math.min(rows - 1, Math.round((y - margin) / rowUnit)));
-  const cols = Math.max(1, Math.min(columns - col, Math.round(w / colUnit)));
-  const spanRows = Math.max(1, Math.min(rows - row, Math.round(h / rowUnit)));
-  return { col, row, cols, rows: spanRows };
-}
-
-function placeStacked(
-  levels: readonly Level[],
-  grid: GeometryGrid,
-  issues: BlueprintIssue[]
-): { zone: ZoneId; rect: Rect }[] {
-  const margin = grid.margin_ratio;
-  const usable = 1 - 2 * margin;
-  const rowUnit = usable / grid.rows;
-  const edges = snappedEdges(
+  return stackBands(
+    levels.map((level) => level.zone as ZoneId),
     levels.map((level) => level.area_share),
-    usable,
-    rowUnit,
-    issues,
-    "geometry.bands"
+    { rowStart, rowEnd, colStart, colEnd },
+    grid
   );
-
-  return levels.map((level, index) => {
-    const y = round(margin + edges[index]!, 6);
-    const h = round(edges[index + 1]! - edges[index]!, 6);
-    return { zone: level.zone as ZoneId, rect: { x: round(margin, 6), y, w: round(usable, 6), h } };
-  });
 }
 
 function placeSplitColumn(
   levels: readonly Level[],
   grid: GeometryGrid,
   layout: LayoutSystem,
+  safe: GeometrySafeArea,
   issues: BlueprintIssue[]
-): { zone: ZoneId; rect: Rect }[] {
+): Placed[] {
   const margin = grid.margin_ratio;
-  const usableW = 1 - 2 * margin;
-  const usableH = 1 - 2 * margin;
-  const rowUnit = usableH / grid.rows;
+  const usable = 1 - 2 * margin;
+  const colUnit = usable / grid.columns;
+  const rowUnit = usable / grid.rows;
 
   const primary = levels[0]!;
-  const primaryColsFrac = clampRatio(primary.area_share);
   const primaryCols = Math.max(
     1,
-    Math.min(grid.columns - 1, Math.round(Math.min(0.6, Math.max(0.34, primaryColsFrac)) * grid.columns))
+    Math.min(grid.columns - 1, Math.round(Math.min(0.6, Math.max(0.34, clampRatio(primary.area_share))) * grid.columns))
   );
-  const primaryW = round((primaryCols / grid.columns) * usableW, 6);
   const flowStartsLeft = layout.flow === "z-pattern" || layout.flow === "f-pattern";
+  const primaryColStart = flowStartsLeft ? 0 : grid.columns - primaryCols;
 
-  const primaryX = round(flowStartsLeft ? margin : margin + usableW - primaryW, 6);
-  const secondaryX = round(flowStartsLeft ? margin + primaryW : margin, 6);
-  const secondaryW = round(usableW - primaryW, 6);
+  const primaryRect: Rect = {
+    x: round(margin + primaryColStart * colUnit, 6),
+    y: round(margin, 6),
+    w: round(primaryCols * colUnit, 6),
+    h: round(usable, 6)
+  };
 
-  const out: { zone: ZoneId; rect: Rect }[] = [
-    { zone: primary.zone as ZoneId, rect: { x: primaryX, y: round(margin, 6), w: primaryW, h: round(usableH, 6) } }
+  const out: Placed[] = [
+    {
+      zone: primary.zone as ZoneId,
+      rect: primaryRect,
+      grid_span: { col: primaryColStart, row: 0, cols: primaryCols, rows: grid.rows }
+    }
   ];
 
   const rest = levels.slice(1);
   if (rest.length > 0) {
-    const edges = snappedEdges(
-      rest.map((level) => level.area_share),
-      usableH,
-      rowUnit,
-      issues,
-      "geometry.bands.secondary"
+    const box = contentBox(margin, safe);
+    let rowStart = Math.max(0, Math.min(grid.rows - 1, Math.ceil((box.top - margin) / rowUnit - EPS)));
+    let rowEnd = Math.max(rowStart + 1, Math.min(grid.rows, grid.rows - Math.ceil((box.bottom - margin) / rowUnit - EPS)));
+    if (rowEnd - rowStart < rest.length) {
+      rowStart = 0;
+      rowEnd = grid.rows;
+    }
+    if (rowEnd - rowStart < rest.length) {
+      issues.push({
+        code: "zone_overflow",
+        severity: "P1",
+        path: "geometry.bands.secondary",
+        message:
+          "The secondary column needs more grid rows than the layout grid provides; band heights were compressed to fit.",
+        zone: null
+      });
+    }
+    const secColStart = flowStartsLeft ? primaryCols : 0;
+    const secColEnd = flowStartsLeft ? grid.columns : grid.columns - primaryCols;
+
+    out.push(
+      ...stackBands(
+        rest.map((level) => level.zone as ZoneId),
+        rest.map((level) => level.area_share),
+        { rowStart, rowEnd, colStart: secColStart, colEnd: secColEnd },
+        grid
+      )
     );
-    rest.forEach((level, index) => {
-      const y = round(margin + edges[index]!, 6);
-      const h = round(edges[index + 1]! - edges[index]!, 6);
-      out.push({ zone: level.zone as ZoneId, rect: { x: secondaryX, y, w: secondaryW, h } });
-    });
   }
 
-  // Restore reading (priority) order.
   const order = new Map(levels.map((level, index) => [level.zone, index]));
-  out.sort((a, b) => (order.get(a.zone) ?? 0) - (order.get(b.zone) ?? 0));
-
-  return out;
+  return out.sort((a, b) => (order.get(a.zone) ?? 0) - (order.get(b.zone) ?? 0));
 }
 
 // --- public entry point ---------------------------------------------
@@ -262,19 +322,13 @@ export function computeGeometry(input: GeometryInput): GeometryResult {
 
   const placed =
     arrangement === "split-column"
-      ? placeSplitColumn(levels, grid, layout, issues)
-      : placeStacked(levels, grid, issues);
-
-  const margin = grid.margin_ratio;
-  const usable = 1 - 2 * margin;
-  const colUnit = usable / grid.columns;
-  const rowUnit = usable / grid.rows;
+      ? placeSplitColumn(levels, grid, layout, safeArea, issues)
+      : placeStacked(levels, grid, safeArea, issues);
 
   const focalRect = placed[0]?.rect;
   const focalArea = focalRect ? rectArea(focalRect) : 1;
 
-  const bands: ZoneBand[] = placed.map(({ zone, rect }) => {
-    const span = spanFor(rect.x, rect.y, rect.w, rect.h, colUnit, rowUnit, margin, grid.columns, grid.rows);
+  const bands: ZoneBand[] = placed.map(({ zone, rect, grid_span }) => {
     const area = rectArea(rect);
     if (rect.x + rect.w > 1 + EPS || rect.y + rect.h > 1 + EPS) {
       issues.push({
@@ -288,7 +342,7 @@ export function computeGeometry(input: GeometryInput): GeometryResult {
     return {
       zone,
       rect,
-      grid_span: span,
+      grid_span,
       area_fraction: round(area, 4),
       vs_focal: round(area / (focalArea || 1), 4),
       within_safe_area: withinSafeArea(rect, safeArea)

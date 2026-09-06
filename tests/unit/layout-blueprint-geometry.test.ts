@@ -112,19 +112,28 @@ describe("blueprint geometry (P2.10.2)", () => {
       }
     });
 
-    it("stacked bands follow reading order top to bottom and tile the margin box", () => {
+    it("stacked bands follow reading order and tile contiguously inside the content box", () => {
       const result = geo("print-property-brochure");
       expect(result.arrangement).toBe("stacked");
       const order = blueprintInputs("print-property-brochure").recipe.hierarchy.reading_order;
       expect(result.bands.map((b) => b.zone)).toEqual(order);
 
       const margin = result.grid.margin_ratio;
-      let cursor = margin;
+      let cursor = result.bands[0]!.rect.y;
+      // content box top is at least the margin
+      expect(cursor).toBeGreaterThanOrEqual(margin - 1e-6);
       for (const band of result.bands) {
-        expect(band.rect.y).toBeCloseTo(cursor, 4);
+        expect(band.rect.y).toBeCloseTo(cursor, 4); // no gaps between bands
         cursor = band.rect.y + band.rect.h;
       }
-      expect(cursor).toBeCloseTo(1 - margin, 4);
+      // last band ends inside the canvas, at or before the bottom margin edge
+      expect(cursor).toBeLessThanOrEqual(1 - margin + 1e-6);
+    });
+
+    it("load-bearing stacked bands land inside the safe area", () => {
+      // northbeam: square feed, generous grid — every zone should be safe
+      const result = geo("northbeam-saas-launch");
+      expect(result.bands.every((b) => b.within_safe_area)).toBe(true);
     });
 
     it("split-column places the priority-1 zone as a full-height column", () => {
