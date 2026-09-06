@@ -303,6 +303,27 @@ export {
   type AppliedChange,
   type CorrectionReport
 } from "./correction";
+// --- P2.16: correction recommendation ----------------------------------
+export {
+  recommendCorrections,
+  toCorrectionPatch,
+  RECOMMENDATION_RESOLVER_VERSION,
+  PRESERVED_INVARIANTS,
+  RECOMMENDABLE_FIELDS,
+  MAX_ABS_DELTA,
+  isRecommendableField,
+  boundedProposal,
+  parameterPathFor,
+  type RecommendCorrectionsInput,
+  type CorrectionPatchDraft,
+  type RecommendableField
+} from "./correction";
+export type {
+  CorrectionRecommendation,
+  CorrectionOption,
+  RecommendationScope,
+  UnactionableFinding
+} from "../types/schemas/correction-recommendation.schema";
 // --- P2.10: Layout Blueprint (derived structural plan) ------------------
 export { resolveLayoutBlueprint, RESOLVER_VERSION, type ResolveBlueprintInput } from "./blueprint/resolve";
 export { computeGeometry, resolveArrangement } from "./blueprint/geometry";
