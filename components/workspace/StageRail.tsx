@@ -17,9 +17,9 @@ export type StageRailProps = {
 
 function dotState(state: StageState, future: boolean): DotState {
   if (state === "active") return "active";
+  if (future) return "future";
   if (state === "done") return "done";
   if (state === "blocked") return "blocked";
-  if (state === "locked") return future ? "future" : "available";
   return "available";
 }
 

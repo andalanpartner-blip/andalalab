@@ -1,0 +1,151 @@
+.section {
+  padding-top: var(--space-2);
+}
+
+.langSwitch {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.langButton {
+  padding: 7px 13px;
+  font-size: var(--fs-caption);
+  font-weight: 540;
+  color: var(--muted);
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+
+.langButton + .langButton {
+  border-left: 1px solid var(--border-strong);
+}
+
+.langButton:hover {
+  color: var(--ink);
+}
+
+.langActive {
+  background: var(--ink);
+  color: var(--ink-on);
+}
+
+.visualCharacter {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--gap-stack);
+}
+
+.visualCharacterKicker {
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.visualCharacterValue {
+  font-size: var(--fs-body-sm);
+  font-weight: 560;
+  color: var(--ink);
+}
+
+.visualCharacterDesc {
+  font-size: var(--fs-caption);
+  color: var(--muted);
+}
+
+.guardNote {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  line-height: var(--lh-normal);
+  margin-bottom: var(--gap-stack);
+}
+
+.guardNoteLabel {
+  font-weight: 620;
+  color: var(--ink);
+}
+
+.guardNote ul {
+  margin: var(--space-1) 0 0;
+  padding-left: 1.1em;
+}
+
+.guardNote code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.masterBlock {
+  margin-bottom: var(--gap-stack);
+}
+
+.moreBoard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.cardTitleWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cardTitle {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  font-weight: 620;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.text {
+  margin: 0;
+  padding: var(--pad-panel);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  line-height: 1.7;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.dominant {
+  border-color: var(--border-strong);
+}
+
+.dominant .cardTitle {
+  color: color-mix(in srgb, var(--ink-on) 65%, transparent);
+}
+
+.dominant .text {
+  color: var(--ink-on);
+  font-size: 13.5px;
+  max-height: 620px;
+}
+
+.whatsNext {
+  margin-top: var(--gap-stack);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--border);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  line-height: var(--lh-normal);
+  max-width: 64ch;
+}

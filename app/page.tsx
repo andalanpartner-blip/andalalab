@@ -15,7 +15,9 @@ import { DecisionLedger } from "../components/DecisionLedger";
 import { ReviewSummary } from "../components/ReviewSummary";
 import { ComplianceChip } from "../components/ComplianceChip";
 import { CorrectionPanel } from "../components/CorrectionPanel";
-import { PromptSection } from "../components/PromptSection";
+import { PromptOutput } from "../components/PromptOutput";
+import { GenerateStage } from "../components/workspace/GenerateStage";
+import { FinalStage } from "../components/workspace/FinalStage";
 import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
 import { AIStatus, type AIStatusStep } from "../components/workspace/AIStatus";
 import { StageHeader } from "../components/ui/StageHeader";
@@ -33,7 +35,6 @@ import {
   defaultStage,
   isReachable,
   isStageId,
-  STAGE_META,
   type StageId,
   type StageState
 } from "../lib/workspace";
@@ -69,6 +70,19 @@ function readStageFromUrl(): StageId | null {
   const value = new URLSearchParams(window.location.search).get("stage");
   return isStageId(value) ? value : null;
 }
+
+const ASPECT_LABEL: Record<string, string> = {
+  portrait: "4:5",
+  square: "1:1",
+  landscape: "16:9",
+  vertical: "9:16",
+  wide: "16:9",
+  ultrawide: "21:9",
+  "a4-portrait": "A4",
+  "a4-landscape": "A4",
+  "landscape-16-9": "16:9",
+  "billboard-3-1": "3:1"
+};
 
 /** A genuine loading placeholder for the recipe stage while /api/recipe runs. */
 function RecipeSkeleton() {
@@ -446,13 +460,34 @@ export default function Page() {
                 <ComplianceChip critic={critic} onOpen={() => goToStage("review")} />
               </div>
             ) : null}
-            <PromptSection recipe={recipe} concept={selectedConcept} />
+            <PromptOutput recipe={recipe} concept={selectedConcept} />
             <div className={styles.stageActions}>
-              <Button variant="secondary" onClick={() => goToStage("review")}>
+              <Button variant="secondary" onClick={() => goToStage("generate")}>
+                Generate
+              </Button>
+              <Button variant="ghost" onClick={() => goToStage("review")}>
                 Review the design
               </Button>
             </div>
           </>
+        );
+
+      case "generate":
+        if (!recipe) return null;
+        return (
+          <GenerateStage
+            aspectRatio={ASPECT_LABEL[recipe.platform.aspect_ratio_id] ?? recipe.platform.aspect_ratio_id}
+            onNavigate={goToStage}
+          />
+        );
+
+      case "final":
+        if (!recipe) return null;
+        return (
+          <FinalStage
+            aspectRatio={ASPECT_LABEL[recipe.platform.aspect_ratio_id] ?? recipe.platform.aspect_ratio_id}
+            onNavigate={goToStage}
+          />
         );
 
       case "review":
@@ -490,18 +525,7 @@ export default function Page() {
         );
 
       default:
-        return (
-          <section className={`container ${styles.stageSection}`}>
-            <StageHeader
-              kicker={`Stage ${STAGE_META[activeStage].index} · ${STAGE_META[activeStage].label}`}
-              title={STAGE_META[activeStage].label}
-            />
-            <EmptyState
-              title="This stage ships with the Generation Adapter (P8)"
-              description={STAGE_META[activeStage].summary}
-            />
-          </section>
-        );
+        return null;
     }
   })();
 

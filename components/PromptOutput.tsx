@@ -6,9 +6,12 @@ import type { CreativeConcept } from "../types/schemas/concept.schema";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import { CopyButton } from "./ui/CopyButton";
 import { Panel } from "./ui/Panel";
-import styles from "./PromptSection.module.css";
+import { Disclosure } from "./ui/Disclosure";
+import { StageHeader } from "./ui/StageHeader";
+import { Badge } from "./ui/Badge";
+import styles from "./PromptOutput.module.css";
 
-export type PromptSectionProps = {
+export type PromptOutputProps = {
   readonly recipe: DesignRecipe;
   readonly concept: CreativeConcept | null;
 };
@@ -17,6 +20,9 @@ type Copy = {
   readonly kicker: string;
   readonly title: string;
   readonly sub: string;
+  readonly useThisOne: string;
+  readonly moreFormats: string;
+  readonly whatsNext: string;
   readonly visualCharacterLabel: string;
   readonly copyLabel: string;
   readonly copiedLabel: string;
@@ -32,8 +38,12 @@ type GuardCopy = { readonly label: string; readonly stripped: (n: number) => str
 const COPY: Record<PromptLanguage, Copy & { readonly guard: GuardCopy }> = {
   en: {
     kicker: "Ready to generate",
-    title: "Prompt for Visual Generation",
-    sub: "Copy the prompt below and use it in your preferred image generator.",
+    title: "Prompt",
+    sub: "The full generation instruction, in your choice of language.",
+    useThisOne: "Use this one",
+    moreFormats: "More formats — Quick, Image-Only, Design/Layout, Negative",
+    whatsNext:
+      "Paste the master prompt into your image generator. When the Generation Adapter (P8) ships, you'll run it from the Generate stage and the render comes back into Review.",
     visualCharacterLabel: "Visual character",
     copyLabel: "Copy",
     copiedLabel: "Copied",
@@ -51,8 +61,12 @@ const COPY: Record<PromptLanguage, Copy & { readonly guard: GuardCopy }> = {
   },
   id: {
     kicker: "Siap digunakan",
-    title: "Prompt untuk Generasi Visual",
-    sub: "Salin prompt di bawah dan gunakan di image generator pilihan Anda.",
+    title: "Prompt",
+    sub: "Instruksi generasi lengkap, dalam bahasa pilihan Anda.",
+    useThisOne: "Pakai yang ini",
+    moreFormats: "Format lain — Quick, Image-Only, Design/Layout, Negative",
+    whatsNext:
+      "Salin master prompt ke image generator Anda. Saat Generation Adapter (P8) hadir, Anda menjalankannya dari tahap Generate dan hasilnya kembali ke Review.",
     visualCharacterLabel: "Karakter visual",
     copyLabel: "Salin",
     copiedLabel: "Tersalin",
@@ -85,10 +99,17 @@ function PromptCard({
     <Panel
       tone={dominant ? "inverted" : "reading"}
       padded={false}
-      className={dominant ? styles.dominant : undefined}
+      className={dominant ? styles.dominant : styles.card}
       header={
         <>
-          <h3 className={styles.cardTitle}>{title}</h3>
+          <span className={styles.cardTitleWrap}>
+            <h3 className={styles.cardTitle}>{title}</h3>
+            {dominant ? (
+              <Badge tone="accent" variant="soft">
+                {copy.useThisOne}
+              </Badge>
+            ) : null}
+          </span>
           <CopyButton
             text={text}
             label={copy.copyLabel}
@@ -103,8 +124,8 @@ function PromptCard({
   );
 }
 
-/** Client-computed: the compiler is pure and deterministic, so switching language is instant and needs no round trip. */
-export function PromptSection({ recipe, concept }: PromptSectionProps) {
+/** Client-computed: the compiler is pure, so switching language is instant. */
+export function PromptOutput({ recipe, concept }: PromptOutputProps) {
   const [language, setLanguage] = useState<PromptLanguage>("en");
   const promptSet: PromptSet = useMemo(
     () => compilePromptSet({ recipe, concept, language }),
@@ -118,13 +139,13 @@ export function PromptSection({ recipe, concept }: PromptSectionProps) {
   const flaggedContexts = [...new Set(guard.findings.filter((f) => f.action === "flagged").map((f) => f.context))];
 
   return (
-    <section className={`container reveal ${styles.section}`} aria-labelledby="prompt-heading">
-      <div className={styles.head}>
-        <p className={styles.kicker}>{copy.kicker}</p>
-        <div className={styles.titleRow}>
-          <h2 id="prompt-heading" className={styles.title}>
-            {copy.title}
-          </h2>
+    <section className={`container ${styles.section}`} aria-labelledby="prompt-heading">
+      <StageHeader
+        kicker={copy.kicker}
+        title={copy.title}
+        id="prompt-heading"
+        sub={copy.sub}
+        aside={
           <div className={styles.langSwitch} role="group" aria-label="Prompt language">
             <button
               type="button"
@@ -143,39 +164,46 @@ export function PromptSection({ recipe, concept }: PromptSectionProps) {
               Bahasa Indonesia
             </button>
           </div>
+        }
+      />
+
+      <p className={styles.visualCharacter}>
+        <span className={styles.visualCharacterKicker}>{copy.visualCharacterLabel}</span>
+        <span className={styles.visualCharacterValue}>{promptSet.visualCharacter.label}</span>
+        <span className={styles.visualCharacterDesc}>{promptSet.visualCharacter.description}</span>
+      </p>
+
+      {!guard.clean ? (
+        <div className={styles.guardNote}>
+          <span className={styles.guardNoteLabel}>{copy.guard.label}</span>{" "}
+          {strippedTokens.size > 0 ? copy.guard.stripped(strippedTokens.size) : null}{" "}
+          {flaggedTokens.size > 0 ? copy.guard.flagged(flaggedTokens.size) : null}
+          {flaggedContexts.length > 0 ? (
+            <ul>
+              {flaggedContexts.map((context) => (
+                <li key={context}>
+                  <code>{context}</code>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
-        <p className={styles.sub}>{copy.sub}</p>
-        <p className={styles.visualCharacter}>
-          <span className={styles.visualCharacterKicker}>{copy.visualCharacterLabel}</span>
-          <span className={styles.visualCharacterValue}>{promptSet.visualCharacter.label}</span>
-          <span className={styles.visualCharacterDesc}>{promptSet.visualCharacter.description}</span>
-        </p>
+      ) : null}
 
-        {!guard.clean ? (
-          <div className={styles.guardNote}>
-            <span className={styles.guardNoteLabel}>{copy.guard.label}</span>{" "}
-            {strippedTokens.size > 0 ? copy.guard.stripped(strippedTokens.size) : null}{" "}
-            {flaggedTokens.size > 0 ? copy.guard.flagged(flaggedTokens.size) : null}
-            {flaggedContexts.length > 0 ? (
-              <ul>
-                {flaggedContexts.map((context) => (
-                  <li key={context}>
-                    <code>{context}</code>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
-
-      <div className={styles.board}>
+      <div className={styles.masterBlock}>
         <PromptCard title={copy.master} text={promptSet.masterPrompt} copy={copy} dominant />
-        <PromptCard title={copy.quick} text={promptSet.quickPrompt} copy={copy} />
-        <PromptCard title={copy.imageOnly} text={promptSet.imageOnlyPrompt} copy={copy} />
-        <PromptCard title={copy.designLayout} text={promptSet.designLayoutPrompt} copy={copy} />
-        <PromptCard title={copy.negative} text={promptSet.negativePrompt} copy={copy} />
       </div>
+
+      <Disclosure title={copy.moreFormats}>
+        <div className={styles.moreBoard}>
+          <PromptCard title={copy.quick} text={promptSet.quickPrompt} copy={copy} />
+          <PromptCard title={copy.imageOnly} text={promptSet.imageOnlyPrompt} copy={copy} />
+          <PromptCard title={copy.designLayout} text={promptSet.designLayoutPrompt} copy={copy} />
+          <PromptCard title={copy.negative} text={promptSet.negativePrompt} copy={copy} />
+        </div>
+      </Disclosure>
+
+      <p className={styles.whatsNext}>{copy.whatsNext}</p>
     </section>
   );
 }

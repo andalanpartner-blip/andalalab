@@ -70,15 +70,17 @@ export function deriveStageStates(s: WorkspaceSignals): Record<StageId, Exclude<
     concept: !s.briefReady ? "locked" : s.conceptSelected ? "done" : "available",
     recipe: !s.conceptSelected ? "locked" : blocked ? "blocked" : s.hasRecipe ? "done" : "available",
     prompt: !s.hasRecipe ? "locked" : "done",
-    // Generate is real only with P8 — always locked, flagged `future` in meta.
-    generate: "locked",
+    // Generate & Final are viewable placeholders once a recipe exists — the
+    // real behaviour ships with P8. `future` in STAGE_META keeps the rail
+    // showing them as "soon".
+    generate: !s.hasRecipe ? "locked" : "available",
     review: !s.hasRecipe ? "locked" : blocked ? "blocked" : s.hasReview ? "done" : "available",
     correct: !s.hasRecipe ? "locked" : "available",
-    final: "locked"
+    final: !s.hasRecipe ? "locked" : "available"
   };
 }
 
-/** The furthest stage the user can sensibly be on right now. */
+/** The furthest stage the user can sensibly be on right now (skips the P8 placeholders). */
 export function defaultStage(states: Record<StageId, Exclude<StageState, "active">>): StageId {
   const order: StageId[] = ["review", "prompt", "recipe", "concept", "strategy", "brief"];
   for (const id of order) {
