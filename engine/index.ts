@@ -272,6 +272,23 @@ export {
   type AppliedChange,
   type CorrectionReport
 } from "./correction";
+// --- P2.10: Layout Blueprint (derived structural plan) ------------------
+export { resolveLayoutBlueprint, RESOLVER_VERSION, type ResolveBlueprintInput } from "./blueprint/resolve";
+export { computeGeometry, resolveArrangement } from "./blueprint/geometry";
+export { resolveZones, resolveReadingFlow, resolveFocal, roleFor, ZONE_LABEL } from "./blueprint/zones";
+export { resolveRelationships } from "./blueprint/relationships";
+export { resolveRationale } from "./blueprint/rationale";
+export { detectImageIntegration } from "./blueprint/signals";
+export type {
+  LayoutBlueprint,
+  BlueprintZone,
+  BlueprintIssue,
+  ZoneRelationship,
+  BlueprintRationale,
+  BlueprintReadingFlow,
+  BlueprintFocal
+} from "../types/schemas/layout-blueprint.schema";
+
 export { resolveTextMode, TEXT_BEARING_ZONES } from "./prompt/text-mode";
 export { isUnsupportedConceptStatement, excludeUnsupportedConcepts } from "./prompt/unsupported-concepts";
 export { resolveVisualAdapter } from "./prompt/visual-adapter/resolve";

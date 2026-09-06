@@ -307,7 +307,8 @@ export const BlueprintIssueCode = z.enum([
   "zone_out_of_safe_area",
   "zone_overflow",
   "reading_order_mismatch",
-  "focal_zone_missing"
+  "focal_zone_missing",
+  "blueprint_invalid"
 ]);
 export type BlueprintIssueCode = z.infer<typeof BlueprintIssueCode>;
 
