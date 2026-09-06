@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "ve_weak_hierarchy_render",
+  "recipe_hash": "00000000",
+  "source": "human-review",
+  "captured_for": "a render with a soft hierarchy and one technical artifact",
+  "aspect_ratio": { "observed": "$match", "expected": "$expected" },
+  "text_render": {
+    "rendered_text_present": true,
+    "core_message_legible": true
+  },
+  "artifacts": [
+    "Visible tonal banding across the upper-left background gradient."
+  ],
+  "observations": [
+    {
+      "category": "hierarchy",
+      "statement": "The headline and the supporting block read at almost the same weight in the frame, so the eye does not land in one place first.",
+      "polarity": "concern",
+      "severity_hint": "P2",
+      "confidence": 0.7
+    },
+    {
+      "category": "color",
+      "statement": "The rendered palette is flatter and greyer than the recipe's contrast value implies.",
+      "polarity": "concern",
+      "severity_hint": "P2",
+      "confidence": 0.6
+    },
+    {
+      "category": "composition",
+      "statement": "Overall balance and focal placement match the recipe.",
+      "polarity": "supports",
+      "severity_hint": null,
+      "confidence": 0.8
+    }
+  ]
+}

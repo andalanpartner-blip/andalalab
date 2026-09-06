@@ -13,9 +13,10 @@ import { ConceptBoard } from "../components/ConceptBoard";
 import { SelectedConcept } from "../components/SelectedConcept";
 import { RecipeBoard } from "../components/RecipeBoard";
 import { DesignReview } from "../components/DesignReview";
+import { VisualReview } from "../components/VisualReview";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptSection } from "../components/PromptSection";
-import type { ClarificationQuestion, DesignCriticReport } from "../engine";
+import type { ClarificationQuestion, DesignCriticReport, VisualReviewReport } from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
@@ -62,6 +63,7 @@ export default function Page() {
   const [selectedConceptId, setSelectedConceptId] = useState<string | null>(null);
   const [recipe, setRecipe] = useState<DesignRecipe | null>(null);
   const [critic, setCritic] = useState<DesignCriticReport | null>(null);
+  const [review, setReview] = useState<VisualReviewReport | null>(null);
   /** Contract / direction the current recipe was built from — corrections may replace these. */
   const [recipeContract, setRecipeContract] = useState<DesignContract | null>(null);
   const [recipeDirection, setRecipeDirection] = useState<DesignDirection | null>(null);
@@ -80,6 +82,7 @@ export default function Page() {
       setSelectedConceptId(data.concepts.selected.id);
       setRecipe(null);
       setCritic(null);
+      setReview(null);
       setRecipeContract(null);
       setRecipeDirection(null);
       setRecipeError(null);
@@ -128,6 +131,7 @@ export default function Page() {
     setSelectedConceptId(null);
     setRecipe(null);
     setCritic(null);
+    setReview(null);
     setRecipeContract(null);
     setRecipeDirection(null);
     setRecipeError(null);
@@ -139,6 +143,7 @@ export default function Page() {
         if (current === id) return current;
         setRecipe(null);
         setCritic(null);
+        setReview(null);
         setRecipeContract(null);
         setRecipeDirection(null);
         setRecipeError(null);
@@ -165,6 +170,7 @@ export default function Page() {
     if (data.status === "OK") {
       setRecipe(data.recipe);
       setCritic(data.critic);
+      setReview(data.review);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
     } else {
@@ -255,6 +261,7 @@ export default function Page() {
             </div>
           ) : null}
           {recipe && critic ? <DesignReview report={critic} /> : null}
+          {recipe && review ? <VisualReview report={review} /> : null}
           {recipe ? <RecipeBoard recipe={recipe} /> : null}
           {recipe && recipeContract && recipeDirection ? (
             <CorrectionPanel
@@ -265,6 +272,9 @@ export default function Page() {
               onCorrected={(next) => {
                 setRecipe(next.recipe);
                 setCritic(next.critic);
+                // the correction pipeline re-runs the P4.0 critic but not the
+                // P4.1 review; any rendered-image evidence is now stale.
+                setReview(null);
                 setRecipeContract(next.contract);
                 setRecipeDirection(next.direction);
               }}

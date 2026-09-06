@@ -13,6 +13,7 @@ import { CreativeConcept as CreativeConceptSchema } from "../types/schemas/conce
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import { DesignRecipe as DesignRecipeSchema } from "../types/schemas/recipe.schema";
 import { CorrectionPatch as CorrectionPatchSchema } from "../types/schemas/correction.schema";
+import { VisualEvidence as VisualEvidenceSchema } from "../types/schemas/visual-evidence.schema";
 
 import { loadDatasets } from "../data/loader";
 import { createGeminiLlm } from "../adapters/llm/gemini";
@@ -30,12 +31,14 @@ import {
   buildDesignRecipe,
   compilePromptSet,
   auditDesign,
+  reviewDesign,
   applyCorrection,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
   type PromptSet,
   type DesignCriticReport,
+  type VisualReviewReport,
   type CorrectionReport
 } from "../engine";
 
@@ -290,6 +293,13 @@ export type RecipePipelineInput = {
   readonly concept: unknown;
   /** Language for the compiled prompt set. Defaults to English. */
   readonly promptLanguage?: PromptLanguage;
+  /**
+   * Optional P4.1 visual evidence — a structured description of a rendered
+   * candidate image. When present and its `recipe_hash` matches, the Visual
+   * Review report's visual-quality and technical-quality dimensions are
+   * assessed; otherwise they are reported `unassessed`. Never required.
+   */
+  readonly visualEvidence?: unknown;
 };
 
 export type RecipeOkResult = {
@@ -302,6 +312,12 @@ export type RecipeOkResult = {
    * pipeline; a `BLOCK` verdict is advice for the reviewer, not an error.
    */
   readonly critic: DesignCriticReport;
+  /**
+   * The P4.1 Visual Review — the P4.0 report mapped into the twelve-category
+   * model plus visual/technical dimensions that stay `unassessed` until a
+   * `VisualEvidence` fixture is supplied. Also deterministic and read-only.
+   */
+  readonly review: VisualReviewReport;
 };
 export type RecipeFailureResult = { readonly status: "ERROR"; readonly message: string };
 export type RecipePipelineResult = RecipeOkResult | RecipeFailureResult;
@@ -352,16 +368,26 @@ export function runRecipePipeline(
     language
   });
 
-  const critic = auditDesign({
+  const auditInput = {
     contract: contractParsed.data,
     direction: directionParsed.data,
     recipe: recipeResult.value,
     promptSet,
     promptLanguage: language,
     concept: conceptParsed.data
+  };
+  const critic = auditDesign(auditInput);
+
+  // P4.1 — parse visual evidence if supplied; a parse failure is not an error,
+  // the review simply runs with the two renderable dimensions unassessed.
+  const evidenceParsed =
+    input.visualEvidence == null ? null : VisualEvidenceSchema.safeParse(input.visualEvidence);
+  const review = reviewDesign({
+    ...auditInput,
+    visualEvidence: evidenceParsed && evidenceParsed.success ? evidenceParsed.data : null
   });
 
-  return { status: "OK", recipe: recipeResult.value, promptSet, critic };
+  return { status: "OK", recipe: recipeResult.value, promptSet, critic, review };
 }
 
 // --- P6: correction engine ---------------------------------------------

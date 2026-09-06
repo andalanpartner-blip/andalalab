@@ -238,6 +238,24 @@ export {
   type CriticArea
 } from "./critic/audit";
 
+// --- P4.1: Visual Review (image-measuring half of the Design Critic) -----
+export {
+  reviewDesign,
+  DOCTRINE_PRINCIPLES,
+  VISUAL_REVIEW_SCHEMA_VERSION,
+  type ReviewInput,
+  type VisualReviewReport,
+  type ReviewIssue,
+  type ReviewDimension,
+  type ReviewSeverity,
+  type ReviewCategory,
+  type EvidenceBasis,
+  type DimensionReport,
+  type CategoryStatus,
+  type VisualEvidence,
+  type EvidenceObservation
+} from "./critic/review";
+
 // --- P6: correction engine ---------------------------------------------
 export {
   applyCorrection,

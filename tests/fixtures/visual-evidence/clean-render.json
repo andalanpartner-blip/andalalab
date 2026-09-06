@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_id": "ve_clean_render",
+  "recipe_hash": "00000000",
+  "source": "fixture",
+  "captured_for": "a clean reference render used to exercise the assessed path",
+  "aspect_ratio": { "observed": "$match", "expected": "$expected" },
+  "text_render": {
+    "rendered_text_present": true,
+    "core_message_legible": true
+  },
+  "artifacts": [],
+  "observations": [
+    {
+      "category": "composition",
+      "statement": "The single focal element sits where the recipe's focal-dominance value predicts and the periphery stays quiet.",
+      "polarity": "supports",
+      "severity_hint": null,
+      "confidence": 0.85
+    },
+    {
+      "category": "hierarchy",
+      "statement": "Reading order in the rendered frame follows the recipe's zone priority; the headline zone dominates as intended.",
+      "polarity": "supports",
+      "severity_hint": null,
+      "confidence": 0.8
+    },
+    {
+      "category": "imagery",
+      "statement": "Materials and light read as a real photograph with no obvious synthetic tells.",
+      "polarity": "supports",
+      "severity_hint": null,
+      "confidence": 0.75
+    }
+  ]
+}

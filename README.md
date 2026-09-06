@@ -2,11 +2,12 @@
 
 *An AI graphic designer that thinks before it prompts.*
 
-**Through P7.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
+**Through P7 + P4.1.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
 Design Recipe → bilingual prompt set with a stereotype output guard → a deterministic
-pre-generation Design Critic verdict → bounded, immutable corrections. The only model call is the
-Brief Interpreter and the Creative Concept Engine (two calls, capped); every design decision is
-deterministic. No database.
+pre-generation Design Critic verdict → a Visual Review that grades design compliance and holds
+visual/technical quality as *not assessed* until a rendered frame is reviewed → bounded, immutable
+corrections. The only model call is the Brief Interpreter and the Creative Concept Engine (two
+calls, capped); every design decision is deterministic. No database.
 
 P7 widened the reference data — 9 industries (healthcare, wellness, luxury added), 6 visual types
 (story, tiktok-still, web-hero, print-a4, out-of-home added) — with no engine change beyond moving
@@ -18,7 +19,7 @@ movement-name detection onto data-authored aliases.
 pnpm install
 pnpm validate:data   # dataset schema + referential integrity + stereotype self-consistency
 pnpm lint            # architectural boundary enforcement
-pnpm test            # 976 tests
+pnpm test            # 1009 tests
 pnpm build           # tsc --noEmit && next build
 pnpm check           # all four, in order
 ```
@@ -32,6 +33,8 @@ Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resoluti
                           Visual Generation Adapter, Stereotype Output Guard)
       → PromptSet (English + Bahasa Indonesia)
       → Design Critic (deterministic PASS / REVIEW / BLOCK verdict, no AI)
+      → Visual Review (12 categories × P0–P3; design compliance graded now,
+                       visual/technical quality "not assessed" until a render is reviewed)
       → Correction Engine (bounded structured nudges → new derived recipe; anchor-violating
                            changes rejected as REDESIGN)
 ```
@@ -42,7 +45,7 @@ Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resoluti
 |---|---|
 | `types/` — Zod schemas, schema version registry | ✅ |
 | `data/` — versioned reference datasets + loader (4 countries · 9 industries · 6 movements · 6 visual types · 10 layouts) | ✅ |
-| `engine/` — pure, framework-free intelligence layer (P0 contract → P6 corrections) | ✅ |
+| `engine/` — pure, framework-free intelligence layer (P0 contract → P4.1 visual review → P6 corrections) | ✅ |
 | `domain/` — entities and invariants | ✅ |
 | `ports/` — injected clock and id | ✅ |
 | `adapters/` — Gemini LLM adapter behind `ports/llm.port` | ✅ |
@@ -80,5 +83,5 @@ mutate old ones. A project built today must still be readable when the datasets 
 Per-engine design notes live in `docs/` (`decision-engine`, `recipe-engine`, `brief-interpreter`,
 `readiness-policy`, `creative-concept-engine`, `graphic-treatment-engine`,
 `photographic-character-engine`, `photographic-finish`, `visual-generation-adapter`,
-`smart-brief-classification`, `prompt-compiler`, `prompt-output-guard`, `design-critic`, `correction-engine`) and the accepted
+`smart-brief-classification`, `prompt-compiler`, `prompt-output-guard`, `design-critic`, `visual-review`, `correction-engine`) and the accepted
 architecture decisions in `docs/adr/`.

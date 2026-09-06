@@ -1,6 +1,6 @@
 # ADR 0009 — The Design Critic is deterministic and pre-generation
 
-**Status:** accepted (P4.0) — see `docs/design-critic.md`
+**Status:** accepted (P4.0) · **visual-review half landed (P4.1)** — see `docs/design-critic.md` and `docs/visual-review.md`
 
 ## Context
 
@@ -46,3 +46,28 @@ verdict.
   surfaces its P0 tension as a `BLOCK` verdict the reviewer must acknowledge, instead of a silent
   recipe.
 - No new ADR is needed when the image half lands — it extends this one.
+
+## P4.1 — the visual-review half (landed)
+
+Built as the extension this ADR anticipated, and **still with no image API, no
+vision model and no new provider**. The mechanism is a structured
+`VisualEvidence` input — a bounded description of what is observed in one
+rendered frame, the shape a human reviewer or (later) a vision model fills in.
+No computer vision was implemented.
+
+- `reviewDesign(...)` runs `auditDesign(...)` unchanged, embeds the
+  `DesignCriticReport` verbatim as `pre_generation`, and maps its findings into
+  a twelve-category / four-severity (`P0`–`P3`) model as **design_compliance**
+  issues (`basis: "evidence-backed"`).
+- **visual_quality** and **technical_quality** are reported `unassessed` — with a
+  `null` score and an explicit "not assessed" issue — unless a `VisualEvidence`
+  fixture whose `recipe_hash` matches is supplied; then their issues are
+  `basis: "fixture-backed"`. A schema refinement forbids a non-`unassessed`
+  issue with empty evidence, so no visual or technical claim can be stated as
+  fact without evidence.
+- Read-only and deterministic, exactly like P4.0. It never mutates the recipe;
+  a critique never feeds back into a `DesignRecipe`.
+- Additive: `RecipeOkResult` gains `review` alongside the untouched `critic`.
+  The P4.0 verdict, checks and calibration are unchanged.
+- When a vision model eventually produces `VisualEvidence`, nothing in the
+  critic changes — only the `source` field on the evidence.

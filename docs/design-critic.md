@@ -123,5 +123,13 @@ evidence). A `PASS` with no findings shows what was checked.
 - Additive: `RecipeOkResult` gains `critic`; existing consumers are unaffected;
   a clean design is `PASS` with no findings.
 - P0/P1/P2 severity is the pipeline's existing scale, reused unchanged.
-- The image-measuring half of the Design Critic (`docs/dkv-engine.md`) remains
-  deferred; its future findings plug into this same report.
+
+## P4.1 — the visual-review half (landed)
+
+The image-measuring half is now built as `reviewDesign` (`engine/critic/review.ts`,
+`docs/visual-review.md`). It runs this critic unchanged, embeds the report
+verbatim, and adds a twelve-category / four-severity model with three
+dimensions — `design_compliance` (from here), `visual_quality` and
+`technical_quality` (from a structured `VisualEvidence` fixture, `unassessed`
+until one is supplied). Still no model, no image API, no vision. `RecipeOkResult`
+gains `review` alongside `critic`.
