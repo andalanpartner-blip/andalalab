@@ -124,6 +124,32 @@ describe("the visual-generation boundary holds (P2.11)", () => {
   });
 });
 
+describe("the visual-evidence boundary holds (P2.14)", () => {
+  it("blocks the engine from importing the visual-evidence adapters or service", async () => {
+    const client = await lintAsEngine(
+      `import { createVisualEvidenceClient } from "../adapters/visual-evidence/client";\nexport const a = createVisualEvidenceClient;\n`
+    );
+    expect(client.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+
+    const gemini = await lintAsEngine(
+      `import { createGeminiVisionCall } from "../adapters/visual-evidence/gemini-vision";\nexport const b = createGeminiVisionCall;\n`
+    );
+    expect(gemini.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+
+    const service = await lintAsEngine(
+      `import { runVisualEvidence } from "../services/evidence.service";\nexport const c = runVisualEvidence;\n`
+    );
+    expect(service.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+  });
+
+  it("allows the engine to depend on the visual-evidence port type", async () => {
+    const messages = await lintAsEngine(
+      `import type { VisualEvidencePort } from "../ports/visual-evidence.port";\nexport const a = (p: VisualEvidencePort) => p;\n`
+    );
+    expect(messages.filter((m) => m.severity === 2)).toHaveLength(0);
+  });
+});
+
 describe("the LLM boundary holds", () => {
   it("blocks the engine from importing a provider adapter directly", async () => {
     const gemini = await lintAsEngine(

@@ -32,7 +32,16 @@ export const SCHEMA_VERSIONS = {
   // P2.11 — Visual Generation. The normalised request sent to an image provider
   // and the immutable record of one generation call (ADR 0004 § P2.11).
   generationRequest: "1.0.0",
-  generatedArtifact: "1.0.0"
+  generatedArtifact: "1.0.0",
+  // P2.14 — Visual Evidence. A structured, observation-only description of one
+  // generated image, bound to its artifact by hash. No judgment (ADR 0004).
+  visualEvidenceReport: "1.0.0",
+  // P2.15 — Design Critique. The vision-aware comparison of observed evidence
+  // against resolved design intent. Interpretation, never a redesign.
+  designCritique: "1.0.0",
+  // P2.16 — Correction Recommendation. Bounded corrective options mapped from
+  // critique findings onto parameters the P6 Correction Engine already supports.
+  correctionRecommendation: "1.0.0"
 } as const;
 
 export type SchemaKey = keyof typeof SCHEMA_VERSIONS;

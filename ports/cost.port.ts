@@ -1,11 +1,13 @@
 import type { LlmStage } from "./llm.port";
 import type { GenerationStage } from "./visual-generation.port";
+import type { EvidenceStage } from "./visual-evidence.port";
 
 /**
  * Every pipeline stage that spends money with an external provider. LLM stages
- * (P2.1–P4.0) plus the P2.11 visual-generation stage. One ledger, one shape.
+ * (P2.1–P4.0), the P2.11 visual-generation stage, and the P2.14 visual-evidence
+ * (vision) stage. One ledger, one shape.
  */
-export type CostStage = LlmStage | GenerationStage;
+export type CostStage = LlmStage | GenerationStage | EvidenceStage;
 
 /**
  * Cost accounting, injected.
