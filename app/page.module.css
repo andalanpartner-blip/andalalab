@@ -18,6 +18,10 @@
   padding-top: var(--space-4);
 }
 
+.stageChip {
+  margin: var(--space-3) 0 var(--space-2);
+}
+
 .recapText {
   font-size: var(--fs-body);
   line-height: 1.6;

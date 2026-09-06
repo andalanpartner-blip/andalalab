@@ -11,8 +11,8 @@ import { DesignDirectionPanel } from "../components/DesignDirectionPanel";
 import { ConceptCompare } from "../components/ConceptCompare";
 import { ConceptStrip } from "../components/ConceptStrip";
 import { RecipeBoard } from "../components/RecipeBoard";
-import { DesignReview } from "../components/DesignReview";
-import { VisualReview } from "../components/VisualReview";
+import { ReviewSummary } from "../components/ReviewSummary";
+import { ComplianceChip } from "../components/ComplianceChip";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptSection } from "../components/PromptSection";
 import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
@@ -415,6 +415,11 @@ export default function Page() {
             {selectedConcept ? (
               <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
             ) : null}
+            {critic ? (
+              <div className={styles.stageChip}>
+                <ComplianceChip critic={critic} onOpen={() => goToStage("review")} />
+              </div>
+            ) : null}
             <RecipeBoard recipe={recipe} />
             <div className={styles.stageActions}>
               <Button onClick={() => goToStage("prompt")} trailing="→">
@@ -434,6 +439,11 @@ export default function Page() {
             {selectedConcept ? (
               <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
             ) : null}
+            {critic ? (
+              <div className={styles.stageChip}>
+                <ComplianceChip critic={critic} onOpen={() => goToStage("review")} />
+              </div>
+            ) : null}
             <PromptSection recipe={recipe} concept={selectedConcept} />
             <div className={styles.stageActions}>
               <Button variant="secondary" onClick={() => goToStage("review")}>
@@ -444,14 +454,13 @@ export default function Page() {
         );
 
       case "review":
-        if (!recipe) return null;
+        if (!recipe || !critic) return null;
         return (
           <>
             {selectedConcept ? (
               <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
             ) : null}
-            {critic ? <DesignReview report={critic} /> : null}
-            {review ? <VisualReview report={review} /> : null}
+            <ReviewSummary report={review} critic={critic} onNavigate={goToStage} />
             <div className={styles.stageActions}>
               <Button variant="secondary" onClick={() => goToStage("correct")}>
                 Make a correction
