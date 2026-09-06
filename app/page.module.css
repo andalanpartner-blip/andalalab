@@ -2,33 +2,46 @@
   min-height: 100vh;
 }
 
-.toolbar {
-  padding-top: var(--space-6);
+.stageSection {
+  padding-top: var(--space-2);
 }
 
-.toolbarInner {
+.stageActions {
   display: flex;
-  justify-content: flex-end;
-}
-
-.newBrief {
-  font-size: 13px;
-  color: var(--muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.newBrief:hover {
-  color: var(--ink);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--stage-gap);
 }
 
 .recipeError {
   padding-top: var(--space-4);
 }
 
-.footerSpace {
-  height: var(--space-9);
+.recapText {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+.recapHint {
+  margin-top: var(--space-3);
+  font-size: var(--fs-body-sm);
+  color: var(--muted);
+}
+
+.linkInline {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.linkInline:hover {
+  color: var(--accent-strong);
 }

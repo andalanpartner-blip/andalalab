@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./page.module.css";
 import { Header } from "../components/Header";
 import { BriefStage } from "../components/BriefStage";
-import { ProcessRail, type ProcessStage } from "../components/ProcessRail";
 import { ClarificationStage } from "../components/ClarificationStage";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { BriefIntelligence } from "../components/BriefIntelligence";
@@ -16,11 +15,25 @@ import { DesignReview } from "../components/DesignReview";
 import { VisualReview } from "../components/VisualReview";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptSection } from "../components/PromptSection";
+import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
+import { StageHeader } from "../components/ui/StageHeader";
+import { Panel } from "../components/ui/Panel";
+import { Button } from "../components/ui/Button";
+import { EmptyState } from "../components/ui/EmptyState";
 import type { ClarificationQuestion, DesignCriticReport, VisualReviewReport } from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
 import type { DesignDirection } from "../types/schemas/direction.schema";
+import {
+  deriveStageStates,
+  defaultStage,
+  isReachable,
+  isStageId,
+  STAGE_META,
+  type StageId,
+  type StageState
+} from "../lib/workspace";
 
 type Phase = "input" | "clarify" | "ready";
 
@@ -48,6 +61,12 @@ async function postRecipe(input: {
   return (await response.json()) as RecipePipelineResult;
 }
 
+function readStageFromUrl(): StageId | null {
+  if (typeof window === "undefined") return null;
+  const value = new URLSearchParams(window.location.search).get("stage");
+  return isStageId(value) ? value : null;
+}
+
 export default function Page() {
   const [briefDraft, setBriefDraft] = useState("");
   const [phase, setPhase] = useState<Phase>("input");
@@ -70,39 +89,89 @@ export default function Page() {
   const [recipeLoading, setRecipeLoading] = useState(false);
   const [recipeError, setRecipeError] = useState<string | null>(null);
 
-  const submitBrief = useCallback(async (input: PendingRequest) => {
-    setBriefBusy(true);
-    setErrorMessage(null);
-    setLastRequest(input);
+  const [activeStage, setActiveStage] = useState<StageId>("brief");
 
-    const data = await postBrief(input);
+  // -- stage state model -------------------------------------------------
+  const stageStates = useMemo(
+    () =>
+      deriveStageStates({
+        briefReady: result !== null,
+        clarifying: phase === "clarify",
+        conceptSelected: selectedConceptId !== null && result !== null,
+        hasRecipe: recipe !== null,
+        hasReview: review !== null,
+        criticVerdict: critic?.verdict ?? null
+      }),
+    [result, phase, selectedConceptId, recipe, review, critic]
+  );
 
-    if (data.status === "READY") {
-      setResult(data);
-      setSelectedConceptId(data.concepts.selected.id);
-      setRecipe(null);
-      setCritic(null);
-      setReview(null);
-      setRecipeContract(null);
-      setRecipeDirection(null);
-      setRecipeError(null);
-      setClarify(null);
-      setPhase("ready");
-    } else if (data.status === "NEEDS_CLARIFICATION") {
-      setClarify({ rawBrief: data.rawBrief, questions: data.questions });
-      setPhase("clarify");
-    } else {
-      // INVALID/ERROR always lands back on an editable brief — with whatever
-      // was actually sent (original text, or original + clarification answers)
-      // preserved — rather than leaving the user stuck in a dead-end form.
-      setErrorMessage(data.message);
-      setClarify(null);
-      setPhase("input");
-      setBriefDraft(data.rawBrief ?? input.rawBrief);
-    }
+  /** Navigate to a stage (state + URL), if it is reachable. */
+  const goToStage = useCallback(
+    (id: StageId, opts: { force?: boolean } = {}) => {
+      if (!opts.force && !isReachable(stageStates[id])) return;
+      setActiveStage(id);
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.set("stage", id);
+        window.history.replaceState(null, "", url);
+      }
+    },
+    [stageStates]
+  );
 
-    setBriefBusy(false);
+  // Sync from URL on mount + on back/forward.
+  useEffect(() => {
+    const fromUrl = readStageFromUrl();
+    if (fromUrl) setActiveStage(fromUrl);
+    const onPop = () => {
+      const id = readStageFromUrl();
+      if (id) setActiveStage(id);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  // If the active stage becomes unreachable (upstream change), fall back.
+  useEffect(() => {
+    if (!isReachable(stageStates[activeStage])) {
+      setActiveStage(defaultStage(stageStates));
+    }
+  }, [stageStates, activeStage]);
+
+  const submitBrief = useCallback(
+    async (input: PendingRequest) => {
+      setBriefBusy(true);
+      setErrorMessage(null);
+      setLastRequest(input);
+
+      const data = await postBrief(input);
+
+      if (data.status === "READY") {
+        setResult(data);
+        setSelectedConceptId(data.concepts.selected.id);
+        setRecipe(null);
+        setCritic(null);
+        setReview(null);
+        setRecipeContract(null);
+        setRecipeDirection(null);
+        setRecipeError(null);
+        setClarify(null);
+        setPhase("ready");
+        goToStage("strategy", { force: true });
+      } else if (data.status === "NEEDS_CLARIFICATION") {
+        setClarify({ rawBrief: data.rawBrief, questions: data.questions });
+        setPhase("clarify");
+      } else {
+        setErrorMessage(data.message);
+        setClarify(null);
+        setPhase("input");
+        setBriefDraft(data.rawBrief ?? input.rawBrief);
+      }
+
+      setBriefBusy(false);
+    },
+    [goToStage]
+  );
 
   const handleAnalyze = useCallback(() => {
     void submitBrief({ rawBrief: briefDraft });
@@ -135,23 +204,27 @@ export default function Page() {
     setRecipeContract(null);
     setRecipeDirection(null);
     setRecipeError(null);
-  }, []);
+    goToStage("brief", { force: true });
+  }, [goToStage]);
 
-  const handleSelectConcept = useCallback(
-    (id: string) => {
-      setSelectedConceptId((current) => {
-        if (current === id) return current;
-        setRecipe(null);
-        setCritic(null);
-        setReview(null);
-        setRecipeContract(null);
-        setRecipeDirection(null);
-        setRecipeError(null);
-        return id;
-      });
-    },
-    []
-  );
+  const handleEditBrief = useCallback(() => {
+    setPhase("input");
+    setBriefDraft(lastRequest?.rawBrief ?? briefDraft);
+    goToStage("brief", { force: true });
+  }, [lastRequest, briefDraft, goToStage]);
+
+  const handleSelectConcept = useCallback((id: string) => {
+    setSelectedConceptId((current) => {
+      if (current === id) return current;
+      setRecipe(null);
+      setCritic(null);
+      setReview(null);
+      setRecipeContract(null);
+      setRecipeDirection(null);
+      setRecipeError(null);
+      return id;
+    });
+  }, []);
 
   const handleBuildRecipe = useCallback(async () => {
     if (!result || !selectedConceptId) return;
@@ -173,117 +246,227 @@ export default function Page() {
       setReview(data.review);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
+      goToStage("recipe", { force: true });
     } else {
       setRecipeError(data.message);
     }
     setRecipeLoading(false);
-  }, [result, selectedConceptId]);
+  }, [result, selectedConceptId, goToStage]);
 
-  const hasStarted = phase !== "input" || lastRequest !== null;
+  const selectedConcept =
+    result?.concepts.concepts.find((entry) => entry.id === selectedConceptId) ?? null;
 
-  const stages: ProcessStage[] = [
-    {
-      key: "brief",
-      label: "Brief",
-      status: phase === "ready" ? "done" : briefBusy ? "active" : "pending"
-    },
-    { key: "strategy", label: "Strategy", status: phase === "ready" ? "done" : "pending" },
-    { key: "concept", label: "Concept", status: phase === "ready" ? "done" : "pending" },
-    {
-      key: "recipe",
-      label: "Recipe",
-      status: recipe ? "done" : recipeLoading ? "active" : "pending"
+  const railStates = useMemo<Record<StageId, StageState>>(() => {
+    const out = { ...stageStates } as Record<StageId, StageState>;
+    if (isReachable(stageStates[activeStage])) out[activeStage] = "active";
+    return out;
+  }, [stageStates, activeStage]);
+
+  // -- the canvas for the active stage --------------------------------
+  const canvas = (() => {
+    switch (activeStage) {
+      case "brief":
+        if (phase === "clarify" && clarify) {
+          return (
+            <>
+              {errorMessage ? <ErrorBanner message={errorMessage} onRetry={handleRetry} /> : null}
+              <ClarificationStage
+                questions={clarify.questions}
+                submitting={briefBusy}
+                onContinue={handleClarifyContinue}
+                onStartOver={handleStartOver}
+              />
+            </>
+          );
+        }
+        if (phase === "ready" && result) {
+          return (
+            <section className={`container ${styles.stageSection}`} aria-labelledby="brief-recap-heading">
+              <StageHeader kicker="Stage 1 · Brief" title="Your brief" id="brief-recap-heading" />
+              <Panel>
+                <p className={styles.recapText}>{lastRequest?.rawBrief ?? briefDraft}</p>
+              </Panel>
+              <p className={styles.recapHint}>
+                The AI read this — see <button type="button" className={styles.linkInline} onClick={() => goToStage("strategy")}>Strategy</button> for what it understood.
+              </p>
+              <div className={styles.stageActions}>
+                <Button variant="secondary" onClick={handleEditBrief}>
+                  Edit brief
+                </Button>
+                <Button variant="link" onClick={handleStartOver}>
+                  Start a new brief
+                </Button>
+              </div>
+            </section>
+          );
+        }
+        return (
+          <>
+            {errorMessage ? <ErrorBanner message={errorMessage} onRetry={handleRetry} /> : null}
+            <BriefStage
+              value={briefDraft}
+              onChange={setBriefDraft}
+              onSubmit={handleAnalyze}
+              submitting={briefBusy}
+            />
+          </>
+        );
+
+      case "strategy":
+        if (!result) return null;
+        return (
+          <>
+            <BriefIntelligence
+              brief={result.brief}
+              contract={result.contract}
+              derived={result.derived}
+              countries={result.countries}
+            />
+            <DesignDirectionPanel summary={result.directionSummary} />
+            <div className={styles.stageActions}>
+              <Button onClick={() => goToStage("concept")} trailing="→">
+                Choose a concept
+              </Button>
+            </div>
+          </>
+        );
+
+      case "concept":
+        if (!result) return null;
+        return (
+          <>
+            <ConceptBoard
+              concepts={result.concepts.concepts}
+              selectedId={selectedConceptId ?? result.concepts.selected.id}
+              onSelect={handleSelectConcept}
+            />
+            {selectedConcept ? (
+              <SelectedConcept
+                concept={selectedConcept}
+                onBuildRecipe={() => void handleBuildRecipe()}
+                buildingRecipe={recipeLoading}
+                hasRecipe={recipe !== null}
+              />
+            ) : null}
+            {recipeError ? (
+              <div className={styles.recipeError}>
+                <ErrorBanner message={recipeError} onRetry={() => void handleBuildRecipe()} />
+              </div>
+            ) : null}
+          </>
+        );
+
+      case "recipe":
+        if (!recipe) {
+          return (
+            <section className={`container ${styles.stageSection}`}>
+              <StageHeader kicker="Stage 4 · Recipe" title="Design Recipe" />
+              <EmptyState
+                title="No recipe yet"
+                description="Choose a concept and build the design recipe — every value it produces traces back to the country, movement or industry behind it."
+                action={
+                  <Button variant="secondary" onClick={() => goToStage("concept")}>
+                    Go to Concept
+                  </Button>
+                }
+              />
+            </section>
+          );
+        }
+        return (
+          <>
+            <RecipeBoard recipe={recipe} />
+            <div className={styles.stageActions}>
+              <Button onClick={() => goToStage("prompt")} trailing="→">
+                See the prompt
+              </Button>
+              <Button variant="secondary" onClick={() => goToStage("review")}>
+                Review the design
+              </Button>
+            </div>
+          </>
+        );
+
+      case "prompt":
+        if (!recipe) return null;
+        return (
+          <>
+            <PromptSection recipe={recipe} concept={selectedConcept} />
+            <div className={styles.stageActions}>
+              <Button variant="secondary" onClick={() => goToStage("review")}>
+                Review the design
+              </Button>
+            </div>
+          </>
+        );
+
+      case "review":
+        if (!recipe) return null;
+        return (
+          <>
+            {critic ? <DesignReview report={critic} /> : null}
+            {review ? <VisualReview report={review} /> : null}
+            <div className={styles.stageActions}>
+              <Button variant="secondary" onClick={() => goToStage("correct")}>
+                Make a correction
+              </Button>
+            </div>
+          </>
+        );
+
+      case "correct":
+        if (!recipe || !recipeContract || !recipeDirection) return null;
+        return (
+          <CorrectionPanel
+            recipe={recipe}
+            contract={recipeContract}
+            direction={recipeDirection}
+            concept={selectedConcept}
+            onCorrected={(next) => {
+              setRecipe(next.recipe);
+              setCritic(next.critic);
+              setReview(null);
+              setRecipeContract(next.contract);
+              setRecipeDirection(next.direction);
+            }}
+          />
+        );
+
+      default:
+        return (
+          <section className={`container ${styles.stageSection}`}>
+            <StageHeader
+              kicker={`Stage ${STAGE_META[activeStage].index} · ${STAGE_META[activeStage].label}`}
+              title={STAGE_META[activeStage].label}
+            />
+            <EmptyState
+              title="This stage ships with the Generation Adapter (P8)"
+              description={STAGE_META[activeStage].summary}
+            />
+          </section>
+        );
     }
-  ];
-
-  const selectedConcept = result?.concepts.concepts.find((entry) => entry.id === selectedConceptId) ?? null;
+  })();
 
   return (
     <main className={styles.main}>
       <Header />
-
-      {hasStarted ? <ProcessRail stages={stages} /> : null}
-
-      {phase === "ready" ? (
-        <div className={`container ${styles.toolbar}`}>
-          <div className={styles.toolbarInner}>
-            <button type="button" className={styles.newBrief} onClick={handleStartOver}>
+      <WorkspaceShell
+        states={railStates}
+        active={activeStage}
+        onNavigate={(id) => goToStage(id)}
+        ledger={recipe ? <RecipeBoard recipe={recipe} /> : null}
+        ledgerAvailable={recipe !== null}
+        toolbar={
+          phase === "ready" ? (
+            <Button variant="link" onClick={handleStartOver}>
               Start a new brief
-            </button>
-          </div>
-        </div>
-      ) : null}
-
-      {phase === "input" ? (
-        <>
-          {errorMessage ? <ErrorBanner message={errorMessage} onRetry={handleRetry} /> : null}
-          <BriefStage value={briefDraft} onChange={setBriefDraft} onSubmit={handleAnalyze} submitting={briefBusy} />
-        </>
-      ) : null}
-
-      {phase === "clarify" && clarify ? (
-        <>
-          {errorMessage ? <ErrorBanner message={errorMessage} onRetry={handleRetry} /> : null}
-          <ClarificationStage
-            questions={clarify.questions}
-            submitting={briefBusy}
-            onContinue={handleClarifyContinue}
-            onStartOver={handleStartOver}
-          />
-        </>
-      ) : null}
-
-      {phase === "ready" && result ? (
-        <>
-          <BriefIntelligence
-            brief={result.brief}
-            contract={result.contract}
-            derived={result.derived}
-            countries={result.countries}
-          />
-          <DesignDirectionPanel summary={result.directionSummary} />
-          <ConceptBoard
-            concepts={result.concepts.concepts}
-            selectedId={selectedConceptId ?? result.concepts.selected.id}
-            onSelect={handleSelectConcept}
-          />
-          {selectedConcept ? (
-            <SelectedConcept
-              concept={selectedConcept}
-              onBuildRecipe={() => void handleBuildRecipe()}
-              buildingRecipe={recipeLoading}
-              hasRecipe={recipe !== null}
-            />
-          ) : null}
-          {recipeError ? (
-            <div className={styles.recipeError}>
-              <ErrorBanner message={recipeError} onRetry={() => void handleBuildRecipe()} />
-            </div>
-          ) : null}
-          {recipe && critic ? <DesignReview report={critic} /> : null}
-          {recipe && review ? <VisualReview report={review} /> : null}
-          {recipe ? <RecipeBoard recipe={recipe} /> : null}
-          {recipe && recipeContract && recipeDirection ? (
-            <CorrectionPanel
-              recipe={recipe}
-              contract={recipeContract}
-              direction={recipeDirection}
-              concept={selectedConcept}
-              onCorrected={(next) => {
-                setRecipe(next.recipe);
-                setCritic(next.critic);
-                // the correction pipeline re-runs the P4.0 critic but not the
-                // P4.1 review; any rendered-image evidence is now stale.
-                setReview(null);
-                setRecipeContract(next.contract);
-                setRecipeDirection(next.direction);
-              }}
-            />
-          ) : null}
-          {recipe ? <PromptSection recipe={recipe} concept={selectedConcept} /> : null}
-          <div className={styles.footerSpace} />
-        </>
-      ) : null}
+            </Button>
+          ) : null
+        }
+      >
+        {canvas}
+      </WorkspaceShell>
     </main>
   );
 }
