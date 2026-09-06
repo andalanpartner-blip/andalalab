@@ -36,6 +36,19 @@ export type BuildRecipeInput = {
   readonly derivedFrom?: string | null;
   /** The selected creative concept (P2.2). Absent until a concept exists. */
   readonly concept?: CreativeConcept | null;
+  /**
+   * P6 Correction Engine only. Bounded overrides for the four dataset-derived
+   * biases, applied BEFORE photographic character / graphic treatment resolve
+   * so a correction propagates coherently. Absent for every normal build —
+   * omitting it is byte-identical to before P6. Each value must already be a
+   * legal `Ratio` (0..1); the correction engine clamps before it gets here.
+   */
+  readonly overrides?: {
+    readonly colorSaturation?: number;
+    readonly imageryRealism?: number;
+    readonly materialityTexture?: number;
+    readonly ornament?: number;
+  };
 };
 
 /**
@@ -62,7 +75,13 @@ export function buildDesignRecipe(
     ]);
   }
 
-  if (input.concept && input.concept.direction_id !== direction.id) {
+  // A concept must belong to the direction — UNLESS this is a P6 correction
+  // rebuild (`derivedFrom` set). A DKV correction re-runs `buildDesignDirection`
+  // on the same candidate with a re-tuned band, producing a fresh direction id;
+  // the movement, layout and composition are provably unchanged (the Correction
+  // Engine's redesign guard enforces that on the result), so the concept — an
+  // idea, not a set of numbers — is still valid.
+  if (input.concept && input.concept.direction_id !== direction.id && !input.derivedFrom) {
     return err([
       directionIssue(
         "recipe_invalid",
@@ -108,17 +127,22 @@ export function buildDesignRecipe(
 
   const dkv = direction.dkv_targets;
   const zones = [...layout.zones].sort((a, b) => a.priority - b.priority);
-  const ornament = graphicCountry?.graphic_language.ornament_bias ?? 0.3;
+  const ov = input.overrides;
+  const ornament = ov?.ornament ?? (graphicCountry?.graphic_language.ornament_bias ?? 0.3);
   const hasDenseBodyCopy = layout.zones.some((zone) => zone.id === "body" && zone.required);
 
   // Already-blended imagery / colour / materiality values. Extracted once so the
   // recipe body and the Photographic Character layer read the exact same numbers.
-  const imageryRealism = imageryCountry?.imagery.realism_bias ?? 0.7;
+  // A P6 correction may override any of the four biases below.
+  const imageryRealism = ov?.imageryRealism ?? (imageryCountry?.imagery.realism_bias ?? 0.7);
   const imageryFraming = imageryCountry?.imagery.framing ?? movement.imagery;
   const lightingDirection = imageryCountry?.imagery.lighting_bias ?? movement.imagery;
-  const colorSaturation = colorCountry?.color.saturation_bias ?? movement.color.saturation_bias;
-  const materialityTexture = materialityCountry?.materiality.texture_bias ?? 0.4;
+  const colorSaturation = ov?.colorSaturation ?? (colorCountry?.color.saturation_bias ?? movement.color.saturation_bias);
+  const materialityTexture = ov?.materialityTexture ?? (materialityCountry?.materiality.texture_bias ?? 0.4);
   const materialitySurfaces = materialityCountry?.materiality.surfaces ?? [movement.materiality];
+
+  /** " + correction" on a `source` string when a P6 override touched that spec. */
+  const corr = (base: string, touched: boolean): string => (touched ? `${base} + correction` : base);
 
   const graphicTreatment = resolveGraphicTreatment({
     objective: contract.objective,
@@ -228,14 +252,14 @@ export function buildDesignRecipe(
           hex: entry.hex,
           name: entry.name
         })) ?? [],
-      source: `country:${colorCountry?.id ?? "none"} + movement:${movement.id}`
+      source: corr(`country:${colorCountry?.id ?? "none"} + movement:${movement.id}`, ov?.colorSaturation !== undefined)
     },
 
     imagery: {
       subject_treatment: imageryCountry?.imagery.subject_treatment ?? movement.imagery,
       framing: imageryFraming,
       realism: imageryRealism,
-      source: `country:${imageryCountry?.id ?? "none"}`
+      source: corr(`country:${imageryCountry?.id ?? "none"}`, ov?.imageryRealism !== undefined)
     },
 
     lighting: {
@@ -247,14 +271,14 @@ export function buildDesignRecipe(
     materiality: {
       surfaces: materialitySurfaces,
       texture: materialityTexture,
-      source: `country:${materialityCountry?.id ?? "none"}`
+      source: corr(`country:${materialityCountry?.id ?? "none"}`, ov?.materialityTexture !== undefined)
     },
 
     graphic_language: {
       shape_logic: graphicCountry?.graphic_language.shape_logic ?? movement.shape_language,
       rhythm: graphicCountry?.graphic_language.rhythm ?? movement.composition,
       ornament,
-      source: `country:${graphicCountry?.id ?? "none"} + movement:${movement.id}`
+      source: corr(`country:${graphicCountry?.id ?? "none"} + movement:${movement.id}`, ov?.ornament !== undefined)
     },
 
     dkv,

@@ -11,6 +11,8 @@ import type { DesignDirection } from "../types/schemas/direction.schema";
 import { DesignDirection as DesignDirectionSchema } from "../types/schemas/direction.schema";
 import { CreativeConcept as CreativeConceptSchema } from "../types/schemas/concept.schema";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
+import { DesignRecipe as DesignRecipeSchema } from "../types/schemas/recipe.schema";
+import { CorrectionPatch as CorrectionPatchSchema } from "../types/schemas/correction.schema";
 
 import { loadDatasets } from "../data/loader";
 import { createGeminiLlm } from "../adapters/llm/gemini";
@@ -28,11 +30,13 @@ import {
   buildDesignRecipe,
   compilePromptSet,
   auditDesign,
+  applyCorrection,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
   type PromptSet,
-  type DesignCriticReport
+  type DesignCriticReport,
+  type CorrectionReport
 } from "../engine";
 
 /**
@@ -358,4 +362,114 @@ export function runRecipePipeline(
   });
 
   return { status: "OK", recipe: recipeResult.value, promptSet, critic };
+}
+
+// --- P6: correction engine ---------------------------------------------
+
+export type CorrectionPipelineInput = {
+  /** The recipe being corrected (round-trips from the client). */
+  readonly parentRecipe: unknown;
+  readonly contract: unknown;
+  readonly direction: unknown;
+  readonly concept?: unknown;
+  readonly patch: unknown;
+  readonly promptLanguage?: PromptLanguage;
+};
+
+export type CorrectionAdjustmentResult = {
+  readonly status: "OK";
+  readonly outcome: "adjustment";
+  readonly correction: CorrectionReport;
+  /** The derived recipe + the contract / direction it was built from. Carry all three forward. */
+  readonly recipe: DesignRecipe;
+  readonly contract: DesignContract;
+  readonly direction: DesignDirection;
+  readonly promptSet: PromptSet;
+  readonly critic: DesignCriticReport;
+};
+export type CorrectionRejectedResult = {
+  readonly status: "REDESIGN" | "NOOP";
+  readonly correction: CorrectionReport;
+};
+export type CorrectionFailureResult = { readonly status: "ERROR"; readonly message: string };
+export type CorrectionPipelineResult =
+  | CorrectionAdjustmentResult
+  | CorrectionRejectedResult
+  | CorrectionFailureResult;
+
+/**
+ * Apply a bounded structured correction to a finished recipe (P6).
+ *
+ * Deterministic and read-only with respect to the parent — a new derived
+ * recipe is produced (`derived_from = parent.id`), never a mutation. On an
+ * accepted `adjustment` the derived recipe is re-compiled, re-guarded (P3.0)
+ * and re-audited (P4.0). A `redesign` or `noop` produces no recipe.
+ */
+export function runCorrectionPipeline(
+  deps: Pick<EngineDeps, "datasets" | "ids" | "clock">,
+  input: CorrectionPipelineInput
+): CorrectionPipelineResult {
+  const parentParsed = DesignRecipeSchema.safeParse(input.parentRecipe);
+  const contractParsed = DesignContractSchema.safeParse(input.contract);
+  const directionParsed = DesignDirectionSchema.safeParse(input.direction);
+  const patchParsed = CorrectionPatchSchema.safeParse(input.patch);
+  const conceptParsed =
+    input.concept == null ? null : CreativeConceptSchema.safeParse(input.concept);
+
+  if (
+    !parentParsed.success ||
+    !contractParsed.success ||
+    !directionParsed.success ||
+    !patchParsed.success ||
+    (conceptParsed && !conceptParsed.success)
+  ) {
+    return { status: "ERROR", message: "That correction couldn't be read. Please start again from the recipe." };
+  }
+
+  const applied = applyCorrection({
+    parentRecipe: parentParsed.data,
+    contract: contractParsed.data,
+    direction: directionParsed.data,
+    patch: patchParsed.data,
+    datasets: deps.datasets,
+    ids: deps.ids,
+    clock: deps.clock,
+    concept: conceptParsed ? conceptParsed.data : null
+  });
+
+  if (!applied.ok) {
+    return { status: "ERROR", message: "This correction couldn't be applied to that recipe." };
+  }
+
+  const { report, recipe, contract, direction } = applied.value;
+
+  if (report.outcome !== "adjustment" || !recipe || !contract || !direction) {
+    return { status: report.outcome === "redesign" ? "REDESIGN" : "NOOP", correction: report };
+  }
+
+  const language = input.promptLanguage ?? "en";
+  const promptSet = compilePromptSet({
+    recipe,
+    concept: conceptParsed ? conceptParsed.data : null,
+    language
+  });
+  const critic = auditDesign({
+    contract,
+    direction,
+    recipe,
+    promptSet,
+    promptLanguage: language,
+    concept: conceptParsed ? conceptParsed.data : null
+  });
+
+  return {
+    status: "OK",
+    outcome: "adjustment",
+    correction: report,
+    recipe,
+    contract,
+    direction,
+    promptSet,
+    critic
+  };
 }

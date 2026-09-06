@@ -237,6 +237,23 @@ export {
   type CriticSeverity,
   type CriticArea
 } from "./critic/audit";
+
+// --- P6: correction engine ---------------------------------------------
+export {
+  applyCorrection,
+  classifyRecipeDiff,
+  STRUCTURAL_PREFIXES,
+  DKV_CORRECTION_FIELDS,
+  type ApplyCorrectionInput,
+  type ApplyCorrectionResult,
+  type DiffClassification,
+  type CorrectionField,
+  type CorrectionAdjustment,
+  type CorrectionPatch,
+  type CorrectionOutcome,
+  type AppliedChange,
+  type CorrectionReport
+} from "./correction";
 export { resolveTextMode, TEXT_BEARING_ZONES } from "./prompt/text-mode";
 export { isUnsupportedConceptStatement, excludeUnsupportedConcepts } from "./prompt/unsupported-concepts";
 export { resolveVisualAdapter } from "./prompt/visual-adapter/resolve";

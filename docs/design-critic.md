@@ -76,7 +76,7 @@ recipe and prompt are still returned.
 | `anchor-integrity` | `anchorViolations(contract.anchors, recipe.anchors)` is empty |
 | `anchor-direction-unlocked` | the recipe locked its `primary_visual_direction` anchor |
 | `anchor-concept-*` (when a concept is supplied) | the `concept` anchor is locked and equals `<id>@<hash>` |
-| `linkage-concept` / `concept-direction-drift` | the supplied concept matches `recipe.concept_ref` and `direction.id` |
+| `linkage-concept` / `concept-direction-drift` | the supplied concept matches `recipe.concept_ref` and `direction.id`. On a derived recipe (`recipe.derived_from != null`) whose `concept_ref` still points at the supplied concept, `concept-direction-drift` is suppressed — a P6 DKV correction regenerates the direction id, and concept content stays pinned by `linkage-concept` and `anchor-concept-*`. |
 
 ### Design quality
 

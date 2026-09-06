@@ -13,10 +13,13 @@ import { ConceptBoard } from "../components/ConceptBoard";
 import { SelectedConcept } from "../components/SelectedConcept";
 import { RecipeBoard } from "../components/RecipeBoard";
 import { DesignReview } from "../components/DesignReview";
+import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptSection } from "../components/PromptSection";
 import type { ClarificationQuestion, DesignCriticReport } from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
+import type { DesignContract } from "../types/schemas/contract.schema";
+import type { DesignDirection } from "../types/schemas/direction.schema";
 
 type Phase = "input" | "clarify" | "ready";
 
@@ -59,6 +62,9 @@ export default function Page() {
   const [selectedConceptId, setSelectedConceptId] = useState<string | null>(null);
   const [recipe, setRecipe] = useState<DesignRecipe | null>(null);
   const [critic, setCritic] = useState<DesignCriticReport | null>(null);
+  /** Contract / direction the current recipe was built from — corrections may replace these. */
+  const [recipeContract, setRecipeContract] = useState<DesignContract | null>(null);
+  const [recipeDirection, setRecipeDirection] = useState<DesignDirection | null>(null);
   const [recipeLoading, setRecipeLoading] = useState(false);
   const [recipeError, setRecipeError] = useState<string | null>(null);
 
@@ -74,6 +80,8 @@ export default function Page() {
       setSelectedConceptId(data.concepts.selected.id);
       setRecipe(null);
       setCritic(null);
+      setRecipeContract(null);
+      setRecipeDirection(null);
       setRecipeError(null);
       setClarify(null);
       setPhase("ready");
@@ -120,6 +128,8 @@ export default function Page() {
     setSelectedConceptId(null);
     setRecipe(null);
     setCritic(null);
+    setRecipeContract(null);
+    setRecipeDirection(null);
     setRecipeError(null);
   }, []);
 
@@ -129,6 +139,8 @@ export default function Page() {
         if (current === id) return current;
         setRecipe(null);
         setCritic(null);
+        setRecipeContract(null);
+        setRecipeDirection(null);
         setRecipeError(null);
         return id;
       });
@@ -153,6 +165,8 @@ export default function Page() {
     if (data.status === "OK") {
       setRecipe(data.recipe);
       setCritic(data.critic);
+      setRecipeContract(result.contract);
+      setRecipeDirection(result.direction);
     } else {
       setRecipeError(data.message);
     }
@@ -242,6 +256,20 @@ export default function Page() {
           ) : null}
           {recipe && critic ? <DesignReview report={critic} /> : null}
           {recipe ? <RecipeBoard recipe={recipe} /> : null}
+          {recipe && recipeContract && recipeDirection ? (
+            <CorrectionPanel
+              recipe={recipe}
+              contract={recipeContract}
+              direction={recipeDirection}
+              concept={selectedConcept}
+              onCorrected={(next) => {
+                setRecipe(next.recipe);
+                setCritic(next.critic);
+                setRecipeContract(next.contract);
+                setRecipeDirection(next.direction);
+              }}
+            />
+          ) : null}
           {recipe ? <PromptSection recipe={recipe} concept={selectedConcept} /> : null}
           <div className={styles.footerSpace} />
         </>

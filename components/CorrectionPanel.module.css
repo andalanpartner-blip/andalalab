@@ -1,0 +1,127 @@
+.section {
+  margin-top: 2.5rem;
+}
+
+.kicker {
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0 0 0.35rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+
+.sub {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  max-width: 62ch;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 11px;
+  font-weight: 620;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.control select,
+.control input {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink);
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--paper, #fff);
+}
+
+.control input {
+  width: 6rem;
+}
+
+.apply {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 560;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--ink-on, #fff);
+  cursor: pointer;
+}
+
+.apply:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.current {
+  margin: 0.6rem 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.result {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius, 8px);
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.result_OK {
+  border-left-color: var(--accent, #2f7d4f);
+}
+.result_NOOP {
+  border-left-color: var(--faint);
+}
+.result_REDESIGN,
+.result_ERROR {
+  border-left-color: #b9770e;
+}
+
+.resultHead {
+  margin: 0 0 0.3rem;
+  font-weight: 620;
+}
+
+.resultReason {
+  margin: 0.3rem 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.result ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1em;
+  font-size: 12.5px;
+  color: var(--muted);
+}

@@ -174,9 +174,18 @@ function checkLinkage(input: AuditInput, f: Findings): void {
     ]);
   }
   if (concept && concept.direction_id !== direction.id) {
-    f.add("P0", "concept-direction-drift", "concept", `The concept was generated for direction ${concept.direction_id}, not ${direction.id}.`, [
-      `${concept.direction_id} vs ${direction.id}`
-    ]);
+    // A P6 correction re-resolves the contract and regenerates the direction
+    // with a fresh id. On a derived recipe whose concept_ref still points at
+    // this concept, that id mismatch is regeneration, not drift — the concept
+    // content itself is still pinned by the concept_ref check above and by the
+    // concept anchor check in checkAnchors. Keep the strict check for original
+    // (non-derived) recipes.
+    const regeneratedByCorrection = recipe.derived_from !== null && recipe.concept_ref === concept.id;
+    if (!regeneratedByCorrection) {
+      f.add("P0", "concept-direction-drift", "concept", `The concept was generated for direction ${concept.direction_id}, not ${direction.id}.`, [
+        `${concept.direction_id} vs ${direction.id}`
+      ]);
+    }
   }
 }
 
