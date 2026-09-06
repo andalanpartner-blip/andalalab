@@ -43,7 +43,7 @@ export const STAGE_META: Record<StageId, StageMeta> = {
   generate: { id: "generate", index: 7, label: "Generate", future: false, summary: "Hand the prompt to the image provider — an explicit action." },
   review: { id: "review", index: 8, label: "Review", future: false, summary: "Compliance now; visual quality when a render exists." },
   correct: { id: "correct", index: 9, label: "Correct", future: false, summary: "Bounded nudges — a new derived recipe." },
-  final: { id: "final", index: 10, label: "Final", future: true, summary: "The finished visual + decision trail — ships with P8." }
+  final: { id: "final", index: 10, label: "Final", future: false, summary: "The approved visual, the human decision and the full lineage." }
 };
 
 export const STAGE_LIST: readonly StageMeta[] = STAGES.map((id) => STAGE_META[id]);
@@ -57,6 +57,11 @@ export type WorkspaceSignals = {
   readonly hasReview: boolean;
   /** The P4.0 verdict on the current recipe, if any — drives `blocked`. */
   readonly criticVerdict: "PASS" | "REVIEW" | "BLOCK" | null;
+  /**
+   * True when a human `approved` CreativeDecision (P2.18) is current for the
+   * generated visual. Unlocks Final. Optional — absent ⇒ false.
+   */
+  readonly hasApproval?: boolean;
 };
 
 /**
@@ -81,7 +86,10 @@ export function deriveStageStates(s: WorkspaceSignals): Record<StageId, Exclude<
     generate: !s.hasRecipe ? "locked" : "available",
     review: !s.hasRecipe ? "locked" : blocked ? "blocked" : s.hasReview ? "done" : "available",
     correct: !s.hasRecipe ? "locked" : "available",
-    final: !s.hasRecipe ? "locked" : "available"
+    // Final is a real stage now (P2.18): it holds the approved visual + the
+    // human decision + the lineage. It stays locked until a human records an
+    // `approved` CreativeDecision for the current generated visual.
+    final: s.hasApproval ? "done" : "locked"
   };
 }
 

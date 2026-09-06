@@ -13,10 +13,15 @@ import type {
   DesignCriticReport,
   LayoutBlueprint
 } from "../../engine";
-import type { GeneratedArtifact } from "../../types/schemas/visual-generation.schema";
+import type {
+  GeneratedArtifact,
+  GenerationRequest
+} from "../../types/schemas/visual-generation.schema";
 import type { VisualEvidenceReport } from "../../types/schemas/visual-evidence-report.schema";
 import type { DesignCritique } from "../../types/schemas/design-critique.schema";
 import type { CorrectionRecommendation } from "../../types/schemas/correction-recommendation.schema";
+import type { CorrectionCycle } from "../../types/schemas/correction-cycle.schema";
+import type { CreativeDecision } from "../../types/schemas/creative-decision.schema";
 
 /**
  * The optional vision-assisted inspection panel (P2.17).
@@ -41,7 +46,8 @@ type ApplyResponse =
       critic: DesignCriticReport;
       blueprint: LayoutBlueprint;
       correction: { diff: { changed_paths: string[] } };
-      cycle: { cycle_hash: string };
+      cycle: CorrectionCycle;
+      decision: CreativeDecision | null;
     }
   | { status: "REDESIGN" | "NOOP"; correction: { reason: string } }
   | { status: "ERROR"; message: string };
@@ -53,6 +59,8 @@ export type VisualInspectionProps = {
   readonly concept: CreativeConcept | null;
   readonly blueprint: LayoutBlueprint | null;
   readonly artifact: GeneratedArtifact;
+  /** The generation request that produced `artifact` — needed to record the decision. */
+  readonly request: GenerationRequest | null;
   readonly imageDataUrl: string;
   readonly onCorrectionApplied: (next: {
     recipe: DesignRecipe;
@@ -61,6 +69,8 @@ export type VisualInspectionProps = {
     critic: DesignCriticReport;
     blueprint: LayoutBlueprint;
     changedPaths: readonly string[];
+    cycle: CorrectionCycle | null;
+    decision: CreativeDecision | null;
   }) => void;
 };
 
@@ -85,6 +95,7 @@ export function VisualInspection({
   concept,
   blueprint,
   artifact,
+  request,
   imageDataUrl,
   onCorrectionApplied
 }: VisualInspectionProps) {
@@ -144,7 +155,11 @@ export function VisualInspection({
             parentRecipe: recipe,
             contract,
             direction,
-            concept
+            concept,
+            // P2.18 — lets the server record the `needs_correction` decision
+            request,
+            parentBlueprint: blueprint,
+            projectId: "local"
           })
         });
         const data = (await res.json()) as ApplyResponse;
@@ -157,7 +172,9 @@ export function VisualInspection({
             direction: data.direction,
             critic: data.critic,
             blueprint: data.blueprint,
-            changedPaths: data.correction.diff.changed_paths
+            changedPaths: data.correction.diff.changed_paths,
+            cycle: data.cycle ?? null,
+            decision: data.decision ?? null
           });
         } else if (data.status === "ERROR") {
           setError(data.message);
@@ -171,7 +188,7 @@ export function VisualInspection({
         setState("inspected");
       }
     },
-    [result, artifact, recipe, contract, direction, concept, onCorrectionApplied]
+    [result, artifact, request, recipe, contract, direction, blueprint, concept, onCorrectionApplied]
   );
 
   return (

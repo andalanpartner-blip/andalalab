@@ -40,6 +40,9 @@ import type {
   GeneratedArtifact,
   GenerationRequest
 } from "../types/schemas/visual-generation.schema";
+import type { CreativeDecision } from "../types/schemas/creative-decision.schema";
+import type { CorrectionCycle } from "../types/schemas/correction-cycle.schema";
+import { decisionApprovesArtifact } from "../lib/review-view";
 import {
   deriveStageStates,
   defaultStage,
@@ -145,10 +148,20 @@ export default function Page() {
   const [generatedRequest, setGeneratedRequest] = useState<GenerationRequest | null>(null);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
 
+  /**
+   * The human's decision about the current visual (P2.18) and the correction
+   * lineage. A new visual (new brief / concept / recipe / regenerate) clears
+   * both — a decision is about one exact artifact and never carries over.
+   */
+  const [creativeDecision, setCreativeDecision] = useState<CreativeDecision | null>(null);
+  const [correctionCycles, setCorrectionCycles] = useState<readonly CorrectionCycle[]>([]);
+
   const clearGeneratedVisual = useCallback(() => {
     setGeneratedArtifact(null);
     setGeneratedRequest(null);
     setGeneratedImageUrl(null);
+    setCreativeDecision(null);
+    setCorrectionCycles([]);
   }, []);
 
   const [activeStage, setActiveStage] = useState<StageId>("brief");
@@ -164,9 +177,10 @@ export default function Page() {
         conceptSelected: selectedConceptId !== null && result !== null,
         hasRecipe: recipe !== null,
         hasReview: review !== null,
-        criticVerdict: critic?.verdict ?? null
+        criticVerdict: critic?.verdict ?? null,
+        hasApproval: decisionApprovesArtifact(creativeDecision, generatedArtifact, recipe?.recipe_hash, blueprint?.blueprint_hash ?? null)
       }),
-    [result, phase, selectedConceptId, recipe, review, critic]
+    [result, phase, selectedConceptId, recipe, review, critic, creativeDecision, generatedArtifact, blueprint]
   );
 
   /** Navigate to a stage (state + URL), if it is reachable. */
@@ -538,6 +552,9 @@ export default function Page() {
               setGeneratedArtifact(artifact);
               setGeneratedRequest(request);
               setGeneratedImageUrl(imageDataUrl);
+              // a fresh render is undecided — any prior decision was about a
+              // different artifact.
+              setCreativeDecision(null);
             }}
           />
         );
@@ -547,6 +564,14 @@ export default function Page() {
         return (
           <FinalStage
             aspectRatio={ASPECT_LABEL[recipe.platform.aspect_ratio_id] ?? recipe.platform.aspect_ratio_id}
+            decision={creativeDecision}
+            artifact={generatedArtifact}
+            imageDataUrl={generatedImageUrl}
+            recipe={recipe}
+            blueprint={blueprint}
+            concept={selectedConcept}
+            correctionCycles={correctionCycles}
+            approved={decisionApprovesArtifact(creativeDecision, generatedArtifact, recipe.recipe_hash, blueprint?.blueprint_hash ?? null)}
             onNavigate={goToStage}
           />
         );
@@ -569,7 +594,13 @@ export default function Page() {
               artifact={generatedArtifact}
               request={generatedRequest}
               imageDataUrl={generatedImageUrl}
+              evidence={null}
+              critique={null}
+              recommendation={null}
+              correctionCycle={correctionCycles[correctionCycles.length - 1] ?? null}
+              decision={creativeDecision}
               onNavigate={goToStage}
+              onDecision={setCreativeDecision}
               onCorrectionApplied={(next) => {
                 setRecipe(next.recipe);
                 setCritic(next.critic);
@@ -578,6 +609,8 @@ export default function Page() {
                 setRecipeContract(next.contract);
                 setRecipeDirection(next.direction);
                 setChangedPaths(next.changedPaths);
+                if (next.cycle) setCorrectionCycles((prev) => [...prev, next.cycle!]);
+                if (next.decision) setCreativeDecision(next.decision);
                 // the generated visual is deliberately KEPT — the stale banner
                 // now prompts a deliberate regeneration.
               }}

@@ -64,7 +64,13 @@ export async function POST(request: Request): Promise<Response> {
         contract: body.contract,
         direction: body.direction,
         concept: body.concept,
-        promptLanguage: body.promptLanguage === "id" ? "id" : "en"
+        promptLanguage: body.promptLanguage === "id" ? "id" : "en",
+        // P2.18 — record the human's `needs_correction` decision alongside the cycle
+        request: body.request,
+        parentBlueprint: body.parentBlueprint ?? body.blueprint,
+        projectId: typeof body.projectId === "string" ? body.projectId : "local",
+        actor: body.actor,
+        note: typeof body.note === "string" ? body.note : null
       });
       return NextResponse.json(result);
     }

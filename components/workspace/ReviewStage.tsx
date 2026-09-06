@@ -19,9 +19,14 @@ import type {
   GeneratedArtifact,
   GenerationRequest
 } from "../../types/schemas/visual-generation.schema";
+import type { CreativeDecision } from "../../types/schemas/creative-decision.schema";
+import type { VisualEvidenceReport } from "../../types/schemas/visual-evidence-report.schema";
+import type { DesignCritique } from "../../types/schemas/design-critique.schema";
+import type { CorrectionRecommendation } from "../../types/schemas/correction-recommendation.schema";
+import type { CorrectionCycle } from "../../types/schemas/correction-cycle.schema";
 import { layoutContextLabel } from "../../lib/generate-view";
 import {
-  REVIEW_STATUS_LABEL,
+  DECISION_ACTION_LABEL,
   STALE_BLUEPRINT_NOTICE,
   STALE_RECIPE_NOTICE,
   TEST_PROVIDER_NOTICE,
@@ -35,8 +40,7 @@ import {
   metadataOnlyReason,
   promptContextLine,
   provenanceChainLabel,
-  reviewProvenanceRows,
-  type HumanReviewStatus
+  reviewProvenanceRows
 } from "../../lib/review-view";
 
 /**
@@ -65,7 +69,16 @@ export type ReviewStageProps = {
   readonly request: GenerationRequest | null;
   /** Transient session-only data URL for the generated image, if one was returned. */
   readonly imageDataUrl: string | null;
+  /** Upstream reasoning artifacts, when the human has run an inspection. */
+  readonly evidence: VisualEvidenceReport | null;
+  readonly critique: DesignCritique | null;
+  readonly recommendation: CorrectionRecommendation | null;
+  readonly correctionCycle: CorrectionCycle | null;
+  /** The current human decision about this visual (P2.18), or null. */
+  readonly decision: CreativeDecision | null;
   readonly onNavigate: (stage: StageId) => void;
+  /** Called when the human records a decision (approve / regenerate). */
+  readonly onDecision?: (decision: CreativeDecision) => void;
   /**
    * Called when a bounded correction from the optional AI inspection is applied.
    * The workspace threads the corrected recipe / blueprint / critic back in; the
@@ -79,13 +92,16 @@ export type ReviewStageProps = {
     critic: DesignCriticReport;
     blueprint: LayoutBlueprint;
     changedPaths: readonly string[];
+    cycle: CorrectionCycle | null;
+    decision: CreativeDecision | null;
   }) => void;
 };
 
-const STATUS_TONE: Record<HumanReviewStatus, "neutral" | "ok" | "attention"> = {
+const DECISION_TONE: Record<CreativeDecision["action"] | "awaiting", "neutral" | "ok" | "attention"> = {
   awaiting: "neutral",
   approved: "ok",
-  needs_correction: "attention"
+  needs_correction: "attention",
+  regenerate: "attention"
 };
 
 export function ReviewStage({
@@ -99,16 +115,18 @@ export function ReviewStage({
   artifact,
   request,
   imageDataUrl,
+  evidence,
+  critique,
+  recommendation,
+  correctionCycle,
+  decision,
   onNavigate,
+  onDecision,
   onCorrectionApplied
 }: ReviewStageProps) {
-  const [status, setStatus] = useState<HumanReviewStatus>("awaiting");
   const sectionRef = useRef<HTMLElement>(null);
-
-  // A fresh artifact resets the human decision — a new render has not been judged.
-  useEffect(() => {
-    setStatus("awaiting");
-  }, [artifact?.artifact_id]);
+  const [decisionBusy, setDecisionBusy] = useState(false);
+  const [decisionError, setDecisionError] = useState<string | null>(null);
 
   // Focus management: move focus to the stage on entry (after a successful
   // generation the user lands here) without yanking the scroll position.
@@ -116,15 +134,62 @@ export function ReviewStage({
     sectionRef.current?.focus({ preventScroll: true });
   }, []);
 
-  const approve = useCallback(() => setStatus("approved"), []);
+  const recordDecision = useCallback(
+    async (action: "approved" | "regenerate") => {
+      if (!artifact || !request) return;
+      setDecisionBusy(true);
+      setDecisionError(null);
+      try {
+        const res = await fetch("/api/decision", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action,
+            projectId: "local",
+            artifact,
+            recipe,
+            blueprint,
+            request,
+            evidence,
+            critique,
+            recommendation,
+            correctionCycle
+          })
+        });
+        const data = (await res.json()) as
+          | { status: "OK"; decision: CreativeDecision }
+          | { status: "ERROR"; message: string };
+        if (data.status === "OK") {
+          onDecision?.(data.decision);
+          if (action === "regenerate") onNavigate("generate");
+          // for "approved", Final unlocks on the next render — an explicit
+          // "Open Final" button then appears (avoids a navigate/state race).
+        } else {
+          setDecisionError(data.message);
+        }
+      } catch {
+        setDecisionError("That decision could not be recorded.");
+      } finally {
+        setDecisionBusy(false);
+      }
+    },
+    [artifact, request, recipe, blueprint, evidence, critique, recommendation, correctionCycle, onDecision, onNavigate]
+  );
+
   const sendToCorrection = useCallback(() => {
-    setStatus("needs_correction");
     onNavigate("correct");
   }, [onNavigate]);
 
   const staleRecipe = isVisualStaleForRecipe(artifact, recipe.recipe_hash);
   const staleBlueprint = isVisualStaleForBlueprint(artifact, blueprint?.blueprint_hash ?? null);
   const showImage = artifact !== null && hasDisplayableImage(imageDataUrl);
+
+  const decisionMatchesArtifact =
+    decision !== null && artifact !== null && decision.subject.artifact_hash === artifact.artifact_hash;
+  // A decision only stands while the render still matches the current design.
+  const decisionIsCurrent = decisionMatchesArtifact && !staleRecipe && !staleBlueprint;
+  const decisionSuperseded = decisionMatchesArtifact && !decisionIsCurrent;
+  const statusKey: CreativeDecision["action"] | "awaiting" = decisionIsCurrent ? decision!.action : "awaiting";
 
   const intentRows = designIntentRows({ recipe, contract, blueprint, concept, request });
 
@@ -141,8 +206,8 @@ export function ReviewStage({
         id="review-stage-heading"
         sub="You evaluate the generated result against the design the pipeline already resolved. The system shows you the intent and what it already knows about compliance — the judgement is yours."
         aside={
-          <Badge tone={STATUS_TONE[status]} variant="soft" dot>
-            {REVIEW_STATUS_LABEL[status]}
+          <Badge tone={DECISION_TONE[statusKey]} variant="soft" dot>
+            {statusKey === "awaiting" ? "Awaiting your decision" : DECISION_ACTION_LABEL[statusKey]}
           </Badge>
         }
       />
@@ -287,42 +352,66 @@ export function ReviewStage({
           concept={concept}
           blueprint={blueprint}
           artifact={artifact}
+          request={request}
           imageDataUrl={imageDataUrl as string}
           onCorrectionApplied={onCorrectionApplied}
         />
       ) : null}
 
-      {/* -------- the human decision -------- */}
+      {/* -------- the human decision (P2.18) -------- */}
       <div className={styles.decision}>
         <p className={styles.decisionLine} role="status" aria-live="polite">
-          {status === "awaiting"
-            ? "Your call: does this visual do the job?"
-            : REVIEW_STATUS_LABEL[status]}
+          {decisionSuperseded
+            ? `You recorded "${DECISION_ACTION_LABEL[decision!.action]}" earlier, but the design has changed since — regenerate to decide on the fresh render.`
+            : statusKey === "awaiting"
+              ? "Your call: this decision is the final word on this exact visual."
+              : `You recorded: ${DECISION_ACTION_LABEL[statusKey]}.`}
         </p>
+        {decisionError ? (
+          <p className={styles.decisionNote} role="alert">
+            {decisionError}
+          </p>
+        ) : null}
         <div className={styles.actions}>
-          {artifact === null ? (
+          {artifact === null || !request ? (
             <Button onClick={() => onNavigate("generate")} trailing="→">
               Generate a visual
             </Button>
           ) : (
             <>
-              <Button onClick={approve} disabled={status === "approved"}>
-                {status === "approved" ? "Approved" : "Approve this visual"}
+              {statusKey === "approved" ? (
+                <Button onClick={() => onNavigate("final")} trailing="→">
+                  Open Final
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => void recordDecision("approved")}
+                  loading={decisionBusy}
+                  disabled={decisionBusy || staleRecipe || staleBlueprint}
+                  trailing="→"
+                >
+                  Approve — this is the final visual
+                </Button>
+              )}
+              <Button variant="secondary" onClick={sendToCorrection} trailing="→" disabled={decisionBusy}>
+                Make a manual correction
               </Button>
-              <Button variant="secondary" onClick={sendToCorrection} trailing="→">
-                Continue to correction
-              </Button>
-              <Button variant="ghost" onClick={() => onNavigate("generate")}>
-                Regenerate
+              <Button
+                variant="ghost"
+                onClick={() => void recordDecision("regenerate")}
+                disabled={decisionBusy || statusKey === "approved"}
+              >
+                Decide to regenerate
               </Button>
             </>
           )}
         </div>
         {artifact !== null && (
           <p className={styles.decisionNote}>
-            &ldquo;Continue to correction&rdquo; records that you decided this visual needs work — the
-            system is not judging the image itself. Regenerate routes back to the Generate stage; it
-            never runs on its own.
+            Approving records an immutable <b>CreativeDecision</b> bound to this exact render and
+            unlocks Final. &ldquo;Decide to regenerate&rdquo; records the decision and routes you to
+            Generate — it never calls the image provider on its own. A stale visual cannot be
+            approved.
           </p>
         )}
       </div>

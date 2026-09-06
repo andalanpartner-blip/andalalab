@@ -7,19 +7,26 @@ import type { DesignCritique } from "../types/schemas/design-critique.schema";
 import type { CorrectionRecommendation } from "../types/schemas/correction-recommendation.schema";
 import type { CorrectionCycle } from "../types/schemas/correction-cycle.schema";
 import { CorrectionCycle as CorrectionCycleSchema } from "../types/schemas/correction-cycle.schema";
+import type { CreativeDecision } from "../types/schemas/creative-decision.schema";
+import { DecisionActor, LOCAL_CREATIVE_ACTOR } from "../types/schemas/creative-decision.schema";
 
 import { DesignRecipe as DesignRecipeSchema } from "../types/schemas/recipe.schema";
 import { DesignContract as DesignContractSchema } from "../types/schemas/contract.schema";
 import { DesignDirection as DesignDirectionSchema } from "../types/schemas/direction.schema";
 import { LayoutBlueprint as LayoutBlueprintSchema } from "../types/schemas/layout-blueprint.schema";
-import { GeneratedArtifact as GeneratedArtifactSchema } from "../types/schemas/visual-generation.schema";
+import {
+  GeneratedArtifact as GeneratedArtifactSchema,
+  GenerationRequest as GenerationRequestSchema
+} from "../types/schemas/visual-generation.schema";
 import { CorrectionRecommendation as CorrectionRecommendationSchema } from "../types/schemas/correction-recommendation.schema";
 import { DesignCritique as DesignCritiqueSchema } from "../types/schemas/design-critique.schema";
+import { VisualEvidenceReport as VisualEvidenceReportSchema } from "../types/schemas/visual-evidence-report.schema";
 
 import { SCHEMA_VERSIONS } from "../types/versions";
 import { canonicalise, fnv1a } from "../types/primitives";
 import { deepFreeze } from "../domain/contract";
 import {
+  buildCreativeDecision,
   evaluateVisionCritique,
   recommendCorrections,
   toCorrectionPatch,
@@ -160,10 +167,23 @@ export type ApplyCorrectionCycleInput = {
   readonly direction: unknown;
   readonly concept?: unknown;
   readonly promptLanguage?: PromptLanguage;
+  /**
+   * P2.18 — when the generation request + parent blueprint are supplied, a
+   * `needs_correction` CreativeDecision is recorded alongside the cycle (the
+   * human explicitly chose to correct with `selectedCodes`). Omitting them keeps
+   * the pre-P2.18 behaviour: a cycle with no decision.
+   */
+  readonly request?: unknown;
+  readonly parentBlueprint?: unknown;
+  readonly projectId?: string;
+  readonly actor?: unknown;
+  readonly note?: string | null;
 };
 
 export type ApplyCorrectionCycleOkResult = Extract<CorrectionPipelineResult, { status: "OK" }> & {
   readonly cycle: CorrectionCycle;
+  /** The `needs_correction` decision, when `request` + `parentBlueprint` were supplied. */
+  readonly decision: CreativeDecision | null;
 };
 export type ApplyCorrectionCycleResult =
   | ApplyCorrectionCycleOkResult
@@ -300,6 +320,41 @@ export function applyRecommendedCorrection(
         .join("; ")}`
     };
   }
+  const frozenCycle = deepFreeze(validated.data);
 
-  return { ...pipelineResult, cycle: deepFreeze(validated.data) };
+  // --- P2.18 — record the human's `needs_correction` decision, when we can ---
+  let decision: CreativeDecision | null = null;
+  const requestParsed = input.request == null ? null : GenerationRequestSchema.safeParse(input.request);
+  const parentBlueprintParsed =
+    input.parentBlueprint == null ? null : LayoutBlueprintSchema.safeParse(input.parentBlueprint);
+  const evidenceParsed = input.evidence == null ? null : VisualEvidenceReportSchema.safeParse(input.evidence);
+  const actorParsed = input.actor == null ? null : DecisionActor.safeParse(input.actor);
+
+  if (requestParsed && requestParsed.success) {
+    const built = buildCreativeDecision({
+      action: "needs_correction",
+      actor: actorParsed && actorParsed.success ? actorParsed.data : LOCAL_CREATIVE_ACTOR,
+      note: input.note ?? null,
+      projectId: input.projectId && input.projectId.length > 0 ? input.projectId : "local",
+      createdAt: deps.clock.now().toISOString(),
+      artifact,
+      recipe: parentRecipe,
+      blueprint: parentBlueprintParsed && parentBlueprintParsed.success ? parentBlueprintParsed.data : null,
+      request: requestParsed.data,
+      evidence: evidenceParsed && evidenceParsed.success ? evidenceParsed.data : null,
+      critique,
+      recommendation,
+      correctionCycle: frozenCycle,
+      selectedCorrectionOptions: draft.selected
+    });
+    if (!built.ok) {
+      return {
+        status: "ERROR",
+        message: `The correction decision couldn't be recorded: ${built.error.map((i) => i.message).join("; ")}`
+      };
+    }
+    decision = built.value;
+  }
+
+  return { ...pipelineResult, cycle: frozenCycle, decision };
 }

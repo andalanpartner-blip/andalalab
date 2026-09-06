@@ -128,8 +128,14 @@ describe("the review surface reads the threaded artifacts", () => {
 describe("the review stage computes nothing", () => {
   it("3 — neither the view helpers nor the component can trigger a generation", () => {
     for (const src of [reviewViewSrc, reviewStageSrc]) {
-      expect(src).not.toMatch(/runVisualGeneration|previewGeneration|\/api\/generate|fetch\(/);
+      // the Review stage may POST a human decision (P2.18) but must never
+      // reach the generation endpoint or service.
+      expect(src).not.toMatch(/runVisualGeneration|previewGeneration|["'`]\/api\/generate\b/);
     }
+    // any fetch in the component goes to /api/decision (or /api/vision-loop via
+    // the child inspection panel), never to /api/generate.
+    const fetchTargets = [...reviewStageSrc.matchAll(/fetch\(\s*["'`](\/api\/[a-z-]+)/g)].map((m) => m[1]);
+    for (const t of fetchTargets) expect(t).not.toBe("/api/generate");
   });
 
   it("5 — compliance comes from the existing ReviewSummary; nothing re-audits the design", () => {

@@ -324,6 +324,22 @@ export type {
   RecommendationScope,
   UnactionableFinding
 } from "../types/schemas/correction-recommendation.schema";
+
+// --- P2.18: human creative decision -----------------------------------
+export {
+  buildCreativeDecision,
+  decisionApprovesArtifact,
+  CREATIVE_DECISION_RESOLVER_VERSION,
+  type BuildCreativeDecisionInput
+} from "./approval/decide";
+export {
+  LOCAL_CREATIVE_ACTOR,
+  type CreativeDecision,
+  type DecisionAction,
+  type DecisionActor,
+  type DecisionSubject,
+  type DecisionContext
+} from "../types/schemas/creative-decision.schema";
 // --- P2.10: Layout Blueprint (derived structural plan) ------------------
 export { resolveLayoutBlueprint, RESOLVER_VERSION, type ResolveBlueprintInput } from "./blueprint/resolve";
 export { computeGeometry, resolveArrangement } from "./blueprint/geometry";

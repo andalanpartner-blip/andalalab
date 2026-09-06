@@ -45,7 +45,10 @@ export const SCHEMA_VERSIONS = {
   // P2.17 — Correction Cycle. One explicit, bounded evidence→critique→
   // recommendation→correction pass, linking the parent generation to the
   // corrected recipe. Immutable, content-hashed lineage record.
-  correctionCycle: "1.0.0"
+  correctionCycle: "1.0.0",
+  // P2.18 — Creative Decision. The immutable record of a human's explicit
+  // decision (approve / correct / regenerate) about one exact generated visual.
+  creativeDecision: "1.0.0"
 } as const;
 
 export type SchemaKey = keyof typeof SCHEMA_VERSIONS;

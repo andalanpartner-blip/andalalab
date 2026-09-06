@@ -17,6 +17,7 @@ import type {
   GeneratedArtifact,
   GenerationRequest
 } from "../types/schemas/visual-generation.schema";
+import type { CreativeDecision } from "../types/schemas/creative-decision.schema";
 import type { StageId } from "./workspace";
 import { FAKE_GENERATION_PROVIDER } from "../adapters/visual-generation/fake";
 import { formatChannel, percent, titleCase } from "./format";
@@ -87,6 +88,49 @@ export function providerTrustLabel(artifact: GeneratedArtifact): string {
 
 export const TEST_PROVIDER_NOTICE =
   "This is placeholder output from the local test adapter, not a real generated image.";
+
+// --- creative decision (P2.18) --------------------------------
+
+/**
+ * Whether an `approved` decision is CURRENT — the decided artifact is still the
+ * live one AND the design has not moved on since. Unlocks Final.
+ *
+ * `currentRecipeHash` / `currentBlueprintHash` are the workspace's live hashes;
+ * a correction applied after approval changes them and the approval no longer
+ * holds.
+ */
+export function decisionApprovesArtifact(
+  decision: CreativeDecision | null,
+  artifact: GeneratedArtifact | null,
+  currentRecipeHash?: string,
+  currentBlueprintHash?: string | null
+): boolean {
+  if (
+    decision === null ||
+    artifact === null ||
+    decision.action !== "approved" ||
+    decision.subject.artifact_hash !== artifact.artifact_hash ||
+    decision.subject.recipe_hash !== artifact.provenance.recipe_hash
+  ) {
+    return false;
+  }
+  if (currentRecipeHash !== undefined && decision.subject.recipe_hash !== currentRecipeHash) return false;
+  if (
+    currentBlueprintHash !== undefined &&
+    currentBlueprintHash !== null &&
+    decision.subject.blueprint_hash !== null &&
+    decision.subject.blueprint_hash !== currentBlueprintHash
+  ) {
+    return false;
+  }
+  return true;
+}
+
+export const DECISION_ACTION_LABEL: Record<CreativeDecision["action"], string> = {
+  approved: "Approved",
+  needs_correction: "Sent for correction",
+  regenerate: "Marked for regeneration"
+};
 
 // --- image display decision ------------------------------------
 
