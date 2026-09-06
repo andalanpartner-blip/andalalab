@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_ooh_hospitality_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Billboard di jalan tol untuk resort baru, satu pesan saja, kelihatan dari mobil.",
+  "objective": "awareness",
+  "core_message": "The cliffside resort is open, forty minutes from the airport.",
+  "audience": {
+    "description": "Domestic travellers driving the toll road who register one idea in the two seconds the panel is in view.",
+    "age_range": [28, 55],
+    "sophistication": 0.5,
+    "price_sensitivity": 0.45,
+    "attention_context": "captive",
+    "cultural_context": ["Indonesian road travellers"]
+  },
+  "industry_id": "hospitality",
+  "brand_id": null,
+  "visual_type_id": "out-of-home",
+  "country": { "indonesia": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "ooh",
+    "aspect_ratio_id": "billboard-3-1",
+    "viewing_context": "street",
+    "localised_text": true
+  },
+  "deliverables": ["One 3:1 billboard"],
+  "mandatories": ["Name the drive time from the airport"],
+  "prohibitions": [],
+  "confidence": { "objective": 1.0 },
+  "missing_fields": []
+}

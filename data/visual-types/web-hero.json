@@ -1,0 +1,35 @@
+{
+  "id": "web-hero",
+  "name": "Web Hero",
+  "schema_version": "1.0.0",
+  "category": "web",
+  "aspect_ratios": [
+    { "id": "wide", "label": "16:9 Wide", "width": 1920, "height": 1080 },
+    { "id": "ultrawide", "label": "21:9 Ultrawide", "width": 2560, "height": 1080 }
+  ],
+  "default_aspect_ratio": "wide",
+  "safe_area": {
+    "top": 0.14,
+    "bottom": 0.08,
+    "left": 0.08,
+    "right": 0.08,
+    "reason": "A fixed or overlaid navigation bar sits across the top of the hero on most templates, and the lower edge is where the fold falls on common laptop viewports. Load-bearing content is kept clear of both so it survives the header and the fold."
+  },
+  "structural_rules": {
+    "max_text_blocks": 3,
+    "min_text_scale_px_at_1080": 24,
+    "focal_requirement": "One proposition and one action above the fold. The hero is read at arm's length and has a moment to state what the page is for before the visitor scrolls or leaves.",
+    "viewing_distance": "arm",
+    "scroll_context": false
+  },
+  "allowed_zones": ["hero", "headline", "body", "image", "cta", "brand", "navigation"],
+  "required_zones": ["headline", "cta"],
+  "default_layouts": ["web-hero-split", "web-hero-centered"],
+  "text_render_risk": 0.35,
+  "dkv_bias": {
+    "hierarchy_strength": 0.7,
+    "focal_dominance": 0.65,
+    "whitespace": 0.55,
+    "contrast": 0.55
+  }
+}

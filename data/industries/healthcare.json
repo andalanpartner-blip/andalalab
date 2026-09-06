@@ -1,0 +1,25 @@
+{
+  "id": "healthcare",
+  "name": "Healthcare & Medical",
+  "schema_version": "1.0.0",
+  "core_perception": "A category where the audience is deciding whether to trust an institution with their body or a family member's. Credibility, clarity and evidence of competence outrank warmth and atmosphere, and anything that looks like marketing polish over a clinical claim is read as a warning rather than reassurance.",
+  "visual_traits": ["calm uncrowded layouts with a single clear entry point", "restrained cool-to-neutral palette with warmth from light rather than saturated colour", "unambiguous typographic hierarchy for names, procedures and numbers", "honest documentary photography of real staff and real spaces"],
+  "communication_needs": ["state the service, the qualification and the location without ambiguity", "make the next step obvious for someone who is anxious or unwell", "support any efficacy or safety claim without implying regulated outcomes it does not hold"],
+  "trust_pressure": 0.95,
+  "conversion_pressure": 0.4,
+  "emotion_pressure": 0.5,
+  "information_pressure": 0.85,
+  "aesthetic_pressure": 0.4,
+  "composition": "Structured and calm, with one dominant image or heading and a disciplined information block beneath it. Instability in the layout transfers directly to perceived risk in the care, so the composition should feel measured and unhurried.",
+  "typography": "Clear hierarchy with unambiguous names, procedures, hours and phone numbers. Anything a distressed reader needs must be findable in one pass. Decorative display faces undermine the credibility the category depends on.",
+  "color": "Restrained and cool-to-neutral. Warmth is introduced through material and daylight rather than through saturated brand colour. High-chroma palettes read as consumer marketing and erode clinical trust.",
+  "imagery": "Real photography of real staff, patients and spaces beats stock or rendering wherever it exists. Over-styled casting and unnaturally perfect environments read as dishonest. Light quality does most of the reassurance work.",
+  "dkv_floor": { "contrast": 0.55, "hierarchy_strength": 0.7 },
+  "dkv_ceiling": { "visual_density": 0.55, "color_complexity": 0.4 },
+  "preferred_movements": ["swiss-international", "editorial-modernism", "minimalism"],
+  "avoid": [
+    "Confrontational, raw or deliberately unstable treatments, which read as disorder in a category where the audience is assessing whether they are in safe hands.",
+    "Saturated promotional layouts with badges and urgency devices, which push a care decision into a retail register the audience distrusts.",
+    "Idealised lifestyle imagery with no real staff, real space or concrete service detail, which the audience has learned to treat as concealment."
+  ]
+}

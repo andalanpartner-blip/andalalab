@@ -1,0 +1,19 @@
+{
+  "id": "ooh-single-statement",
+  "name": "OOH Single Statement",
+  "schema_version": "1.0.0",
+  "description": "One line and one mark. A single oversized statement holds the centre, the brand sits in a fixed corner, and an optional image is a full field behind rather than a separate element. Everything that is not the message has been removed.",
+  "grid": { "columns": 6, "rows": 3, "gutter_ratio": 0.02, "margin_ratio": 0.09 },
+  "zones": [
+    { "id": "headline", "priority": 1, "area_share": 0.55, "required": true },
+    { "id": "image", "priority": 2, "area_share": 0.3, "required": false },
+    { "id": "brand", "priority": 3, "area_share": 0.08, "required": true }
+  ],
+  "flow": "centre-out",
+  "density": 0.2,
+  "complexity": 0.18,
+  "spacing": "The statement occupies most of the panel with wide clear space on every side, and the brand mark is held in one corner well inside the safe area.",
+  "responsive_behavior": "Between the 16:9 and 3:1 panels the type reflows from two lines to one and grows in size. The brand mark keeps its corner and its clear space at both ratios.",
+  "dkv_bias": { "focal_dominance": 0.92, "hierarchy_strength": 0.9, "visual_density": 0.22, "typographic_scale_ratio": 3.0 },
+  "suitable_visual_types": ["out-of-home"]
+}

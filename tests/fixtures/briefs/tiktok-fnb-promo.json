@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_tiktok_fnb_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Cover TikTok buat promo menu baru bulan ini, target anak muda 18 sampai 28.",
+  "objective": "promotion",
+  "core_message": "The new rice bowl is on the menu this month at the launch price on weekdays before 3pm.",
+  "audience": {
+    "description": "Young urban Indonesians aged 18 to 28 who scroll fast and decide on a frame in under a second.",
+    "age_range": [18, 28],
+    "sophistication": 0.45,
+    "price_sensitivity": 0.7,
+    "attention_context": "scroll",
+    "cultural_context": ["urban Indonesia", "value dining"]
+  },
+  "industry_id": "fnb",
+  "brand_id": null,
+  "visual_type_id": "tiktok-still",
+  "country": { "indonesia": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "tiktok",
+    "aspect_ratio_id": "vertical",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": ["One 9:16 TikTok cover frame"],
+  "mandatories": ["State the launch price", "Name the weekday time limit"],
+  "prohibitions": [],
+  "confidence": { "objective": 0.9 },
+  "missing_fields": []
+}

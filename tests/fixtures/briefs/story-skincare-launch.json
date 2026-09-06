@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_story_skincare_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Teaser Story vertikal untuk peluncuran serum baru, target perempuan urban 22 sampai 35.",
+  "objective": "launch",
+  "core_message": "The new barrier serum launches Friday and the first 500 orders include the travel size.",
+  "audience": {
+    "description": "Urban women aged 22 to 35 who follow skincare closely and watch Stories through rather than reading them.",
+    "age_range": [22, 35],
+    "sophistication": 0.6,
+    "price_sensitivity": 0.5,
+    "attention_context": "scroll",
+    "cultural_context": ["urban Indonesia", "skincare routine"]
+  },
+  "industry_id": "beauty-skincare",
+  "brand_id": null,
+  "visual_type_id": "story",
+  "country": { "indonesia": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "instagram-story",
+    "aspect_ratio_id": "vertical",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": ["One 9:16 Story frame"],
+  "mandatories": ["State the launch day", "Name the first-order gift"],
+  "prohibitions": ["No before-and-after skin claims"],
+  "confidence": { "objective": 0.9 },
+  "missing_fields": []
+}

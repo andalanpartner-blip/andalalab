@@ -133,6 +133,21 @@ describe("classifyBrief — industry", () => {
     expect(d.confidence).toBeLessThan(HIGH_CONFIDENCE);
     expect(d.value).toBeNull();
   });
+
+  // P7 — the three new industries are reachable from natural phrasing.
+  it.each([
+    ["Materi untuk rumah sakit ibu dan anak kami.", "healthcare", "rumah sakit"],
+    ["Promo kelas studio pilates baru di kota.", "wellness", "studio pilates"],
+    ["Kampanye untuk koleksi high jewellery terbaru.", "luxury", "high jewellery"]
+  ])("maps %j to a P7 industry via a curated alias", (raw, expectedId, evidence) => {
+    const extraction = parse("20-solo-event-anak-muda");
+    const { extraction: next, diagnostics } = classifyBrief(extraction, raw, datasets);
+    expect(next.industry_id.value).toBe(expectedId);
+    const d = diag(diagnostics, "industry_id")!;
+    expect(d.source).toBe("alias");
+    expect(d.confidence).toBeGreaterThanOrEqual(HIGH_CONFIDENCE);
+    expect(d.evidence).toBe(evidence);
+  });
 });
 
 describe("classifyBrief — audience", () => {

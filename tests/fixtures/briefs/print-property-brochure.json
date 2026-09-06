@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_print_property_01",
+  "schema_version": "1.0.0",
+  "raw_input": "One-page A4 sell sheet for the new cluster, handed out at the sales gallery.",
+  "objective": "consideration",
+  "core_message": "The cluster's three-bedroom units start at the published price with the specification listed in full.",
+  "audience": {
+    "description": "Young families visiting the sales gallery who compare developments on price, unit size and completion record.",
+    "age_range": [30, 50],
+    "sophistication": 0.55,
+    "price_sensitivity": 0.7,
+    "attention_context": "dwell",
+    "cultural_context": ["Indonesian first-home buyers"]
+  },
+  "industry_id": "property",
+  "brand_id": null,
+  "visual_type_id": "print-a4",
+  "country": { "indonesia": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "print",
+    "aspect_ratio_id": "a4-portrait",
+    "viewing_context": "arm",
+    "localised_text": true
+  },
+  "deliverables": ["One A4 portrait sell sheet"],
+  "mandatories": ["State the starting price", "List the unit specification", "Name the completion quarter"],
+  "prohibitions": [],
+  "confidence": { "objective": 1.0 },
+  "missing_fields": []
+}

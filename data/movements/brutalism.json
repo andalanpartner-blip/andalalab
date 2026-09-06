@@ -1,8 +1,14 @@
 {
   "id": "brutalism",
   "name": "Brutalism",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "1950s architecture, graphic revival 2015 onward",
+  "aliases": [
+    "brutalist",
+    "neo-brutalism",
+    "neubrutalism",
+    "web brutalism"
+  ],
   "core_principles": [
     "honesty of material and structure — nothing is disguised",
     "scale and mass used as the primary expressive tools",

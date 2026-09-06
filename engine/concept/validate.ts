@@ -3,6 +3,7 @@ import type { DesignContract } from "../../types/schemas/contract.schema";
 import type { DesignDirection } from "../../types/schemas/direction.schema";
 import type { ConceptIssue, ConceptProposal } from "../../types/schemas/concept.schema";
 import type { ConceptLexicon } from "../../types/schemas/reference/lexicon.schema";
+import type { DesignMovement } from "../../types/schemas/reference/movement.schema";
 import { clampRatio, round } from "../dkv/params";
 import { CONCEPTUAL_FIELDS, SPECIFICITY } from "./config";
 import { conceptLexicon, contentWords, tokenise } from "./lexicon";
@@ -207,10 +208,24 @@ function checkSpecificity(report: SpecificityReport): ConceptIssue[] {
 
 /** ---------------------------------------------------------------- 7C constraints */
 
+/**
+ * Every lowercase phrasing that names a movement in free text: its `id` with
+ * hyphens spaced, its display `name`, and its data-authored `aliases`. Nothing
+ * here is hardcoded — a new movement file brings its own names.
+ */
+function movementNamePhrases(movement: DesignMovement): string[] {
+  return [
+    movement.id.replace(/-/g, " "),
+    movement.name.toLowerCase(),
+    ...movement.aliases.map((alias) => alias.toLowerCase())
+  ].filter((phrase) => phrase.length >= 4);
+}
+
 function checkConstraints(
   proposal: ConceptProposal,
   contract: DesignContract,
   direction: DesignDirection,
+  datasets: DatasetRegistry,
   lexicon: ConceptLexicon
 ): ConceptIssue[] {
   const issues: ConceptIssue[] = [];
@@ -219,21 +234,25 @@ function checkConstraints(
     .toLowerCase();
   const tokens = new Set(tokenise(haystack));
 
-  // A concept may not reassign the movement the engine already chose.
+  // A concept may not reassign the movement the engine already chose. The set
+  // of movements it could name is the loaded dataset, not a fixed list.
   const selected = direction.candidates.find(
     (candidate) => candidate.candidate.candidate_id === direction.selected_candidate_id
   );
   const chosenMovement = selected?.candidate.movement_id;
 
-  for (const movementId of ["bauhaus", "brutalism", "minimalism", "swiss-international"]) {
-    if (movementId === chosenMovement) continue;
-    if (haystack.includes(movementId.replace(/-/g, " ")) || tokens.has(movementId)) {
+  for (const movement of datasets.movements.values()) {
+    if (movement.id === chosenMovement) continue;
+    const named = movementNamePhrases(movement).some((phrase) =>
+      phrase.includes(" ") ? haystack.includes(phrase) : tokens.has(phrase)
+    );
+    if (named) {
       issues.push(
         issue(
           "CONSTRAINT_VIOLATION",
           "critical",
           "visual_world",
-          `The concept names "${movementId}" but the direction selected "${chosenMovement}".`,
+          `The concept names "${movement.id}" but the direction selected "${chosenMovement}".`,
           "The design movement is decided by the deterministic engine from industry, audience and country fit. A concept that reassigns it is proposing a different project.",
           "Express the idea inside the assigned movement, or raise a revision of the direction instead."
         )
@@ -367,7 +386,7 @@ export function validateConcept(
   const issues = [
     ...checkGenericLanguage(proposal, lexicon),
     ...checkSpecificity(specificity),
-    ...checkConstraints(proposal, contract, direction, lexicon),
+    ...checkConstraints(proposal, contract, direction, datasets, lexicon),
     ...checkCulture(proposal, contract, datasets, lexicon)
   ];
 

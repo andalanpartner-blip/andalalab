@@ -1,8 +1,12 @@
 {
   "id": "editorial-modernism",
   "name": "Editorial Modernism",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "1960s magazine design onward, dominant in contemporary premium branding",
+  "aliases": [
+    "editorial modernist",
+    "modernist editorial"
+  ],
   "core_principles": [
     "narrative sequencing — the reader is led through, not shown at once",
     "contrast between a refined display voice and a quiet text voice",
@@ -18,16 +22,58 @@
     "restrained accent colour with warm neutral grounds"
   ],
   "composition": "Asymmetric and paced. A strong entry point leads to a secondary layer that rewards a longer look. Space is distributed unevenly on purpose, and the composition assumes a viewer willing to spend more than one second.",
-  "grid": { "logic": "Asymmetric multi-column grid, often twelve columns used unevenly, with a deliberately wide margin on one side that carries captions and secondary type.", "preferred_columns": [8, 12], "modularity": 0.8 },
-  "typography": { "logic": "A pairing strategy: an expressive high-contrast serif for display and a neutral sans for functional text. Careful optical sizing, tight display tracking, comfortable body leading.", "scale_ratio": 1.8, "case_bias": "title", "weight_bias": "mixed" },
-  "color": { "logic": "Warm neutral base with one restrained accent. Colour supports the photography rather than competing with it, and palettes are drawn from the imagery itself.", "palette_size": 4, "saturation_bias": 0.35 },
+  "grid": {
+    "logic": "Asymmetric multi-column grid, often twelve columns used unevenly, with a deliberately wide margin on one side that carries captions and secondary type.",
+    "preferred_columns": [
+      8,
+      12
+    ],
+    "modularity": 0.8
+  },
+  "typography": {
+    "logic": "A pairing strategy: an expressive high-contrast serif for display and a neutral sans for functional text. Careful optical sizing, tight display tracking, comfortable body leading.",
+    "scale_ratio": 1.8,
+    "case_bias": "title",
+    "weight_bias": "mixed"
+  },
+  "color": {
+    "logic": "Warm neutral base with one restrained accent. Colour supports the photography rather than competing with it, and palettes are drawn from the imagery itself.",
+    "palette_size": 4,
+    "saturation_bias": 0.35
+  },
   "imagery": "Authored photography with a clear point of view. Directional light, shallow depth, considered styling. The image carries mood and is given enough space to do so.",
   "materiality": "Refined and tactile. Heavier uncoated stock, soft matte finishes, subtle foil or emboss at premium tiers.",
   "shape_language": "Almost entirely typographic and photographic. Where graphic elements appear they are thin rules, small marks and restrained dividers used for pacing.",
-  "dkv_bias": { "whitespace": 0.72, "alignment": 0.85, "visual_density": 0.35, "hierarchy_strength": 0.75, "color_complexity": 0.3, "contrast": 0.6, "focal_dominance": 0.7, "typographic_scale_ratio": 1.8 },
-  "suitable_industries": ["fashion", "hospitality", "beauty-skincare", "property", "fnb"],
-  "suitable_objectives": ["brand-building", "consideration", "launch", "trust"],
-  "compatibility": { "minimalism": 0.7, "swiss-international": 0.8, "contemporary-digital": 0.6, "bauhaus": 0.55, "brutalism": 0.5 },
+  "dkv_bias": {
+    "whitespace": 0.72,
+    "alignment": 0.85,
+    "visual_density": 0.35,
+    "hierarchy_strength": 0.75,
+    "color_complexity": 0.3,
+    "contrast": 0.6,
+    "focal_dominance": 0.7,
+    "typographic_scale_ratio": 1.8
+  },
+  "suitable_industries": [
+    "fashion",
+    "hospitality",
+    "beauty-skincare",
+    "property",
+    "fnb"
+  ],
+  "suitable_objectives": [
+    "brand-building",
+    "consideration",
+    "launch",
+    "trust"
+  ],
+  "compatibility": {
+    "minimalism": 0.7,
+    "swiss-international": 0.8,
+    "contemporary-digital": 0.6,
+    "bauhaus": 0.55,
+    "brutalism": 0.5
+  },
   "anti_stereotype": [
     "A high-contrast serif on a cream background is not automatically editorial. Without asymmetric pacing and a real secondary layer it is a font choice standing in for a structure.",
     "This is not the same as luxury styling. The movement is about sequencing and viewpoint, and it works equally well for a low-priced product with something interesting to say.",

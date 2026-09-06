@@ -1,0 +1,20 @@
+{
+  "id": "story-stack",
+  "name": "Story Stack",
+  "schema_version": "1.0.0",
+  "description": "A vertical stack for a full-height frame: a decisive headline in the upper-middle third, a single image or colour field behind or below it, and the brand mark and one action pinned inside the lower safe area. Built to be understood in a glance while it auto-advances.",
+  "grid": { "columns": 4, "rows": 9, "gutter_ratio": 0.03, "margin_ratio": 0.06 },
+  "zones": [
+    { "id": "headline", "priority": 1, "area_share": 0.28, "required": true },
+    { "id": "image", "priority": 2, "area_share": 0.45, "required": false },
+    { "id": "cta", "priority": 3, "area_share": 0.08, "required": false },
+    { "id": "brand", "priority": 4, "area_share": 0.06, "required": false }
+  ],
+  "flow": "top-down",
+  "density": 0.4,
+  "complexity": 0.3,
+  "spacing": "Generous vertical rhythm between the headline block and the lower marks, with the headline set tight internally so it reads as one mass. Nothing sits in the top or bottom safe bands.",
+  "responsive_behavior": "The headline reflows by line count and the image field extends to fill the remaining height. On a shorter frame the image gives up height before the type does.",
+  "dkv_bias": { "focal_dominance": 0.8, "hierarchy_strength": 0.75, "whitespace": 0.45, "typographic_scale_ratio": 1.9 },
+  "suitable_visual_types": ["story", "tiktok-still"]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "web-hero-split",
+  "name": "Web Hero Split",
+  "schema_version": "1.0.0",
+  "description": "A two-part hero: supporting image on one side, a proposition and a primary action on the other. The eye lands on the image, crosses to the headline and settles on the call to action.",
+  "grid": { "columns": 12, "rows": 6, "gutter_ratio": 0.02, "margin_ratio": 0.06 },
+  "zones": [
+    { "id": "image", "priority": 1, "area_share": 0.45, "required": false },
+    { "id": "headline", "priority": 2, "area_share": 0.22, "required": true },
+    { "id": "body", "priority": 3, "area_share": 0.12, "required": false },
+    { "id": "cta", "priority": 4, "area_share": 0.1, "required": true },
+    { "id": "brand", "priority": 5, "area_share": 0.05, "required": false }
+  ],
+  "flow": "z-pattern",
+  "density": 0.42,
+  "complexity": 0.4,
+  "spacing": "A clear column gap between the image half and the text half, with the headline, body and action set as one left-aligned group inside the safe area below the navigation band.",
+  "responsive_behavior": "Below a tablet width the halves stack: image first, then the text group. The action never drops below the fold on a common laptop viewport.",
+  "dkv_bias": { "hierarchy_strength": 0.7, "focal_dominance": 0.62, "whitespace": 0.5, "contrast": 0.55 },
+  "suitable_visual_types": ["web-hero"]
+}

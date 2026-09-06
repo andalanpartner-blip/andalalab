@@ -1,8 +1,15 @@
 {
   "id": "swiss-international",
   "name": "Swiss / International Typographic Style",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "1950–1975, continuous influence since",
+  "aliases": [
+    "swiss style",
+    "swiss design",
+    "international typographic style",
+    "the international style",
+    "swiss modernism"
+  ],
   "core_principles": [
     "the modular grid as the organising instrument of the surface",
     "objectivity — the designer serves the information, not the expression",
@@ -18,16 +25,57 @@
     "flat unmodulated colour fields"
   ],
   "composition": "The surface is divided into equal modules and every element occupies whole modules. Position is derived from the system rather than chosen by eye, and unequal margins are calculated rather than felt. Asymmetry is produced by the grid, not applied to it.",
-  "grid": { "logic": "Modular column-and-baseline grid, with images and text blocks snapped to module boundaries. The number of columns is chosen so that content divides cleanly at several scales.", "preferred_columns": [6, 8, 12], "modularity": 0.95 },
-  "typography": { "logic": "A single neutral family carries every level. Hierarchy comes from a fixed numeric scale and from position, never from decoration or colour. Leading is locked to a baseline grid.", "scale_ratio": 1.5, "case_bias": "sentence", "weight_bias": "medium" },
-  "color": { "logic": "Black, white and one accent with a functional job. Colour classifies or flags; it does not create atmosphere.", "palette_size": 3, "saturation_bias": 0.45 },
+  "grid": {
+    "logic": "Modular column-and-baseline grid, with images and text blocks snapped to module boundaries. The number of columns is chosen so that content divides cleanly at several scales.",
+    "preferred_columns": [
+      6,
+      8,
+      12
+    ],
+    "modularity": 0.95
+  },
+  "typography": {
+    "logic": "A single neutral family carries every level. Hierarchy comes from a fixed numeric scale and from position, never from decoration or colour. Leading is locked to a baseline grid.",
+    "scale_ratio": 1.5,
+    "case_bias": "sentence",
+    "weight_bias": "medium"
+  },
+  "color": {
+    "logic": "Black, white and one accent with a functional job. Colour classifies or flags; it does not create atmosphere.",
+    "palette_size": 3,
+    "saturation_bias": 0.45
+  },
   "imagery": "Objective photography that documents rather than dramatises. Even lighting, clear subject, precise crop. The image informs and is subordinate to the structure that holds it.",
   "materiality": "Deliberately low surface interest. Matte uncoated stock, flat colour, no texture that competes with information.",
   "shape_language": "Orthogonal fields and precisely weighted rules derived from the grid. Rectangles are modules, not decoration.",
-  "dkv_bias": { "whitespace": 0.75, "alignment": 0.96, "visual_density": 0.35, "hierarchy_strength": 0.8, "color_complexity": 0.2, "contrast": 0.78, "typographic_scale_ratio": 1.5 },
-  "suitable_industries": ["technology-saas", "property", "hospitality", "fashion"],
-  "suitable_objectives": ["education", "trust", "awareness", "brand-building"],
-  "compatibility": { "bauhaus": 0.9, "minimalism": 0.85, "editorial-modernism": 0.8, "contemporary-digital": 0.75, "brutalism": 0.45 },
+  "dkv_bias": {
+    "whitespace": 0.75,
+    "alignment": 0.96,
+    "visual_density": 0.35,
+    "hierarchy_strength": 0.8,
+    "color_complexity": 0.2,
+    "contrast": 0.78,
+    "typographic_scale_ratio": 1.5
+  },
+  "suitable_industries": [
+    "technology-saas",
+    "property",
+    "hospitality",
+    "fashion"
+  ],
+  "suitable_objectives": [
+    "education",
+    "trust",
+    "awareness",
+    "brand-building"
+  ],
+  "compatibility": {
+    "bauhaus": 0.9,
+    "minimalism": 0.85,
+    "editorial-modernism": 0.8,
+    "contemporary-digital": 0.75,
+    "brutalism": 0.45
+  },
   "anti_stereotype": [
     "Setting a headline in a well-known neutral sans-serif is not this movement. Without a modular grid, a fixed scale and disciplined alignment it is only a typeface choice wearing the name.",
     "Red-and-black colour blocking with a diagonal element is a period pastiche of the poster output, not the method. The method is structural and can carry any palette.",

@@ -1,0 +1,23 @@
+{
+  "id": "print-editorial-page",
+  "name": "Print Editorial Page",
+  "schema_version": "1.0.0",
+  "description": "A full page built like an editorial spread: a dominant image and headline across the top, a disciplined information block beneath, and the brand mark and any legal or contact line in the footer. Carries more than a feed asset without losing a single entry point.",
+  "grid": { "columns": 6, "rows": 9, "gutter_ratio": 0.02, "margin_ratio": 0.07 },
+  "zones": [
+    { "id": "image", "priority": 1, "area_share": 0.4, "required": false },
+    { "id": "headline", "priority": 2, "area_share": 0.16, "required": true },
+    { "id": "body", "priority": 3, "area_share": 0.15, "required": false },
+    { "id": "data", "priority": 4, "area_share": 0.1, "required": false },
+    { "id": "offer", "priority": 5, "area_share": 0.06, "required": false },
+    { "id": "brand", "priority": 6, "area_share": 0.05, "required": true },
+    { "id": "footer", "priority": 7, "area_share": 0.05, "required": false }
+  ],
+  "flow": "f-pattern",
+  "density": 0.52,
+  "complexity": 0.48,
+  "spacing": "A firm horizontal division between the image-and-headline band and the information block, with consistent column gutters through the lower half and the footer set off by clear space.",
+  "responsive_behavior": "Between A4 portrait and landscape the image band changes height and the information block reflows across the six columns. The footer stays a single row.",
+  "dkv_bias": { "hierarchy_strength": 0.68, "visual_density": 0.52, "typographic_scale_ratio": 2.0 },
+  "suitable_visual_types": ["print-a4"]
+}

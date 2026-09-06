@@ -162,7 +162,52 @@ export const INDUSTRY_ALIASES: readonly IndustryAlias[] = [
   { industry_id: "technology-saas", phrase: "platform digital", confidence: 0.85 },
   { industry_id: "technology-saas", phrase: "b2b software", confidence: 0.93 },
   { industry_id: "technology-saas", phrase: "fintech", confidence: 0.85 },
-  { industry_id: "technology-saas", phrase: "aplikasi", confidence: 0.78 }
+  { industry_id: "technology-saas", phrase: "aplikasi", confidence: 0.78 },
+
+  // --- Healthcare & Medical ----------------------------------------------
+  { industry_id: "healthcare", phrase: "rumah sakit", confidence: 0.95 },
+  { industry_id: "healthcare", phrase: "hospital", confidence: 0.95 },
+  { industry_id: "healthcare", phrase: "klinik", confidence: 0.9 },
+  { industry_id: "healthcare", phrase: "clinic", confidence: 0.9 },
+  { industry_id: "healthcare", phrase: "puskesmas", confidence: 0.92 },
+  { industry_id: "healthcare", phrase: "layanan kesehatan", confidence: 0.92 },
+  { industry_id: "healthcare", phrase: "healthcare", confidence: 0.93 },
+  { industry_id: "healthcare", phrase: "medical", confidence: 0.85 },
+  { industry_id: "healthcare", phrase: "dokter", confidence: 0.8 },
+  { industry_id: "healthcare", phrase: "praktik dokter", confidence: 0.9 },
+  { industry_id: "healthcare", phrase: "laboratorium klinik", confidence: 0.9 },
+  { industry_id: "healthcare", phrase: "apotek", confidence: 0.8 },
+  { industry_id: "healthcare", phrase: "telemedicine", confidence: 0.85 },
+  { industry_id: "healthcare", phrase: "klinik gigi", confidence: 0.9 },
+
+  // --- Wellness & Fitness ----------------------------------------------
+  { industry_id: "wellness", phrase: "pilates", confidence: 0.92 },
+  { industry_id: "wellness", phrase: "yoga", confidence: 0.9 },
+  { industry_id: "wellness", phrase: "studio kebugaran", confidence: 0.9 },
+  { industry_id: "wellness", phrase: "gym", confidence: 0.82 },
+  { industry_id: "wellness", phrase: "fitness", confidence: 0.85 },
+  { industry_id: "wellness", phrase: "kebugaran", confidence: 0.85 },
+  { industry_id: "wellness", phrase: "wellness", confidence: 0.9 },
+  { industry_id: "wellness", phrase: "kesejahteraan", confidence: 0.78 },
+  { industry_id: "wellness", phrase: "meditasi", confidence: 0.82 },
+  { industry_id: "wellness", phrase: "retret kesehatan", confidence: 0.88 },
+  { industry_id: "wellness", phrase: "wellness retreat", confidence: 0.9 },
+  { industry_id: "wellness", phrase: "spa", confidence: 0.7 },
+  { industry_id: "wellness", phrase: "studio pilates", confidence: 0.95 },
+
+  // --- Luxury & Prestige ----------------------------------------------
+  { industry_id: "luxury", phrase: "luxury", confidence: 0.9 },
+  { industry_id: "luxury", phrase: "mewah", confidence: 0.82 },
+  { industry_id: "luxury", phrase: "barang mewah", confidence: 0.9 },
+  { industry_id: "luxury", phrase: "high jewellery", confidence: 0.93 },
+  { industry_id: "luxury", phrase: "high jewelry", confidence: 0.93 },
+  { industry_id: "luxury", phrase: "perhiasan mewah", confidence: 0.92 },
+  { industry_id: "luxury", phrase: "haute couture", confidence: 0.93 },
+  { industry_id: "luxury", phrase: "made-to-order", confidence: 0.82 },
+  { industry_id: "luxury", phrase: "made to order", confidence: 0.82 },
+  { industry_id: "luxury", phrase: "atelier", confidence: 0.8 },
+  { industry_id: "luxury", phrase: "jam tangan mewah", confidence: 0.9 },
+  { industry_id: "luxury", phrase: "prestige", confidence: 0.8 }
 ];
 
 /**

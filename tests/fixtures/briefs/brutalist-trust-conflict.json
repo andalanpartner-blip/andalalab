@@ -1,23 +1,23 @@
 {
   "brief_id": "brief_brutalist_trust_01",
   "schema_version": "1.0.0",
-  "raw_input": "Client insists on the raw concrete brutalist look for the tower launch.",
+  "raw_input": "Client insists on the raw concrete brutalist look for the new hospital wing opening campaign.",
   "objective": "launch",
-  "core_message": "The tower's first release is priced below the district average and the specification is published in full.",
+  "core_message": "The new cardiac wing opens in March with published consultant credentials and same-week appointment availability.",
   "audience": {
-    "description": "First-time buyers aged 28 to 42 comparing developments on price per square metre and completion record.",
+    "description": "Patients and families aged 30 to 60 choosing a provider on consultant record, waiting time and proximity, often while anxious.",
     "age_range": [
-      28,
-      42
+      30,
+      60
     ],
     "sophistication": 0.5,
-    "price_sensitivity": 0.75,
+    "price_sensitivity": 0.6,
     "attention_context": "scroll",
     "cultural_context": [
-      "urban first-time buyers"
+      "urban patients choosing a provider"
     ]
   },
-  "industry_id": "property",
+  "industry_id": "healthcare",
   "brand_id": null,
   "visual_type_id": "social-feed",
   "country": {
@@ -35,8 +35,8 @@
     "One 1:1 launch asset"
   ],
   "mandatories": [
-    "State the price per square metre",
-    "Name the completion quarter"
+    "State the opening month",
+    "Name the consultant qualification"
   ],
   "prohibitions": [],
   "confidence": {

@@ -62,6 +62,15 @@ describe("golden: known scenarios", () => {
     expect(r.findings.every((f) => f.severity === "P2")).toBe(true);
   });
 
+  it("wellness-studio-promo — Indonesian spatial density vs a calm-category ceiling → REVIEW", () => {
+    const r = auditDesign(auditFor("wellness-studio-promo"));
+    expect(r.verdict).toBe("REVIEW");
+    expect(r.findings.some((f) => f.severity === "P0")).toBe(false);
+    expect(
+      r.findings.some((f) => f.check === "dkv-conflict" && f.severity === "P1" && f.message.match(/visual_density/))
+    ).toBe(true);
+  });
+
   it("jakarta-tokyo-blend — DKV clamps + a guarded motif in a negative instruction → REVIEW", () => {
     const r = auditDesign(auditFor("jakarta-tokyo-blend"));
     expect(r.verdict).toBe("REVIEW");

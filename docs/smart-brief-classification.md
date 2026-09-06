@@ -34,21 +34,25 @@ invents an id (every value written is already a key in `datasets.industries`), a
 second readiness gate: `evaluateReadiness` remains the single authority and now always runs on
 canonical, normalized values.
 
-### Canonical taxonomy (unchanged)
+### Canonical taxonomy
 
-The six industries in `data/industries/` are the only valid `industry_id` values:
+The industries in `data/industries/` are the only valid `industry_id` values:
 
 | id | name |
 |---|---|
 | `beauty-skincare` | Beauty & Skincare |
 | `fashion` | Fashion |
 | `fnb` | Food & Beverage |
+| `healthcare` | Healthcare & Medical *(P7)* |
 | `hospitality` | Hospitality |
+| `luxury` | Luxury & Prestige *(P7)* |
 | `property` | Property & Real Estate |
 | `technology-saas` | Technology & SaaS |
+| `wellness` | Wellness & Fitness *(P7)* |
 
-P2.8 adds **no** industry, movement, provider, or schema. A test asserts every alias in
-`INDUSTRY_ALIASES` points at a loaded canonical id.
+P2.8 added **no** industry, movement, provider, or schema. P7 added the three industries above as
+data plus their `INDUSTRY_ALIASES` rows — no new classification logic. A test asserts every alias
+in `INDUSTRY_ALIASES` points at a loaded canonical id.
 
 ### Semantic aliases
 

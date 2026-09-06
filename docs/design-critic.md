@@ -95,13 +95,19 @@ Findings are sorted `(severity, check slug, message)`. The summary string is a
 pure function of the P0/P1/P2 counts. Identical inputs ⇒ byte-identical report.
 No clock, no `Math.random`, no network, no model.
 
-## Calibration (the 14 P1 fixtures)
+## Calibration (the 15 P1 fixtures)
 
 | verdict | fixtures |
 | --- | --- |
 | `PASS` | kopi-lawas, minimal-promo-cta, type-led-fashion, property-editorial, warung-vernacular-promo, tokyo-fashion-editorial (P2 note), luxury-density-conflict (P2 note) |
-| `REVIEW` | hardstone, northbeam, helvetica-labs, cascade-house, tech-contemporary (a P1 `color_complexity` country-vs-industry clamp each), jakarta-tokyo-blend (two P1 clamps + the batik P2 note) |
-| `BLOCK` | brutalist-trust-conflict (P0 `visual_density`: the pinned Brutalism movement vs. the trust-critical property industry) |
+| `REVIEW` | hardstone, northbeam, helvetica-labs, cascade-house, tech-contemporary (a P1 `color_complexity` country-vs-industry clamp each), jakarta-tokyo-blend (two P1 clamps + the batik P2 note), wellness-studio-promo (a P1 `visual_density` Indonesia-vs-industry clamp) |
+| `BLOCK` | brutalist-trust-conflict (P0 `visual_density`: the pinned Brutalism movement vs. the trust-critical **healthcare** industry) |
+
+**P7 recalibration.** `brutalist-trust-conflict` and `luxury-density-conflict` moved from the
+`property`/`fashion` stand-ins onto the real `healthcare` and `luxury` industries; both keep their
+former verdict because the industry pressures and DKV ceilings were authored to preserve the same
+tension. `wellness-studio-promo` is the one new verdict — a genuine `REVIEW` from the Indonesian
+spatial-density bias meeting the calm-category `visual_density` ceiling.
 
 ## UI
 

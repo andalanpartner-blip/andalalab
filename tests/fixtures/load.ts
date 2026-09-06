@@ -36,16 +36,15 @@ export const GOLDEN_BRIEFS = [
 ] as const;
 
 /**
- * The full P1 fixture set: 14 briefs spanning every country, every industry,
+ * The full P1 fixture set: 15 briefs spanning every country, every industry,
  * both conflict scenarios and the country blend cases.
  *
- * Two substitutions are deliberate. The P1 brief asks for a healthcare
- * scenario and a luxury scenario; neither industry exists in the MVP dataset
- * (they arrive at P7 breadth). Property carries the highest trust pressure in
- * the set at 0.92 and stands in for healthcare; fashion under a six-mandatory
- * information load stands in for luxury-versus-density. The structural tension
- * being tested — a trust-critical or restraint-critical industry against a
- * movement that fights it — is identical.
+ * `brutalist-trust-conflict` runs the real `healthcare` industry against a
+ * pinned Brutalism movement; `luxury-density-conflict` runs the real `luxury`
+ * industry under a six-mandatory information load against pinned Minimalism.
+ * `wellness-studio-promo` exercises the third P7 industry. The structural
+ * tension in each case — a trust-critical or restraint-critical industry
+ * against the movement or the load that fights it — is what these test.
  */
 export const P1_BRIEFS = [
   "kopi-lawas-promotion",
@@ -56,6 +55,7 @@ export const P1_BRIEFS = [
   "cascade-house-hospitality",
   "brutalist-trust-conflict",
   "luxury-density-conflict",
+  "wellness-studio-promo",
   "jakarta-tokyo-blend",
   "minimal-promo-cta",
   "type-led-fashion",
@@ -65,6 +65,20 @@ export const P1_BRIEFS = [
 ] as const;
 
 export type P1BriefName = (typeof P1_BRIEFS)[number];
+
+/**
+ * One brief per non-social-feed visual type (P7). Kept separate from
+ * `P1_BRIEFS` so the doctrine-calibration set stays stable; these exist to
+ * prove every visual type resolves end to end with the right ratio, zones and
+ * safe area.
+ */
+export const VISUAL_TYPE_BRIEFS = [
+  "story-skincare-launch",
+  "tiktok-fnb-promo",
+  "web-hero-saas-launch",
+  "print-property-brochure",
+  "ooh-hospitality-billboard"
+] as const;
 
 /** Build contract → direction → recipe for a fixture, failing loudly. */
 export function pipeline(name: string) {

@@ -1,8 +1,11 @@
 {
   "id": "bauhaus",
   "name": "Bauhaus",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "1919–1933, continuous influence since",
+  "aliases": [
+    "staatliches bauhaus"
+  ],
   "core_principles": [
     "form follows function — every element must justify its presence",
     "unity of art, craft and industrial production",

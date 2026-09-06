@@ -14,7 +14,7 @@
 export const SCHEMA_VERSIONS = {
   // reference datasets
   country: "1.0.0",
-  movement: "1.0.0",
+  movement: "1.1.0",
   industry: "1.0.0",
   visualType: "1.0.0",
   layout: "1.0.0",
@@ -36,7 +36,7 @@ export function schemaTag(key: SchemaKey): string {
 }
 
 /**
- * Upcaster registry. Empty at P0 — there is nothing older than 1.0.0 yet.
+ * Upcaster registry.
  * When contract@2.0.0 lands, register { from: "1.0.0", to: "2.0.0", up } here
  * and the read path will migrate in memory without rewriting stored rows.
  */
@@ -47,4 +47,17 @@ export type Upcaster = {
   readonly up: (payload: unknown) => unknown;
 };
 
-export const UPCASTERS: readonly Upcaster[] = [];
+export const UPCASTERS: readonly Upcaster[] = [
+  {
+    // P7 — movement@1.1.0 adds the optional `aliases` array. Older payloads are
+    // valid as-is with an empty list; the field default handles it, so this is
+    // an identity migration kept for a complete, auditable version chain.
+    key: "movement",
+    from: "1.0.0",
+    to: "1.1.0",
+    up: (payload) =>
+      payload !== null && typeof payload === "object" && !Array.isArray(payload)
+        ? { aliases: [], ...(payload as Record<string, unknown>), schema_version: "1.1.0" }
+        : payload
+  }
+];

@@ -1,8 +1,12 @@
 {
   "id": "minimalism",
   "name": "Minimalism",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "1960s onward, dominant in commercial design since 2000",
+  "aliases": [
+    "minimalist",
+    "minimal design"
+  ],
   "core_principles": [
     "reduction until only the load-bearing elements remain",
     "space as the primary compositional material",
@@ -18,16 +22,59 @@
     "absence of ornament, border, texture and gradient"
   ],
   "composition": "One dominant element and a large calm field. The relationship between the element and the edges of the surface carries the entire composition, so margin decisions become the design. Any additional element must displace an existing one.",
-  "grid": { "logic": "Simple wide-margin structure, often a single generous column with a secondary alignment for small supporting type. The grid exists to guarantee consistency of margin rather than to divide the field.", "preferred_columns": [1, 2, 4], "modularity": 0.6 },
-  "typography": { "logic": "One family, two sizes, wide spacing. Small type used confidently. Hierarchy is achieved by isolation and position rather than by weight or scale escalation.", "scale_ratio": 1.33, "case_bias": "sentence", "weight_bias": "light" },
-  "color": { "logic": "Extended neutrals with at most one low-chroma accent. Value contrast is kept narrow so the eye rests. Colour never carries emotional load on its own.", "palette_size": 2, "saturation_bias": 0.2 },
+  "grid": {
+    "logic": "Simple wide-margin structure, often a single generous column with a secondary alignment for small supporting type. The grid exists to guarantee consistency of margin rather than to divide the field.",
+    "preferred_columns": [
+      1,
+      2,
+      4
+    ],
+    "modularity": 0.6
+  },
+  "typography": {
+    "logic": "One family, two sizes, wide spacing. Small type used confidently. Hierarchy is achieved by isolation and position rather than by weight or scale escalation.",
+    "scale_ratio": 1.33,
+    "case_bias": "sentence",
+    "weight_bias": "light"
+  },
+  "color": {
+    "logic": "Extended neutrals with at most one low-chroma accent. Value contrast is kept narrow so the eye rests. Colour never carries emotional load on its own.",
+    "palette_size": 2,
+    "saturation_bias": 0.2
+  },
   "imagery": "Single subject, clean background, soft even light. Detail and material quality replace narrative complexity. Frequently a fragment or a still object rather than a scene.",
   "materiality": "Matte, uniform and tactile at close range. Uncoated stock, plain surfaces, no visible pattern. Restraint is expensive and is meant to read that way.",
   "shape_language": "Almost none. Where shapes appear they are simple, singular and placed with obvious intent — a rule, a circle, a single field.",
-  "dkv_bias": { "whitespace": 0.88, "alignment": 0.9, "visual_density": 0.15, "hierarchy_strength": 0.55, "color_complexity": 0.12, "contrast": 0.45, "focal_dominance": 0.85, "typographic_scale_ratio": 1.33 },
-  "suitable_industries": ["beauty-skincare", "fashion", "hospitality", "property", "technology-saas"],
-  "suitable_objectives": ["brand-building", "trust", "consideration", "launch"],
-  "compatibility": { "swiss-international": 0.85, "editorial-modernism": 0.7, "contemporary-digital": 0.7, "bauhaus": 0.6, "brutalism": 0.3 },
+  "dkv_bias": {
+    "whitespace": 0.88,
+    "alignment": 0.9,
+    "visual_density": 0.15,
+    "hierarchy_strength": 0.55,
+    "color_complexity": 0.12,
+    "contrast": 0.45,
+    "focal_dominance": 0.85,
+    "typographic_scale_ratio": 1.33
+  },
+  "suitable_industries": [
+    "beauty-skincare",
+    "fashion",
+    "hospitality",
+    "property",
+    "technology-saas"
+  ],
+  "suitable_objectives": [
+    "brand-building",
+    "trust",
+    "consideration",
+    "launch"
+  ],
+  "compatibility": {
+    "swiss-international": 0.85,
+    "editorial-modernism": 0.7,
+    "contemporary-digital": 0.7,
+    "bauhaus": 0.6,
+    "brutalism": 0.3
+  },
   "anti_stereotype": [
     "Emptiness is not automatically minimalism. A layout with too few elements and no considered margin relationship is underdesigned, and the difference is visible immediately.",
     "This movement is the weakest choice when the brief carries high information pressure. Reducing a promotion with five required messages to one calm element does not simplify the message, it discards it.",

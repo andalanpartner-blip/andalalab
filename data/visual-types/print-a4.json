@@ -1,0 +1,34 @@
+{
+  "id": "print-a4",
+  "name": "Print A4",
+  "schema_version": "1.0.0",
+  "category": "print",
+  "aspect_ratios": [
+    { "id": "a4-portrait", "label": "A4 Portrait", "width": 2480, "height": 3508 },
+    { "id": "a4-landscape", "label": "A4 Landscape", "width": 3508, "height": 2480 }
+  ],
+  "default_aspect_ratio": "a4-portrait",
+  "safe_area": {
+    "top": 0.07,
+    "bottom": 0.09,
+    "left": 0.07,
+    "right": 0.07,
+    "reason": "Trim and bleed variance plus the grip margin on a hand-held sheet mean the outer band cannot carry anything that must not be cut or covered. The lower margin is a little deeper where a folded or bound edge is possible."
+  },
+  "structural_rules": {
+    "max_text_blocks": 5,
+    "min_text_scale_px_at_1080": 20,
+    "focal_requirement": "One clear entry point, then a readable path through the supporting information. The sheet is held and read at arm's length, so it can carry more than a feed asset but still needs a single place for the eye to land first.",
+    "viewing_distance": "arm",
+    "scroll_context": false
+  },
+  "allowed_zones": ["headline", "body", "image", "product", "data", "offer", "cta", "brand", "footer"],
+  "required_zones": ["headline", "brand"],
+  "default_layouts": ["print-editorial-page"],
+  "text_render_risk": 0.3,
+  "dkv_bias": {
+    "hierarchy_strength": 0.68,
+    "visual_density": 0.5,
+    "typographic_scale_ratio": 2.0
+  }
+}

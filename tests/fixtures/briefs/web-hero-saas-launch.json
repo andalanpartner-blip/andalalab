@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_web_hero_saas_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Homepage hero for the new analytics product, aimed at data teams at mid-market companies.",
+  "objective": "launch",
+  "core_message": "The analytics workspace ships with governed metrics and a free tier for teams under ten.",
+  "audience": {
+    "description": "Data and analytics engineers at mid-market companies evaluating tools at their desk against a shortlist.",
+    "age_range": [26, 45],
+    "sophistication": 0.8,
+    "price_sensitivity": 0.4,
+    "attention_context": "dwell",
+    "cultural_context": ["mid-market data teams"]
+  },
+  "industry_id": "technology-saas",
+  "brand_id": null,
+  "visual_type_id": "web-hero",
+  "country": { "united-states": 1 },
+  "movement_id": null,
+  "layout_id": null,
+  "platform": {
+    "channel": "web",
+    "aspect_ratio_id": "wide",
+    "viewing_context": "arm",
+    "localised_text": false
+  },
+  "deliverables": ["One 16:9 web hero"],
+  "mandatories": ["State the free-tier limit", "Name the governed-metrics capability"],
+  "prohibitions": [],
+  "confidence": { "objective": 1.0 },
+  "missing_fields": []
+}

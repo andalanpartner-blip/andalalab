@@ -1,0 +1,34 @@
+{
+  "id": "story",
+  "name": "Story / Reel Frame",
+  "schema_version": "1.0.0",
+  "category": "social",
+  "aspect_ratios": [
+    { "id": "vertical", "label": "9:16 Vertical", "width": 1080, "height": 1920 }
+  ],
+  "default_aspect_ratio": "vertical",
+  "safe_area": {
+    "top": 0.12,
+    "bottom": 0.18,
+    "left": 0.06,
+    "right": 0.06,
+    "reason": "Story and Reel interfaces overlay the account header and a progress bar across the top and stack reply fields, captions and action controls across a deep lower band. Anything load-bearing outside this area is covered or cropped depending on the client and the device."
+  },
+  "structural_rules": {
+    "max_text_blocks": 2,
+    "min_text_scale_px_at_1080": 36,
+    "focal_requirement": "One element that resolves in the first second, because the frame is often auto-advanced and is watched rather than read. A second competing element is lost before it registers.",
+    "viewing_distance": "thumb",
+    "scroll_context": true
+  },
+  "allowed_zones": ["hero", "headline", "body", "image", "offer", "cta", "brand"],
+  "required_zones": ["headline"],
+  "default_layouts": ["story-stack", "story-fullbleed"],
+  "text_render_risk": 0.78,
+  "dkv_bias": {
+    "focal_dominance": 0.8,
+    "hierarchy_strength": 0.72,
+    "whitespace": 0.45,
+    "typographic_scale_ratio": 1.8
+  }
+}

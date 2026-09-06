@@ -1,0 +1,20 @@
+{
+  "id": "web-hero-centered",
+  "name": "Web Hero Centered",
+  "schema_version": "1.0.0",
+  "description": "A centred proposition over a quiet background or a single wide image, with the primary action directly beneath it. One column, one axis, nothing competing for the centre.",
+  "grid": { "columns": 12, "rows": 6, "gutter_ratio": 0.02, "margin_ratio": 0.08 },
+  "zones": [
+    { "id": "headline", "priority": 1, "area_share": 0.3, "required": true },
+    { "id": "body", "priority": 2, "area_share": 0.14, "required": false },
+    { "id": "cta", "priority": 3, "area_share": 0.1, "required": true },
+    { "id": "brand", "priority": 4, "area_share": 0.05, "required": false }
+  ],
+  "flow": "centre-out",
+  "density": 0.32,
+  "complexity": 0.3,
+  "spacing": "Wide symmetric margins with the headline, body and action stacked on the central axis and generous space above and below the group.",
+  "responsive_behavior": "The column narrows with the viewport and the headline reflows by line count. The action stays paired with the headline at every width.",
+  "dkv_bias": { "hierarchy_strength": 0.68, "focal_dominance": 0.6, "whitespace": 0.6 },
+  "suitable_visual_types": ["web-hero"]
+}

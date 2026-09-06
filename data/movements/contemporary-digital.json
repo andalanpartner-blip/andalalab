@@ -1,8 +1,14 @@
 {
   "id": "contemporary-digital",
   "name": "Contemporary Digital / Neo-Graphic",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "period": "2015 onward",
+  "aliases": [
+    "neo-graphic",
+    "neograph",
+    "contemporary digital",
+    "neo graphic"
+  ],
   "core_principles": [
     "systems and components rather than one-off compositions",
     "designed first for a small screen in a scrolling context",
@@ -18,16 +24,61 @@
     "component repetition as a visible organising principle"
   ],
   "composition": "Stacked and modular. Content is arranged in self-contained blocks that read cleanly in a vertical scroll, with a strong opening block and a clear terminal action. Composition is designed to survive reordering and truncation.",
-  "grid": { "logic": "Component-based spacing system built on a fixed base unit, typically four or eight pixels, with a simple column structure that collapses predictably at smaller sizes.", "preferred_columns": [4, 6, 12], "modularity": 0.85 },
-  "typography": { "logic": "One versatile sans family across all levels with a compact scale. Weight is the main differentiator, sizes are drawn from a fixed token set, and line length is controlled for small screens.", "scale_ratio": 1.25, "case_bias": "sentence", "weight_bias": "medium" },
-  "color": { "logic": "Neutral surface palette with semantic colour roles — one accent for action, one for emphasis, greys for structure. Contrast floors are set by accessibility requirements rather than by taste.", "palette_size": 5, "saturation_bias": 0.5 },
+  "grid": {
+    "logic": "Component-based spacing system built on a fixed base unit, typically four or eight pixels, with a simple column structure that collapses predictably at smaller sizes.",
+    "preferred_columns": [
+      4,
+      6,
+      12
+    ],
+    "modularity": 0.85
+  },
+  "typography": {
+    "logic": "One versatile sans family across all levels with a compact scale. Weight is the main differentiator, sizes are drawn from a fixed token set, and line length is controlled for small screens.",
+    "scale_ratio": 1.25,
+    "case_bias": "sentence",
+    "weight_bias": "medium"
+  },
+  "color": {
+    "logic": "Neutral surface palette with semantic colour roles — one accent for action, one for emphasis, greys for structure. Contrast floors are set by accessibility requirements rather than by taste.",
+    "palette_size": 5,
+    "saturation_bias": 0.5
+  },
   "imagery": "Bright, clean and lightly styled. Product-in-context shots, screen content and illustration used interchangeably. Images are treated as replaceable content within a fixed frame.",
   "materiality": "Screen-native. Soft shadow, subtle blur and translucency stand in for physical material, and any texture is applied sparingly as an accent.",
   "shape_language": "Rounded rectangles, pill forms and simple icons. Containment is the dominant device — nearly everything sits inside a defined block.",
-  "dkv_bias": { "whitespace": 0.6, "alignment": 0.92, "visual_density": 0.45, "hierarchy_strength": 0.7, "color_complexity": 0.35, "contrast": 0.65, "focal_dominance": 0.6, "typographic_scale_ratio": 1.25 },
-  "suitable_industries": ["technology-saas", "fnb", "property", "beauty-skincare", "hospitality", "fashion"],
-  "suitable_objectives": ["conversion", "consideration", "education", "launch", "promotion"],
-  "compatibility": { "swiss-international": 0.75, "minimalism": 0.7, "bauhaus": 0.65, "editorial-modernism": 0.6, "brutalism": 0.4 },
+  "dkv_bias": {
+    "whitespace": 0.6,
+    "alignment": 0.92,
+    "visual_density": 0.45,
+    "hierarchy_strength": 0.7,
+    "color_complexity": 0.35,
+    "contrast": 0.65,
+    "focal_dominance": 0.6,
+    "typographic_scale_ratio": 1.25
+  },
+  "suitable_industries": [
+    "technology-saas",
+    "fnb",
+    "property",
+    "beauty-skincare",
+    "hospitality",
+    "fashion"
+  ],
+  "suitable_objectives": [
+    "conversion",
+    "consideration",
+    "education",
+    "launch",
+    "promotion"
+  ],
+  "compatibility": {
+    "swiss-international": 0.75,
+    "minimalism": 0.7,
+    "bauhaus": 0.65,
+    "editorial-modernism": 0.6,
+    "brutalism": 0.4
+  },
   "anti_stereotype": [
     "This is a systems discipline, not a look. Rounded corners and a soft gradient applied to an unstructured layout produce the surface of the movement without the component logic that gives it value.",
     "Gradient blobs and glassmorphic panels are a passing trend layer, not the movement, and doctrine ranks contemporary trend below every structural consideration.",

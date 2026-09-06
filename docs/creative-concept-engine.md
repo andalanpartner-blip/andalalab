@@ -141,8 +141,9 @@ With a concept selected, no anchor remains `pending`.
    and are deliberately out of scope here.
 3. **Concepts are generated in English.** The banned-phrase and vagueness lists
    are English; Indonesian concept output needs an Indonesian lexicon first.
-4. **Movement-name detection is a hardcoded shortlist.** It catches the six MVP
-   movements by name and would need to be data-driven at P7 breadth.
+4. **Movement-name detection is data-driven (P7).** `checkConstraints` iterates
+   `datasets.movements` and matches each on its `id`, its display `name` and its
+   data-authored `aliases`. A new movement file needs no code change.
 5. **Cultural checking is token matching**, not interpretation. A stereotype
    expressed without using any listed token passes.
 6. **No live model has ever run this.** All fixtures are hand-written. Whether a

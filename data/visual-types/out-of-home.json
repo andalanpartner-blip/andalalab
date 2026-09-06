@@ -1,0 +1,36 @@
+{
+  "id": "out-of-home",
+  "name": "Out of Home",
+  "schema_version": "1.0.0",
+  "category": "advertising",
+  "aspect_ratios": [
+    { "id": "landscape-16-9", "label": "16:9 Landscape", "width": 1920, "height": 1080 },
+    { "id": "billboard-3-1", "label": "3:1 Billboard", "width": 2880, "height": 960 }
+  ],
+  "default_aspect_ratio": "landscape-16-9",
+  "safe_area": {
+    "top": 0.1,
+    "bottom": 0.1,
+    "left": 0.08,
+    "right": 0.08,
+    "reason": "Mounting frames, structural supports and viewing angle all eat into the physical edge of an out-of-home surface, and the exact loss is not known at design time. Everything that carries the message is kept well inside the panel."
+  },
+  "structural_rules": {
+    "max_text_blocks": 2,
+    "min_text_scale_px_at_1080": 90,
+    "focal_requirement": "One idea, readable in under two seconds by someone moving past. There is no second glance, so a second message is not a smaller line, it is a different panel.",
+    "viewing_distance": "street",
+    "scroll_context": false
+  },
+  "allowed_zones": ["hero", "headline", "image", "brand", "cta"],
+  "required_zones": ["headline", "brand"],
+  "default_layouts": ["ooh-single-statement"],
+  "text_render_risk": 0.85,
+  "dkv_bias": {
+    "focal_dominance": 0.92,
+    "hierarchy_strength": 0.9,
+    "visual_density": 0.25,
+    "typographic_scale_ratio": 3.0,
+    "contrast": 0.8
+  }
+}

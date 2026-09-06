@@ -35,7 +35,9 @@ describe("prompt template", () => {
     const prompt = buildBriefNormalizerPrompt(RAW_INDONESIAN_BRIEF, datasets);
     for (const id of datasets.industries.keys()) expect(prompt).toContain(id);
     for (const id of datasets.countries.keys()) expect(prompt).toContain(id);
-    expect(prompt).not.toContain("healthcare");
+    // an industry that is not in the dataset must not appear in the enum list
+    expect(datasets.industries.has("automotive")).toBe(false);
+    expect(prompt).not.toContain("automotive");
   });
 
   it("instructs the model not to invent values", () => {

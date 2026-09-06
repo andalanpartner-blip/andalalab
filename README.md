@@ -2,11 +2,15 @@
 
 *An AI graphic designer that thinks before it prompts.*
 
-**Through P6.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
+**Through P7.** Raw Indonesian/English brief → readiness gate → strategy → creative concepts →
 Design Recipe → bilingual prompt set with a stereotype output guard → a deterministic
 pre-generation Design Critic verdict → bounded, immutable corrections. The only model call is the
 Brief Interpreter and the Creative Concept Engine (two calls, capped); every design decision is
 deterministic. No database.
+
+P7 widened the reference data — 9 industries (healthcare, wellness, luxury added), 6 visual types
+(story, tiktok-still, web-hero, print-a4, out-of-home added) — with no engine change beyond moving
+movement-name detection onto data-authored aliases.
 
 ## Commands
 
@@ -14,7 +18,7 @@ deterministic. No database.
 pnpm install
 pnpm validate:data   # dataset schema + referential integrity + stereotype self-consistency
 pnpm lint            # architectural boundary enforcement
-pnpm test            # 925 tests
+pnpm test            # 976 tests
 pnpm build           # tsc --noEmit && next build
 pnpm check           # all four, in order
 ```
@@ -37,7 +41,7 @@ Brief → Readiness / Progressive Briefing → Strategy (DKV + doctrine resoluti
 | Layer | Status |
 |---|---|
 | `types/` — Zod schemas, schema version registry | ✅ |
-| `data/` — versioned reference datasets + loader | ✅ |
+| `data/` — versioned reference datasets + loader (4 countries · 9 industries · 6 movements · 6 visual types · 10 layouts) | ✅ |
 | `engine/` — pure, framework-free intelligence layer (P0 contract → P6 corrections) | ✅ |
 | `domain/` — entities and invariants | ✅ |
 | `ports/` — injected clock and id | ✅ |

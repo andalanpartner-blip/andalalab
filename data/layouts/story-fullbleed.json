@@ -1,0 +1,20 @@
+{
+  "id": "story-fullbleed",
+  "name": "Story Full Bleed",
+  "schema_version": "1.0.0",
+  "description": "A single image carries the whole frame edge to edge, with a short headline set into a quiet region of the image and the brand mark and action held in the lower safe area. The picture persuades; the type only names and directs.",
+  "grid": { "columns": 4, "rows": 9, "gutter_ratio": 0.02, "margin_ratio": 0.06 },
+  "zones": [
+    { "id": "hero", "priority": 1, "area_share": 0.7, "required": false },
+    { "id": "headline", "priority": 2, "area_share": 0.16, "required": true },
+    { "id": "cta", "priority": 3, "area_share": 0.07, "required": false },
+    { "id": "brand", "priority": 4, "area_share": 0.05, "required": false }
+  ],
+  "flow": "centre-out",
+  "density": 0.3,
+  "complexity": 0.28,
+  "spacing": "The type block sits inside the safe area over the calmest part of the image, with at least twice the headline's internal leading between it and the brand mark.",
+  "responsive_behavior": "The image crops from the long edge toward its focal point so the type position holds across 9:16 and any taller variant without repositioning.",
+  "dkv_bias": { "focal_dominance": 0.88, "visual_density": 0.28, "whitespace": 0.5 },
+  "suitable_visual_types": ["story", "tiktok-still"]
+}

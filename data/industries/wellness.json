@@ -1,0 +1,25 @@
+{
+  "id": "wellness",
+  "name": "Wellness & Fitness",
+  "schema_version": "1.0.0",
+  "core_perception": "A category bought on how a practice makes the audience feel about themselves and their routine. Aspiration and calm matter, but the audience has been oversold to and now discounts anything that promises transformation without showing the actual room, class or practitioner.",
+  "visual_traits": ["generous space and unhurried pacing", "natural light and real movement rather than posed stillness", "warm neutral palette with one grounded accent", "quiet confident typography with little explanation"],
+  "communication_needs": ["establish the feeling and the discipline of the practice at a glance", "show the real space, format and people so the offer is credible", "make the schedule, price or first step easy to find"],
+  "trust_pressure": 0.62,
+  "conversion_pressure": 0.5,
+  "emotion_pressure": 0.7,
+  "information_pressure": 0.45,
+  "aesthetic_pressure": 0.75,
+  "composition": "Calm and asymmetric, with a single subject given room to breathe. Density reads as stress, which is the opposite of the state the practice is selling, so the layout stays open.",
+  "typography": "Light to regular weights with wide spacing. One confident line usually carries the asset; schedule and price sit in a compact secondary block.",
+  "color": "Warm neutrals with a single grounded accent drawn from the space or the light. High saturation and heavy contrast fight the calm the imagery is establishing.",
+  "imagery": "Real movement, real practitioners and the actual space do the persuasive work. Posed perfection and generic stock read as a studio that does not exist.",
+  "dkv_floor": { "contrast": 0.4, "hierarchy_strength": 0.45 },
+  "dkv_ceiling": { "visual_density": 0.5, "color_complexity": 0.45 },
+  "preferred_movements": ["minimalism", "editorial-modernism", "contemporary-digital"],
+  "avoid": [
+    "Dense promotional layouts with urgency devices, which contradict the calm and control the practice is selling.",
+    "Transformation claims illustrated only by idealised bodies with no real space, class or practitioner shown.",
+    "High-saturation energy-drink treatments that borrow from mass-market advertising and undercut the considered positioning."
+  ]
+}

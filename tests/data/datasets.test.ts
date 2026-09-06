@@ -14,9 +14,9 @@ describe("dataset loading", () => {
     expect(summariseDatasets(registry)).toEqual({
       countries: 4,
       movements: 6,
-      industries: 6,
-      visualTypes: 1,
-      layouts: 4,
+      industries: 9,
+      visualTypes: 6,
+      layouts: 10,
       lexicons: 1
     });
   });
@@ -131,5 +131,18 @@ describe("dataset validation gate", () => {
     const registry = loadDatasets({ root });
     expect(registry.countries.size).toBe(5);
     expect(registry.countries.get("netherlands")?.name).toBe("Netherlands");
+  });
+
+  it("picks up a new industry from a file alone, with no code change", () => {
+    const root = scratchDataRoot();
+    const template = JSON.parse(JSON.stringify(loadDatasets().industries.get("wellness")));
+    template.id = "education";
+    template.name = "Education";
+    mkdirSync(join(root, "industries"), { recursive: true });
+    writeFileSync(join(root, "industries", "education.json"), JSON.stringify(template));
+
+    const registry = loadDatasets({ root });
+    expect(registry.industries.size).toBe(10);
+    expect(registry.industries.get("education")?.name).toBe("Education");
   });
 });

@@ -1,11 +1,11 @@
 {
   "brief_id": "brief_luxury_density_01",
   "schema_version": "1.0.0",
-  "raw_input": "Six-step service explained in one restrained asset.",
+  "raw_input": "Six-step made-to-order service explained in one restrained asset.",
   "objective": "consideration",
-  "core_message": "The atelier's made-to-order service is explained in six steps, and every step has to be legible in a single asset.",
+  "core_message": "The house's made-to-order service is explained in six steps, and every step has to be legible in a single asset.",
   "audience": {
-    "description": "Affluent buyers aged 35 to 60 who expect restraint but will not book without understanding the full process.",
+    "description": "Affluent buyers aged 35 to 60 who expect restraint but will not commission without understanding the full process.",
     "age_range": [
       35,
       60
@@ -17,7 +17,7 @@
       "luxury made-to-order"
     ]
   },
-  "industry_id": "fashion",
+  "industry_id": "luxury",
   "brand_id": null,
   "visual_type_id": "social-feed",
   "country": {
@@ -39,7 +39,7 @@
     "Name all six steps",
     "Show the fitting stage",
     "State the lead time",
-    "Show the fabric selection",
+    "Show the material selection",
     "Name the atelier location",
     "State the deposit terms"
   ],

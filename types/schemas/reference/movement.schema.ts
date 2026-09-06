@@ -17,6 +17,15 @@ export const DesignMovement = z.object({
   schema_version: SemVer,
   period: NonEmptyText,
 
+  /**
+   * Extra lowercase phrasings that name this movement in free text — the
+   * deterministic movement-name check in `engine/concept/validate.ts` matches
+   * `id`, `name` and these. Data-authored so a new movement never needs a code
+   * edit. Never a taxonomy: every entry must be an unambiguous name for this
+   * one movement (e.g. "swiss style" for swiss-international), not a trait.
+   */
+  aliases: z.array(NonEmptyText).default([]),
+
   core_principles: z.array(NonEmptyText).min(3),
   visual_traits: z.array(NonEmptyText).min(3),
 
