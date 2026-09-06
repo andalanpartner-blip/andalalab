@@ -41,7 +41,11 @@ export const SCHEMA_VERSIONS = {
   designCritique: "1.0.0",
   // P2.16 — Correction Recommendation. Bounded corrective options mapped from
   // critique findings onto parameters the P6 Correction Engine already supports.
-  correctionRecommendation: "1.0.0"
+  correctionRecommendation: "1.0.0",
+  // P2.17 — Correction Cycle. One explicit, bounded evidence→critique→
+  // recommendation→correction pass, linking the parent generation to the
+  // corrected recipe. Immutable, content-hashed lineage record.
+  correctionCycle: "1.0.0"
 } as const;
 
 export type SchemaKey = keyof typeof SCHEMA_VERSIONS;

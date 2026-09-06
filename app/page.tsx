@@ -561,6 +561,7 @@ export default function Page() {
             <ReviewStage
               recipe={recipe}
               contract={recipeContract}
+              direction={recipeDirection}
               concept={selectedConcept}
               blueprint={blueprint}
               critic={critic}
@@ -569,6 +570,17 @@ export default function Page() {
               request={generatedRequest}
               imageDataUrl={generatedImageUrl}
               onNavigate={goToStage}
+              onCorrectionApplied={(next) => {
+                setRecipe(next.recipe);
+                setCritic(next.critic);
+                setReview(null);
+                setBlueprint(next.blueprint);
+                setRecipeContract(next.contract);
+                setRecipeDirection(next.direction);
+                setChangedPaths(next.changedPaths);
+                // the generated visual is deliberately KEPT — the stale banner
+                // now prompts a deliberate regeneration.
+              }}
             />
           </>
         );

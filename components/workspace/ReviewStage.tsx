@@ -7,9 +7,11 @@ import { Button } from "../ui/Button";
 import { Badge } from "../ui/Badge";
 import { Disclosure } from "../ui/Disclosure";
 import { ReviewSummary } from "../ReviewSummary";
+import { VisualInspection } from "./VisualInspection";
 import type { StageId } from "../../lib/workspace";
 import type { DesignRecipe } from "../../types/schemas/recipe.schema";
 import type { DesignContract } from "../../types/schemas/contract.schema";
+import type { DesignDirection } from "../../types/schemas/direction.schema";
 import type { CreativeConcept } from "../../types/schemas/concept.schema";
 import type { LayoutBlueprint } from "../../types/schemas/layout-blueprint.schema";
 import type { DesignCriticReport, VisualReviewReport } from "../../engine";
@@ -53,6 +55,8 @@ export type ReviewStageProps = {
   readonly contract: DesignContract;
   readonly concept: CreativeConcept | null;
   readonly blueprint: LayoutBlueprint | null;
+  /** The direction the current recipe was built from — needed for a bounded correction. */
+  readonly direction: DesignDirection | null;
   readonly critic: DesignCriticReport;
   readonly review: VisualReviewReport | null;
   /** The artifact from the Generate stage, or null if nothing has been generated. */
@@ -62,6 +66,20 @@ export type ReviewStageProps = {
   /** Transient session-only data URL for the generated image, if one was returned. */
   readonly imageDataUrl: string | null;
   readonly onNavigate: (stage: StageId) => void;
+  /**
+   * Called when a bounded correction from the optional AI inspection is applied.
+   * The workspace threads the corrected recipe / blueprint / critic back in; the
+   * generated visual is deliberately KEPT so the stale banner prompts a
+   * deliberate regeneration.
+   */
+  readonly onCorrectionApplied?: (next: {
+    recipe: DesignRecipe;
+    contract: DesignContract;
+    direction: DesignDirection;
+    critic: DesignCriticReport;
+    blueprint: LayoutBlueprint;
+    changedPaths: readonly string[];
+  }) => void;
 };
 
 const STATUS_TONE: Record<HumanReviewStatus, "neutral" | "ok" | "attention"> = {
@@ -77,10 +95,12 @@ export function ReviewStage({
   blueprint,
   critic,
   review,
+  direction,
   artifact,
   request,
   imageDataUrl,
-  onNavigate
+  onNavigate,
+  onCorrectionApplied
 }: ReviewStageProps) {
   const [status, setStatus] = useState<HumanReviewStatus>("awaiting");
   const sectionRef = useRef<HTMLElement>(null);
@@ -252,6 +272,25 @@ export function ReviewStage({
 
       {/* -------- existing compliance, rendered unchanged -------- */}
       <ReviewSummary report={review} critic={critic} onNavigate={onNavigate} />
+
+      {/* -------- optional AI inspection (P2.17) — only for a current, real render -------- */}
+      {artifact !== null &&
+      showImage &&
+      !staleRecipe &&
+      !staleBlueprint &&
+      direction !== null &&
+      onCorrectionApplied ? (
+        <VisualInspection
+          recipe={recipe}
+          contract={contract}
+          direction={direction}
+          concept={concept}
+          blueprint={blueprint}
+          artifact={artifact}
+          imageDataUrl={imageDataUrl as string}
+          onCorrectionApplied={onCorrectionApplied}
+        />
+      ) : null}
 
       {/* -------- the human decision -------- */}
       <div className={styles.decision}>
