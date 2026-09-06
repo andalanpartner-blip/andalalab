@@ -16,6 +16,7 @@ import { ReviewSummary } from "../components/ReviewSummary";
 import { ComplianceChip } from "../components/ComplianceChip";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptOutput } from "../components/PromptOutput";
+import { LayoutBlueprint, LayoutBackLink } from "../components/LayoutBlueprint";
 import { GenerateStage } from "../components/workspace/GenerateStage";
 import { FinalStage } from "../components/workspace/FinalStage";
 import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
@@ -25,7 +26,12 @@ import { Panel } from "../components/ui/Panel";
 import { Button } from "../components/ui/Button";
 import { EmptyState } from "../components/ui/EmptyState";
 import { Skeleton } from "../components/ui/Skeleton";
-import type { ClarificationQuestion, DesignCriticReport, VisualReviewReport } from "../engine";
+import type {
+  ClarificationQuestion,
+  DesignCriticReport,
+  VisualReviewReport,
+  LayoutBlueprint as LayoutBlueprintArtifact
+} from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
@@ -119,6 +125,7 @@ export default function Page() {
   const [recipe, setRecipe] = useState<DesignRecipe | null>(null);
   const [critic, setCritic] = useState<DesignCriticReport | null>(null);
   const [review, setReview] = useState<VisualReviewReport | null>(null);
+  const [blueprint, setBlueprint] = useState<LayoutBlueprintArtifact | null>(null);
   /** Contract / direction the current recipe was built from — corrections may replace these. */
   const [recipeContract, setRecipeContract] = useState<DesignContract | null>(null);
   const [recipeDirection, setRecipeDirection] = useState<DesignDirection | null>(null);
@@ -197,6 +204,7 @@ export default function Page() {
         setRecipe(null);
         setCritic(null);
         setReview(null);
+        setBlueprint(null);
         setRecipeContract(null);
         setRecipeDirection(null);
         setRecipeError(null);
@@ -246,6 +254,7 @@ export default function Page() {
     setRecipe(null);
     setCritic(null);
     setReview(null);
+    setBlueprint(null);
     setRecipeContract(null);
     setRecipeDirection(null);
     setRecipeError(null);
@@ -264,6 +273,7 @@ export default function Page() {
       setRecipe(null);
       setCritic(null);
       setReview(null);
+      setBlueprint(null);
       setRecipeContract(null);
       setRecipeDirection(null);
       setRecipeError(null);
@@ -292,6 +302,7 @@ export default function Page() {
       setRecipe(data.recipe);
       setCritic(data.critic);
       setReview(data.review);
+      setBlueprint(data.blueprint);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
     } else {
@@ -439,14 +450,24 @@ export default function Page() {
             ) : null}
             <RecipeStageSummary recipe={recipe} onOpenLedger={() => setLedgerOpen(true)} />
             <div className={styles.stageActions}>
-              <Button onClick={() => goToStage("prompt")} trailing="→">
-                See the prompt
+              <Button onClick={() => goToStage("layout")} trailing="→">
+                See the layout
               </Button>
               <Button variant="secondary" onClick={() => goToStage("review")}>
                 Review the design
               </Button>
             </div>
           </>
+        );
+
+      case "layout":
+        if (!recipe || !blueprint) return null;
+        return (
+          <LayoutBlueprint
+            blueprint={blueprint}
+            recipeHash={recipe.recipe_hash}
+            onNavigate={goToStage}
+          />
         );
 
       case "prompt":
@@ -459,6 +480,11 @@ export default function Page() {
             {critic ? (
               <div className={styles.stageChip}>
                 <ComplianceChip critic={critic} onOpen={() => goToStage("review")} />
+              </div>
+            ) : null}
+            {blueprint ? (
+              <div className={styles.stageChip}>
+                <LayoutBackLink blueprint={blueprint} onOpen={() => goToStage("layout")} />
               </div>
             ) : null}
             <PromptOutput recipe={recipe} concept={selectedConcept} />
@@ -519,6 +545,7 @@ export default function Page() {
               setRecipe(next.recipe);
               setCritic(next.critic);
               setReview(null);
+              setBlueprint(next.blueprint);
               setRecipeContract(next.contract);
               setRecipeDirection(next.direction);
               setChangedPaths(next.changedPaths);

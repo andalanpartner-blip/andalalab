@@ -1,0 +1,194 @@
+.canvas {
+  /* role weights — restrained ink washes, no new palette */
+  --bp-fill-primary: color-mix(in srgb, var(--ink) 8%, transparent);
+  --bp-fill-secondary: color-mix(in srgb, var(--ink) 5%, transparent);
+  --bp-fill-supporting: color-mix(in srgb, var(--ink) 3%, transparent);
+  --bp-fill-utility: color-mix(in srgb, var(--ink) 1.5%, transparent);
+
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.frame {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+
+.grid line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.margin {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.safe {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.25;
+  stroke-dasharray: 9 6;
+  opacity: 0.55;
+}
+
+.edgeLabel {
+  fill: var(--faint);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* zones ---------------------------------------------------------------- */
+
+.zoneRect {
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  transition: fill var(--dur-fast) var(--ease), stroke var(--dur-fast) var(--ease);
+}
+
+.zone[data-role="primary"] .zoneRect {
+  stroke: var(--ink);
+  stroke-width: 2.25;
+}
+
+.zone[data-role="utility"] .zoneRect {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.zone[data-focal] .zoneRect {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.zone[data-highlight] .zoneRect {
+  fill: color-mix(in srgb, var(--accent) 10%, transparent) !important;
+  stroke: var(--accent-strong);
+}
+
+.zoneLabel {
+  fill: var(--ink);
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.zoneLabelSmall {
+  fill: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.zoneMeta {
+  fill: var(--faint);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.annotation {
+  fill: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+/* reading flow ------------------------------------------------------- */
+
+.flowLine {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-dasharray: 3 6;
+  stroke-linecap: round;
+}
+
+.arrowHead {
+  fill: var(--muted);
+}
+
+.flowDot {
+  fill: var(--surface);
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.flowNum {
+  fill: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+/* focal ------------------------------------------------------------- */
+
+.focalRing {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.focalDot {
+  fill: var(--accent);
+}
+
+.focalCross {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.75;
+}
+
+/* mobile — the schematic is an at-a-glance overview; the zone list below it
+   carries the detail, so drop the in-diagram meta text that would be too small. */
+@media (max-width: 640px) {
+  .zoneMeta,
+  .annotation,
+  .edgeLabel {
+    display: none;
+  }
+  .zoneLabel {
+    font-size: 34px;
+  }
+  .zoneLabelSmall {
+    font-size: 26px;
+  }
+  .flowNum {
+    font-size: 20px;
+  }
+}
+
+/* entrance — reduced-motion safe via the global animation-duration reset */
+@keyframes bp-draw {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.zones .zone,
+.flow,
+.focal {
+  animation: bp-draw var(--dur) var(--ease) both;
+}
+
+.flow {
+  animation-delay: calc(var(--dur) * 0.5);
+}
+
+.focal {
+  animation-delay: var(--dur);
+}

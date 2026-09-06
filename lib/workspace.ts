@@ -11,6 +11,7 @@ export const STAGES = [
   "strategy",
   "concept",
   "recipe",
+  "layout",
   "prompt",
   "generate",
   "review",
@@ -37,11 +38,12 @@ export const STAGE_META: Record<StageId, StageMeta> = {
   strategy: { id: "strategy", index: 2, label: "Strategy", future: false, summary: "The art direction the AI resolved." },
   concept: { id: "concept", index: 3, label: "Concept", future: false, summary: "Three directions, one strategic idea." },
   recipe: { id: "recipe", index: 4, label: "Recipe", future: false, summary: "Every design decision, with provenance." },
-  prompt: { id: "prompt", index: 5, label: "Prompt", future: false, summary: "The generation prompt, in two languages." },
-  generate: { id: "generate", index: 6, label: "Generate", future: true, summary: "Runs the image — ships with P8." },
-  review: { id: "review", index: 7, label: "Review", future: false, summary: "Compliance now; visual quality when a render exists." },
-  correct: { id: "correct", index: 8, label: "Correct", future: false, summary: "Bounded nudges — a new derived recipe." },
-  final: { id: "final", index: 9, label: "Final", future: true, summary: "The finished visual + decision trail — ships with P8." }
+  layout: { id: "layout", index: 5, label: "Layout", future: false, summary: "The intended structure — grid, zones, reading flow." },
+  prompt: { id: "prompt", index: 6, label: "Prompt", future: false, summary: "The generation prompt, in two languages." },
+  generate: { id: "generate", index: 7, label: "Generate", future: true, summary: "Runs the image — ships with P8." },
+  review: { id: "review", index: 8, label: "Review", future: false, summary: "Compliance now; visual quality when a render exists." },
+  correct: { id: "correct", index: 9, label: "Correct", future: false, summary: "Bounded nudges — a new derived recipe." },
+  final: { id: "final", index: 10, label: "Final", future: true, summary: "The finished visual + decision trail — ships with P8." }
 };
 
 export const STAGE_LIST: readonly StageMeta[] = STAGES.map((id) => STAGE_META[id]);
@@ -69,6 +71,10 @@ export function deriveStageStates(s: WorkspaceSignals): Record<StageId, Exclude<
     strategy: s.briefReady ? "done" : "locked",
     concept: !s.briefReady ? "locked" : s.conceptSelected ? "done" : "available",
     recipe: !s.conceptSelected ? "locked" : blocked ? "blocked" : s.hasRecipe ? "done" : "available",
+    // Layout is a real stage (not a P8 placeholder): the blueprint is resolved
+    // and returned with every recipe/correction response. Viewable regardless of
+    // the critic verdict — it shows intended structure, it decides nothing.
+    layout: !s.hasRecipe ? "locked" : "done",
     prompt: !s.hasRecipe ? "locked" : "done",
     // Generate & Final are viewable placeholders once a recipe exists — the
     // real behaviour ships with P8. `future` in STAGE_META keeps the rail
@@ -82,7 +88,7 @@ export function deriveStageStates(s: WorkspaceSignals): Record<StageId, Exclude<
 
 /** The furthest stage the user can sensibly be on right now (skips the P8 placeholders). */
 export function defaultStage(states: Record<StageId, Exclude<StageState, "active">>): StageId {
-  const order: StageId[] = ["review", "prompt", "recipe", "concept", "strategy", "brief"];
+  const order: StageId[] = ["review", "prompt", "layout", "recipe", "concept", "strategy", "brief"];
   for (const id of order) {
     if (states[id] === "available" || states[id] === "done" || states[id] === "blocked") return id;
   }

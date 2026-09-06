@@ -5,7 +5,12 @@ import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
 import type { DesignDirection } from "../types/schemas/direction.schema";
 import type { CreativeConcept } from "../types/schemas/concept.schema";
-import type { CorrectionField, CorrectionReport, DesignCriticReport } from "../engine";
+import type {
+  CorrectionField,
+  CorrectionReport,
+  DesignCriticReport,
+  LayoutBlueprint
+} from "../engine";
 import styles from "./CorrectionPanel.module.css";
 import { titleCase } from "../lib/format";
 import { StageHeader } from "./ui/StageHeader";
@@ -42,6 +47,7 @@ type OkResult = {
   contract: DesignContract;
   direction: DesignDirection;
   critic: DesignCriticReport;
+  blueprint: LayoutBlueprint;
 };
 type RejectedResult = { status: "REDESIGN" | "NOOP"; correction: CorrectionReport };
 type FailureResult = { status: "ERROR"; message: string };
@@ -57,6 +63,7 @@ export type CorrectionPanelProps = {
     contract: DesignContract;
     direction: DesignDirection;
     critic: DesignCriticReport;
+    blueprint: LayoutBlueprint;
     changedPaths: readonly string[];
   }) => void;
 };
@@ -110,6 +117,7 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
         contract: data.contract,
         direction: data.direction,
         critic: data.critic,
+        blueprint: data.blueprint,
         changedPaths: data.correction.diff.changed_paths
       });
     }
