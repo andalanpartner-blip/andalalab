@@ -212,6 +212,21 @@ export { lockConceptAnchor, CONCEPT_ANCHOR } from "./recipe/anchors";
 
 export { ok, err, isOk, isErr, unwrap, type Result } from "./util/result";
 
+// --- P2.11: visual generation request builder (pure — no provider) ---------
+export {
+  buildGenerationRequest,
+  PROMPT_COMPILER_VERSION,
+  GENERATION_REQUEST_VERSION,
+  type BuildGenerationRequestInput
+} from "./generation/request";
+export type {
+  GenerationRequest,
+  GeneratedArtifact,
+  GenerationProvenance,
+  GenerationConfig,
+  GenerationTarget
+} from "../types/schemas/visual-generation.schema";
+
 // --- P2.3: prompt compiler -------------------------------------------------
 export { compilePromptSet } from "./prompt/compile";
 export { buildPromptBlocks, type BuildPromptBlocksInput } from "./prompt/blocks";

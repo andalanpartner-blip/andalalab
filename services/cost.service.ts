@@ -127,6 +127,12 @@ export function costEventFrom(input: {
   readonly status: CostEvent["status"];
   readonly attempt: number;
   readonly createdAt: string;
+  /**
+   * An explicit cost, in USD, from a provider that does not price by token
+   * (e.g. a per-image generation call). When given it is used verbatim; when
+   * absent the token-rate estimate is used.
+   */
+  readonly estimatedCostUsd?: number;
 }): CostEvent {
   return {
     project_id: input.projectId,
@@ -136,7 +142,9 @@ export function costEventFrom(input: {
     prompt_template_version: input.templateVersion,
     input_tokens: input.inputTokens,
     output_tokens: input.outputTokens,
-    estimated_cost_usd: estimateCostUsd(input.modelId, input.inputTokens, input.outputTokens),
+    estimated_cost_usd:
+      input.estimatedCostUsd ??
+      estimateCostUsd(input.modelId, input.inputTokens, input.outputTokens),
     latency_ms: input.latencyMs,
     status: input.status,
     attempt: input.attempt,

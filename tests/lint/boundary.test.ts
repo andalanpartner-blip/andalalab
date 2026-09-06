@@ -91,6 +91,34 @@ describe("the real engine source obeys the rule", () => {
   });
 });
 
+describe("the visual-generation boundary holds (P2.11)", () => {
+  it("blocks the engine from importing the visual-generation adapter or client", async () => {
+    const fake = await lintAsEngine(
+      `import { createFakeVisualGeneration } from "../adapters/visual-generation/fake";\nexport const a = createFakeVisualGeneration;\n`
+    );
+    expect(fake.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+
+    const client = await lintAsEngine(
+      `import { createVisualGenerationClient } from "../adapters/visual-generation/client";\nexport const b = createVisualGenerationClient;\n`
+    );
+    expect(client.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+  });
+
+  it("blocks the engine from importing the generation service", async () => {
+    const messages = await lintAsEngine(
+      `import { runVisualGeneration } from "../services/generation.service";\nexport const a = runVisualGeneration;\n`
+    );
+    expect(messages.filter((m) => m.severity === 2).length).toBeGreaterThan(0);
+  });
+
+  it("allows the engine to depend on the visual-generation port type", async () => {
+    const messages = await lintAsEngine(
+      `import type { VisualGenerationPort } from "../ports/visual-generation.port";\nexport const a = (p: VisualGenerationPort) => p;\n`
+    );
+    expect(messages.filter((m) => m.severity === 2)).toHaveLength(0);
+  });
+});
+
 describe("the LLM boundary holds", () => {
   it("blocks the engine from importing a provider adapter directly", async () => {
     const gemini = await lintAsEngine(

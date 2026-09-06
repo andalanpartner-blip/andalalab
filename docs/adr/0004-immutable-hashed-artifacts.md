@@ -1,6 +1,6 @@
 # ADR 0004 — Artifacts are immutable, version-pinned and content-hashed
 
-**Status:** accepted (P0) · **correction loops implemented (P6)** · **Layout Blueprint added (P2.10)** — see `docs/correction-engine.md` and `docs/layout-blueprint.md`
+**Status:** accepted (P0) · **correction loops implemented (P6)** · **Layout Blueprint added (P2.10)** · **Visual Generation foundation added (P2.11)** — see `docs/correction-engine.md`, `docs/layout-blueprint.md` and `docs/visual-generation-integration.md`
 
 ## Context
 A project must remain readable years later, after schemas and datasets have moved on. Correction
@@ -58,3 +58,37 @@ recipe), and is deep-frozen on creation.
 
 No new dataset (ADR 0002 stands). No new engine rule for the design core (ADR 0006 stands — the
 blueprint is arithmetic over resolved artifacts). No LLM (ADR 0007 stands).
+
+## P2.11 — Visual Generation
+Two more artifacts of this kind wrap a **non-deterministic** image API without letting anything
+around it drift.
+
+- **`GenerationRequest`** (`engine/generation/request.ts` → `buildGenerationRequest`) — the
+  normalised instruction sent to a provider. Pure and deterministic: built from an
+  already-resolved recipe, its (optional) blueprint and the compiled prompt set. It carries
+  `schema_version`, `generation_request_version`, a full `provenance` block (recipe id + hash,
+  contract, direction, concept ref, blueprint hash, prompt-compiler version, prompt hash,
+  P2.7 adapter id, dataset version) and an 8-char `request_hash = fnv1a(canonicalise(body))`.
+  Same inputs ⇒ byte-identical request and hash. It makes no design decision — the adapter, the
+  prompt strings and every parameter were resolved upstream.
+- **`GeneratedArtifact`** — the immutable record of one generation call, deep-frozen. It is
+  traceable end to end and never stores the image bytes — only `image.delivery` +
+  `image.reference` (a short opaque handle). `artifact_hash` identifies the generation
+  *envelope* (provenance + provider + model + adapter + image spec + cost basis + seed), not the
+  pixels; `artifact_id` is fresh per call. Provider metadata, run metadata and a
+  `GenerationCostRecord` (with an explicit `pricing_basis`, never presented as an invoice) ride
+  alongside.
+
+The provider is reached only through `VisualGenerationPort` (`ports/visual-generation.port.ts`),
+mirroring the LLM boundary: `engine/**`, the prompt compiler, the critic, the correction engine,
+the recipe engine and the blueprint engine contain no provider import (enforced by the
+`engine/**` lint boundary and `tests/lint/boundary.test.ts`). A provider-independent client
+(`adapters/visual-generation/client.ts`) books a cost-ledger event for every call — on success
+and on failure, before the result is decided — never retries, and never turns a provider failure
+into an artifact. Generation is an **explicit downstream action** (`services/generation.service.ts`)
+and is never triggered by `runRecipePipeline` or `runCorrectionPipeline`.
+
+No live image API is called: this milestone ships the port, the schemas, the deterministic
+request builder and a **fake adapter** (`adapters/visual-generation/fake.ts`) that returns a
+schema-valid artifact with `delivery: "none"` and `pricing_basis: "test-fixture"`. No object
+storage, no database, no persistence, no new dependency.

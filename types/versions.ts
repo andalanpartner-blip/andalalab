@@ -28,7 +28,11 @@ export const SCHEMA_VERSIONS = {
   concept: "1.0.0",
   // P2.10 — Layout Blueprint. A derived, deterministic, content-hashed artifact
   // (ADR 0004 § P2.10). Additive: nothing upstream reads it.
-  layoutBlueprint: "1.0.0"
+  layoutBlueprint: "1.0.0",
+  // P2.11 — Visual Generation. The normalised request sent to an image provider
+  // and the immutable record of one generation call (ADR 0004 § P2.11).
+  generationRequest: "1.0.0",
+  generatedArtifact: "1.0.0"
 } as const;
 
 export type SchemaKey = keyof typeof SCHEMA_VERSIONS;
