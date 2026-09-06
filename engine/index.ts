@@ -271,6 +271,22 @@ export {
   type EvidenceObservation
 } from "./critic/review";
 
+// --- P2.15: vision-aware Design Critic (evidence vs intent) -------------
+export {
+  evaluateVisionCritique,
+  VISION_CRITIQUE_RESOLVER_VERSION,
+  type VisionCritiqueInput
+} from "./critic/vision-critique";
+export type {
+  DesignCritique,
+  CritiqueFinding,
+  CritiqueDimension,
+  CritiqueClassification,
+  CritiqueSeverity,
+  CritiqueProvenance,
+  CritiqueDimensionRollup
+} from "../types/schemas/design-critique.schema";
+
 // --- P6: correction engine ---------------------------------------------
 export {
   applyCorrection,
