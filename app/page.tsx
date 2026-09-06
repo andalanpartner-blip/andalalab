@@ -152,10 +152,17 @@ export default function Page() {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  // If the active stage becomes unreachable (upstream change), fall back.
+  // If the active stage becomes unreachable (upstream change or a stale URL),
+  // fall back to the furthest sensible stage and keep the URL honest.
   useEffect(() => {
     if (!isReachable(stageStates[activeStage])) {
-      setActiveStage(defaultStage(stageStates));
+      const fallback = defaultStage(stageStates);
+      setActiveStage(fallback);
+      if (typeof window !== "undefined") {
+        const url = new URL(window.location.href);
+        url.searchParams.set("stage", fallback);
+        window.history.replaceState(null, "", url);
+      }
     }
   }, [stageStates, activeStage]);
 
