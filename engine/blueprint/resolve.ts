@@ -257,6 +257,10 @@ export function resolveLayoutBlueprint(
     resolver_version: RESOLVER_VERSION,
     dataset_version: datasets.version,
     mode: "schematic" as const,
+    derived_from: {
+      recipe_id: recipe.id,
+      recipe_hash: recipe.recipe_hash
+    },
     provenance: {
       recipe_id: recipe.id,
       recipe_hash: recipe.recipe_hash,

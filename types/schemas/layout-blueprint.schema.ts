@@ -339,7 +339,20 @@ export const LayoutBlueprint = z
     dataset_version: DatasetVersion,
     mode: BlueprintMode,
 
-    /** Provenance — what this blueprint was derived from. Never re-derived. */
+    /**
+     * The parent recipe this blueprint is bound to — the same convention as
+     * `DesignRecipe.derived_from` (ADR 0004). A blueprint whose
+     * `derived_from.recipe_hash` is not the current recipe's hash is stale and
+     * must be re-resolved, never reused.
+     */
+    derived_from: z
+      .object({
+        recipe_id: Id,
+        recipe_hash: z.string().length(8)
+      })
+      .strict(),
+
+    /** Fuller provenance trace — every artifact the blueprint was projected from. */
     provenance: z
       .object({
         recipe_id: Id,

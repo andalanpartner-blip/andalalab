@@ -17,12 +17,12 @@ import { blueprintInputs, BLUEPRINT_FIXTURES } from "../fixtures/blueprint-input
 
 /** Pinned blueprint hashes. Regenerate ONLY with an intentional resolver bump. */
 const GOLDEN_HASH: Record<(typeof BLUEPRINT_FIXTURES)[number], string> = {
-  "kopi-lawas-promotion": "4239fe95",
-  "northbeam-saas-launch": "5a7897a3",
-  "ooh-hospitality-billboard": "17e35581",
-  "print-property-brochure": "7ef0d8e6",
-  "web-hero-saas-launch": "1ef043a3",
-  "story-skincare-launch": "090e33e1"
+  "kopi-lawas-promotion": "4fd3c391",
+  "northbeam-saas-launch": "a69c07ae",
+  "ooh-hospitality-billboard": "1ed32b69",
+  "print-property-brochure": "8e60b90c",
+  "web-hero-saas-launch": "7f39d6c2",
+  "story-skincare-launch": "bc4d2305"
 };
 
 const resolve = (name: string) => {
@@ -45,6 +45,12 @@ describe("golden: layout blueprint per fixture", () => {
     expect(LayoutBlueprint.safeParse(a.value).success).toBe(true);
     expect(b.value).toEqual(a.value);
     expect(a.value.blueprint_hash).toBe(GOLDEN_HASH[name]);
+
+    // the blueprint is bound to the recipe it was resolved from
+    const { recipe } = blueprintInputs(name);
+    expect(a.value.derived_from.recipe_hash).toBe(recipe.recipe_hash);
+    expect(a.value.derived_from.recipe_id).toBe(recipe.id);
+    expect(a.value.provenance.recipe_hash).toBe(recipe.recipe_hash);
   });
 
   it.each(BLUEPRINT_FIXTURES)("%s — every value traces back to the recipe or is marked derived", (name) => {

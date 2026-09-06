@@ -33,13 +33,15 @@ import {
   auditDesign,
   reviewDesign,
   applyCorrection,
+  resolveLayoutBlueprint,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
   type PromptSet,
   type DesignCriticReport,
   type VisualReviewReport,
-  type CorrectionReport
+  type CorrectionReport,
+  type LayoutBlueprint
 } from "../engine";
 
 /**
@@ -318,6 +320,14 @@ export type RecipeOkResult = {
    * `VisualEvidence` fixture is supplied. Also deterministic and read-only.
    */
   readonly review: VisualReviewReport;
+  /**
+   * The P2.10 Layout Blueprint — a derived, deterministic, content-hashed
+   * structural plan (canvas, grid, zones, geometry, hierarchy, reading flow,
+   * focal area, relationships, rationale). Bound to this recipe by
+   * `blueprint.derived_from.recipe_hash`. Read-only; it never alters the recipe,
+   * critic or review, and it is computed after them.
+   */
+  readonly blueprint: LayoutBlueprint;
 };
 export type RecipeFailureResult = { readonly status: "ERROR"; readonly message: string };
 export type RecipePipelineResult = RecipeOkResult | RecipeFailureResult;
@@ -387,7 +397,34 @@ export function runRecipePipeline(
     visualEvidence: evidenceParsed && evidenceParsed.success ? evidenceParsed.data : null
   });
 
-  return { status: "OK", recipe: recipeResult.value, promptSet, critic, review };
+  // P2.10 — the Layout Blueprint, resolved AFTER the critic and the review from
+  // the same finished recipe. It never recomputes or mutates the recipe. A P0
+  // resolver failure means the recipe / contract / direction are structurally
+  // inconsistent; surface it through the existing ERROR result rather than
+  // returning a design that cannot be laid out.
+  const blueprintResult = resolveLayoutBlueprint({
+    recipe: recipeResult.value,
+    contract: contractParsed.data,
+    direction: directionParsed.data,
+    datasets: deps.datasets
+  });
+  if (!blueprintResult.ok) {
+    return {
+      status: "ERROR",
+      message: `The layout blueprint couldn't be resolved for this design (${blueprintResult.error
+        .map((issue) => issue.code)
+        .join(", ")}).`
+    };
+  }
+
+  return {
+    status: "OK",
+    recipe: recipeResult.value,
+    promptSet,
+    critic,
+    review,
+    blueprint: blueprintResult.value
+  };
 }
 
 // --- P6: correction engine ---------------------------------------------
@@ -412,6 +449,11 @@ export type CorrectionAdjustmentResult = {
   readonly direction: DesignDirection;
   readonly promptSet: PromptSet;
   readonly critic: DesignCriticReport;
+  /**
+   * A FRESH P2.10 Layout Blueprint resolved from the derived recipe — never the
+   * parent's. Bound to the corrected recipe by `blueprint.derived_from.recipe_hash`.
+   */
+  readonly blueprint: LayoutBlueprint;
 };
 export type CorrectionRejectedResult = {
   readonly status: "REDESIGN" | "NOOP";
@@ -488,6 +530,18 @@ export function runCorrectionPipeline(
     concept: conceptParsed ? conceptParsed.data : null
   });
 
+  // P2.10 — a fresh blueprint from the DERIVED recipe (never the parent). Its
+  // `derived_from.recipe_hash` therefore tracks the corrected recipe's hash.
+  const blueprintResult = resolveLayoutBlueprint({ recipe, contract, direction, datasets: deps.datasets });
+  if (!blueprintResult.ok) {
+    return {
+      status: "ERROR",
+      message: `The layout blueprint couldn't be resolved for the corrected design (${blueprintResult.error
+        .map((issue) => issue.code)
+        .join(", ")}).`
+    };
+  }
+
   return {
     status: "OK",
     outcome: "adjustment",
@@ -496,6 +550,7 @@ export function runCorrectionPipeline(
     contract,
     direction,
     promptSet,
-    critic
+    critic,
+    blueprint: blueprintResult.value
   };
 }

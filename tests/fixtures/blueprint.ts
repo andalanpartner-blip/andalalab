@@ -13,6 +13,10 @@ export function validBlueprint(overrides: Partial<LayoutBlueprint> = {}): Layout
     resolver_version: "1.0.0",
     dataset_version: "2026.09.3",
     mode: "schematic",
+    derived_from: {
+      recipe_id: "recipe_000001",
+      recipe_hash: "abcd1234"
+    },
     provenance: {
       recipe_id: "recipe_000001",
       recipe_hash: "abcd1234",
