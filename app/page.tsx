@@ -16,10 +16,12 @@ import { VisualReview } from "../components/VisualReview";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptSection } from "../components/PromptSection";
 import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
+import { AIStatus, type AIStatusStep } from "../components/workspace/AIStatus";
 import { StageHeader } from "../components/ui/StageHeader";
 import { Panel } from "../components/ui/Panel";
 import { Button } from "../components/ui/Button";
 import { EmptyState } from "../components/ui/EmptyState";
+import { Skeleton } from "../components/ui/Skeleton";
 import type { ClarificationQuestion, DesignCriticReport, VisualReviewReport } from "../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../services/pipeline.service";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
@@ -65,6 +67,25 @@ function readStageFromUrl(): StageId | null {
   if (typeof window === "undefined") return null;
   const value = new URLSearchParams(window.location.search).get("stage");
   return isStageId(value) ? value : null;
+}
+
+/** A genuine loading placeholder for the recipe stage while /api/recipe runs. */
+function RecipeSkeleton() {
+  return (
+    <section className="container" aria-busy="true">
+      <StageHeader kicker="Stage 4 · Recipe" title="Design Recipe" />
+      <Skeleton variant="line" lines={2} />
+      <div style={{ marginTop: "var(--space-5)" }}>
+        <Skeleton variant="panel" height="88px" />
+      </div>
+      <div style={{ marginTop: "var(--space-3)" }}>
+        <Skeleton variant="panel" height="88px" />
+      </div>
+      <div style={{ marginTop: "var(--space-3)" }}>
+        <Skeleton variant="panel" height="88px" />
+      </div>
+    </section>
+  );
 }
 
 export default function Page() {
@@ -233,6 +254,9 @@ export default function Page() {
 
     setRecipeLoading(true);
     setRecipeError(null);
+    // Move to the recipe stage now and show a skeleton while the POST runs —
+    // the wait belongs to that stage, not the concept stage.
+    goToStage("recipe", { force: true });
 
     const data = await postRecipe({
       contract: result.contract,
@@ -246,15 +270,24 @@ export default function Page() {
       setReview(data.review);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
-      goToStage("recipe", { force: true });
     } else {
       setRecipeError(data.message);
+      goToStage("concept", { force: true });
     }
     setRecipeLoading(false);
   }, [result, selectedConceptId, goToStage]);
 
   const selectedConcept =
     result?.concepts.concepts.find((entry) => entry.id === selectedConceptId) ?? null;
+
+  // The real operation running right now — one honest line, no fabricated steps.
+  const aiStep: AIStatusStep | null = briefBusy
+    ? clarify
+      ? "clarifying-brief"
+      : "interpreting-brief"
+    : recipeLoading
+      ? "building-recipe"
+      : null;
 
   const railStates = useMemo<Record<StageId, StageState>>(() => {
     const out = { ...stageStates } as Record<StageId, StageState>;
@@ -357,6 +390,7 @@ export default function Page() {
         );
 
       case "recipe":
+        if (!recipe && recipeLoading) return <RecipeSkeleton />;
         if (!recipe) {
           return (
             <section className={`container ${styles.stageSection}`}>
@@ -457,6 +491,7 @@ export default function Page() {
         onNavigate={(id) => goToStage(id)}
         ledger={recipe ? <RecipeBoard recipe={recipe} /> : null}
         ledgerAvailable={recipe !== null}
+        aiStatus={<AIStatus step={aiStep} />}
         toolbar={
           phase === "ready" ? (
             <Button variant="link" onClick={handleStartOver}>

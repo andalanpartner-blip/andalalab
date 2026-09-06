@@ -4,13 +4,13 @@
   gap: 8px;
   font-size: var(--fs-caption);
   letter-spacing: 0.02em;
-  color: var(--faint);
-  min-height: 1em;
+  color: var(--muted);
   margin: 0;
+  min-height: 0;
 }
 
 .status[data-active="true"] {
-  color: var(--muted);
+  min-height: 1.2em;
 }
 
 .inline {
@@ -18,6 +18,7 @@
 }
 
 .pulse {
+  position: relative;
   width: 6px;
   height: 6px;
   border-radius: var(--radius-pill);
@@ -28,18 +29,18 @@
 .pulse::after {
   content: "";
   position: absolute;
-  width: 6px;
-  height: 6px;
+  inset: 0;
   border-radius: var(--radius-pill);
   border: 1px solid var(--accent);
   animation: ai-ping 2s var(--ease) infinite;
 }
 
 .ellipsis {
-  animation: ai-dots 1.4s steps(4, end) infinite;
+  display: inline-block;
   width: 1ch;
   overflow: hidden;
   white-space: nowrap;
+  animation: ai-dots 1.4s steps(4, end) infinite;
 }
 
 @keyframes ai-ping {
@@ -64,11 +65,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse::after,
-  .ellipsis {
+  .pulse::after {
     animation: none;
+    opacity: 0.4;
   }
   .ellipsis {
+    animation: none;
     width: 1ch;
   }
 }

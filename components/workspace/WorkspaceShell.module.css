@@ -35,6 +35,10 @@
   gap: var(--space-3);
 }
 
+.aiStatusRow {
+  margin-top: var(--space-3);
+}
+
 .canvas {
   max-width: var(--canvas-max);
 }

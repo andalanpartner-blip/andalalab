@@ -16,6 +16,8 @@ export type WorkspaceShellProps = {
   readonly ledgerAvailable: boolean;
   /** Right-aligned actions above the canvas, e.g. "Start a new brief". */
   readonly toolbar?: ReactNode;
+  /** The AIStatus line — an always-present slot below the toolbar. */
+  readonly aiStatus?: ReactNode;
   readonly children: ReactNode;
 };
 
@@ -26,6 +28,7 @@ export function WorkspaceShell({
   ledger,
   ledgerAvailable,
   toolbar,
+  aiStatus,
   children
 }: WorkspaceShellProps) {
   const [ledgerOpen, setLedgerOpen] = useState(false);
@@ -58,6 +61,8 @@ export function WorkspaceShell({
           </Button>
           <div className={styles.toolbarRight}>{toolbar}</div>
         </div>
+
+        {aiStatus ? <div className={styles.aiStatusRow}>{aiStatus}</div> : null}
 
         <div className={styles.canvas}>{children}</div>
       </div>
