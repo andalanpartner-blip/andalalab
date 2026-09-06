@@ -500,10 +500,13 @@ export default function Page() {
         );
 
       case "generate":
-        if (!recipe) return null;
+        if (!recipe || !recipeContract) return null;
         return (
           <GenerateStage
-            aspectRatio={ASPECT_LABEL[recipe.platform.aspect_ratio_id] ?? recipe.platform.aspect_ratio_id}
+            recipe={recipe}
+            contract={recipeContract}
+            concept={selectedConcept}
+            blueprint={blueprint}
             onNavigate={goToStage}
           />
         );

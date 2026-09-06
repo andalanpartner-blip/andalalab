@@ -119,15 +119,29 @@ export type GenerateVisualOptions = {
 };
 
 /**
+ * A deterministic pre-call estimate: who would run this request, on what model,
+ * and roughly what it would cost. No provider call, no cost-ledger event — used
+ * for the human cost-confirmation step before generation.
+ */
+export type GenerationEstimate = {
+  readonly provider: string;
+  readonly model: string;
+  readonly adapter_id: string;
+  readonly cost: GenerationCost;
+};
+
+/**
  * The port itself.
  *
- * Implementations MUST: book a cost-ledger event for every call before
- * returning (on success AND on failure), never retry, and never return an
- * artifact for a failed call.
+ * Implementations MUST: book a cost-ledger event for every `generate` call
+ * before returning (on success AND on failure), never retry, and never return
+ * an artifact for a failed call. `estimate` is pure — it never calls the
+ * provider and never records cost.
  */
 export type VisualGenerationPort = {
   generate(
     request: GenerationRequest,
     options: GenerateVisualOptions
   ): Promise<Result<GeneratedArtifact, GenerationIssue[]>>;
+  estimate(request: GenerationRequest): GenerationEstimate;
 };

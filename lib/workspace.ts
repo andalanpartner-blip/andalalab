@@ -40,7 +40,7 @@ export const STAGE_META: Record<StageId, StageMeta> = {
   recipe: { id: "recipe", index: 4, label: "Recipe", future: false, summary: "Every design decision, with provenance." },
   layout: { id: "layout", index: 5, label: "Layout", future: false, summary: "The intended structure — grid, zones, reading flow." },
   prompt: { id: "prompt", index: 6, label: "Prompt", future: false, summary: "The generation prompt, in two languages." },
-  generate: { id: "generate", index: 7, label: "Generate", future: true, summary: "Runs the image — ships with P8." },
+  generate: { id: "generate", index: 7, label: "Generate", future: false, summary: "Hand the prompt to the image provider — an explicit action." },
   review: { id: "review", index: 8, label: "Review", future: false, summary: "Compliance now; visual quality when a render exists." },
   correct: { id: "correct", index: 9, label: "Correct", future: false, summary: "Bounded nudges — a new derived recipe." },
   final: { id: "final", index: 10, label: "Final", future: true, summary: "The finished visual + decision trail — ships with P8." }
@@ -76,9 +76,8 @@ export function deriveStageStates(s: WorkspaceSignals): Record<StageId, Exclude<
     // the critic verdict — it shows intended structure, it decides nothing.
     layout: !s.hasRecipe ? "locked" : "done",
     prompt: !s.hasRecipe ? "locked" : "done",
-    // Generate & Final are viewable placeholders once a recipe exists — the
-    // real behaviour ships with P8. `future` in STAGE_META keeps the rail
-    // showing them as "soon".
+    // Generate is a real, explicit action once the recipe (and its blueprint +
+    // compiled prompt) exist. It is never auto-run. Final stays a P8 placeholder.
     generate: !s.hasRecipe ? "locked" : "available",
     review: !s.hasRecipe ? "locked" : blocked ? "blocked" : s.hasReview ? "done" : "available",
     correct: !s.hasRecipe ? "locked" : "available",

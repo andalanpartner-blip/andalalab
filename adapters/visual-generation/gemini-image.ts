@@ -2,11 +2,14 @@ import type { ClockPort } from "../../ports/clock.port";
 import type { CostLedgerPort } from "../../ports/cost.port";
 import type { IdPort } from "../../ports/id.port";
 import type {
+  GenerationCost,
+  GenerationEstimate,
   GenerationIssueCode,
   RawGenerationCall,
   RawGenerationResponse,
   VisualGenerationPort
 } from "../../ports/visual-generation.port";
+import type { GenerationRequest } from "../../types/schemas/visual-generation.schema";
 import { fnv1a } from "../../types/primitives";
 import { createVisualGenerationClient } from "./client";
 
@@ -135,6 +138,39 @@ function decodeBase64(b64: string): Uint8Array {
 }
 
 const round6 = (n: number): number => Math.round(n * 1_000_000) / 1_000_000;
+
+/**
+ * Deterministic pre-call cost estimate — same published rates, applied to the
+ * request instead of a provider response. Input tokens are approximated from
+ * the prompt length (~4 chars/token); the image output token count is the
+ * published figure for the resolution bucket. No network, no cost event.
+ */
+export function estimateGeminiImageCost(
+  targetWidth: number,
+  targetHeight: number,
+  promptChars: number
+): GenerationCost {
+  const size = imageSizeFor(Math.max(targetWidth, targetHeight));
+  const inputTokens = Math.ceil(promptChars / 4);
+  const inputCost = round6((inputTokens / 1_000_000) * RATE_INPUT_PER_MILLION_USD);
+  const imageCost = round6((IMAGE_OUTPUT_TOKENS[size] / 1_000_000) * RATE_IMAGE_OUTPUT_PER_MILLION_USD);
+  return {
+    currency: "USD",
+    estimated_cost_usd: round6(inputCost + imageCost),
+    image_cost_usd: imageCost,
+    input_cost_usd: inputCost,
+    pricing_basis: "estimated"
+  };
+}
+
+export function estimateGeminiImage(request: GenerationRequest, model = GEMINI_IMAGE_MODEL): GenerationEstimate {
+  return {
+    provider: GEMINI_IMAGE_PROVIDER,
+    model,
+    adapter_id: request.provenance.adapter_id,
+    cost: estimateGeminiImageCost(request.target.width, request.target.height, request.prompt.length)
+  };
+}
 
 // --- response shape (Gemini generateContent, image) ------------------
 
@@ -325,8 +361,10 @@ export function createGeminiImageCall(options: GeminiImageOptions): RawGeneratio
 export function createGeminiImageGeneration(
   options: GeminiImageOptions & { ledger: CostLedgerPort; ids: IdPort }
 ): VisualGenerationPort {
+  const model = options.model ?? GEMINI_IMAGE_MODEL;
   return createVisualGenerationClient({
     call: createGeminiImageCall(options),
+    estimate: (request) => estimateGeminiImage(request, model),
     ledger: options.ledger,
     clock: options.clock,
     ids: options.ids

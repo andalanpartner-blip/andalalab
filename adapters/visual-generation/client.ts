@@ -3,6 +3,7 @@ import type { CostLedgerPort } from "../../ports/cost.port";
 import type { IdPort } from "../../ports/id.port";
 import type {
   GenerateVisualOptions,
+  GenerationEstimate,
   GenerationIssue,
   RawGenerationCall,
   RawGenerationResponse,
@@ -42,6 +43,8 @@ export const DEFAULT_GENERATION_TIMEOUT_MS = 60_000;
 
 export type VisualGenerationClientOptions = {
   readonly call: RawGenerationCall;
+  /** Deterministic pre-call estimate. Pure — no provider call, no cost event. */
+  readonly estimate: (request: GenerationRequest) => GenerationEstimate;
   readonly ledger: CostLedgerPort;
   readonly clock: ClockPort;
   readonly ids: IdPort;
@@ -65,6 +68,8 @@ export function createVisualGenerationClient(
   const timeoutDefault = options.defaultTimeoutMs ?? DEFAULT_GENERATION_TIMEOUT_MS;
 
   return {
+    estimate: options.estimate,
+
     async generate(
       request: GenerationRequest,
       generateOptions: GenerateVisualOptions
