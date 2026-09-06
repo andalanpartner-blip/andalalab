@@ -457,10 +457,40 @@ function buildSections(recipe: DesignRecipe): LedgerSection[] {
   ];
 }
 
-export function DecisionLedger({ recipe }: { recipe: DesignRecipe }) {
+/** Map a correction's changed_path (e.g. "dkv.whitespace") to a ledger section id. */
+function pathToSection(path: string): string | null {
+  const head = path.split(".")[0];
+  if (head === "composition" || head === "grid") return head;
+  if (head === "hierarchy" || head === "typography" || head === "color") return head === "typography" ? "typography" : head;
+  if (head === "imagery" || head === "lighting" || head === "materiality") return head;
+  if (head === "graphic_language") return "graphic-language";
+  if (head === "graphic_treatment") return "graphic-treatment";
+  if (head === "photographic_character") return "photographic-character";
+  if (head === "dkv") {
+    const p = path.split(".")[1];
+    if (p === "contrast" || p === "color_complexity") return "color";
+    if (p === "hierarchy_strength" || p === "focal_dominance") return "hierarchy";
+    if (p === "typographic_scale_ratio") return "typography";
+    return "composition"; // whitespace / visual_density / alignment
+  }
+  return null;
+}
+
+export function DecisionLedger({
+  recipe,
+  recentlyChanged = []
+}: {
+  recipe: DesignRecipe;
+  recentlyChanged?: readonly string[];
+}) {
   const [filter, setFilter] = useState<LedgerFilter>("all");
   const [query, setQuery] = useState("");
   const sections = useMemo(() => buildSections(recipe), [recipe]);
+
+  const changedSections = useMemo(
+    () => new Set(recentlyChanged.map(pathToSection).filter((id): id is string => id !== null)),
+    [recentlyChanged]
+  );
 
   const q = query.trim().toLowerCase();
   const visible = sections.filter((section) => {
@@ -505,17 +535,26 @@ export function DecisionLedger({ recipe }: { recipe: DesignRecipe }) {
       ) : (
         <DisclosureGroup>
           {visible.map((section) => (
-            <Disclosure
-              key={section.id}
-              title={section.title}
-              hint={section.hint}
-              defaultOpen={q.length > 0 || section.defaultOpen}
-            >
-              {section.body}
-              <p className={styles.source}>
-                <span className={styles.sourceLabel}>Source</span> {section.source}
-              </p>
-            </Disclosure>
+            <div key={section.id} className={changedSections.has(section.id) ? "updated-flash" : undefined}>
+              <Disclosure
+                title={
+                  changedSections.has(section.id) ? (
+                    <>
+                      {section.title} <span className={styles.changedTag}>updated</span>
+                    </>
+                  ) : (
+                    section.title
+                  )
+                }
+                hint={section.hint}
+                defaultOpen={q.length > 0 || changedSections.has(section.id) || section.defaultOpen}
+              >
+                {section.body}
+                <p className={styles.source}>
+                  <span className={styles.sourceLabel}>Source</span> {section.source}
+                </p>
+              </Disclosure>
+            </div>
           ))}
         </DisclosureGroup>
       )}

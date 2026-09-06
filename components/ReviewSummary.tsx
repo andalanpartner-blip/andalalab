@@ -151,10 +151,12 @@ export function ReviewSummary({ report, critic, onNavigate }: ReviewSummaryProps
       />
 
       <div className={`${styles.verdict} ${styles[`verdict_${verdict}`]}`}>
-        <div className={styles.verdictHead}>
-          <Badge tone={VERDICT_TONE[verdict]} variant="soft">
-            {titleCase(verdict)}
-          </Badge>
+        <div className={styles.verdictHead} key={verdict}>
+          <span className="crossfade">
+            <Badge tone={VERDICT_TONE[verdict]} variant="soft">
+              {titleCase(verdict)}
+            </Badge>
+          </span>
           <span className={styles.summary}>{summary}</span>
         </div>
         <p className={styles.nextLine}>{action.line}</p>

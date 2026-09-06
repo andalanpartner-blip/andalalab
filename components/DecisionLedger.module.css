@@ -202,3 +202,13 @@
   font-size: 10px;
   margin-right: 6px;
 }
+
+.changedTag {
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  vertical-align: middle;
+}

@@ -24,9 +24,11 @@ export function ComplianceChip({
 }) {
   return (
     <button type="button" className={styles.chip} onClick={onOpen}>
-      <Badge tone={VERDICT_TONE[critic.verdict]} variant="soft" dot>
-        {VERDICT_COPY[critic.verdict]}
-      </Badge>
+      <span key={critic.verdict} className="crossfade">
+        <Badge tone={VERDICT_TONE[critic.verdict]} variant="soft" dot>
+          {VERDICT_COPY[critic.verdict]}
+        </Badge>
+      </span>
       <span className={styles.open}>Open review →</span>
     </button>
   );

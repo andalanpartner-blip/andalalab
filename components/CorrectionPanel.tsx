@@ -57,6 +57,7 @@ export type CorrectionPanelProps = {
     contract: DesignContract;
     direction: DesignDirection;
     critic: DesignCriticReport;
+    changedPaths: readonly string[];
   }) => void;
 };
 
@@ -104,7 +105,13 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
     const data = (await response.json()) as CorrectionResult;
     setResult(data);
     if (data.status === "OK") {
-      onCorrected({ recipe: data.recipe, contract: data.contract, direction: data.direction, critic: data.critic });
+      onCorrected({
+        recipe: data.recipe,
+        contract: data.contract,
+        direction: data.direction,
+        critic: data.critic,
+        changedPaths: data.correction.diff.changed_paths
+      });
     }
     setBusy(false);
   };

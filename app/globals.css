@@ -272,6 +272,50 @@ button {
   animation: reveal var(--dur-slow) var(--ease) both;
 }
 
+/* Stage transition — the canvas slides the new stage in. Keyed by stage id. */
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.stage-in {
+  animation: stage-in var(--dur) var(--ease) both;
+}
+
+/* A one-shot, quiet "this just changed" flash — value corrections, etc. */
+@keyframes updated-flash {
+  0% {
+    background-color: var(--accent-soft);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.updated-flash {
+  animation: updated-flash var(--dur-slow) var(--ease) both;
+}
+
+/* Verdict change — a quick crossfade so a new verdict registers. */
+@keyframes crossfade {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.crossfade {
+  animation: crossfade var(--dur) var(--ease) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

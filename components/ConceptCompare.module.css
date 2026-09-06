@@ -24,6 +24,7 @@
   gap: var(--space-3);
   padding: var(--pad-panel);
   background: var(--surface);
+  transition: box-shadow var(--dur) var(--ease), background var(--dur-fast) var(--ease);
 }
 
 .card[data-selected="true"] {

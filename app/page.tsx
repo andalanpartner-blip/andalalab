@@ -127,6 +127,7 @@ export default function Page() {
 
   const [activeStage, setActiveStage] = useState<StageId>("brief");
   const [ledgerOpen, setLedgerOpen] = useState(false);
+  const [changedPaths, setChangedPaths] = useState<readonly string[]>([]);
 
   // -- stage state model -------------------------------------------------
   const stageStates = useMemo(
@@ -520,6 +521,7 @@ export default function Page() {
               setReview(null);
               setRecipeContract(next.contract);
               setRecipeDirection(next.direction);
+              setChangedPaths(next.changedPaths);
             }}
           />
         );
@@ -536,7 +538,7 @@ export default function Page() {
         states={railStates}
         active={activeStage}
         onNavigate={(id) => goToStage(id)}
-        ledger={recipe ? <DecisionLedger recipe={recipe} /> : null}
+        ledger={recipe ? <DecisionLedger recipe={recipe} recentlyChanged={changedPaths} /> : null}
         ledgerAvailable={recipe !== null}
         ledgerOpen={ledgerOpen}
         onLedgerOpenChange={setLedgerOpen}
@@ -549,7 +551,9 @@ export default function Page() {
           ) : null
         }
       >
-        {canvas}
+        <div key={`${activeStage}-${phase}`} className="stage-in">
+          {canvas}
+        </div>
       </WorkspaceShell>
     </main>
   );
