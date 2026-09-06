@@ -1,0 +1,89 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-kicker);
+  font-weight: 560;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  flex: none;
+}
+
+/* -- tone x variant ------------------------------------------------------- */
+.neutral.soft {
+  color: var(--muted);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+.neutral.outline {
+  color: var(--muted);
+  border-color: var(--border-strong);
+}
+.neutral.solid {
+  color: var(--ink-on);
+  background: var(--muted);
+}
+
+.ok.soft {
+  color: var(--ok);
+  background: var(--ok-soft);
+}
+.ok.outline {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+.ok.solid {
+  color: var(--ink-on);
+  background: var(--ok);
+}
+
+.attention.soft {
+  color: var(--attention);
+  background: var(--attention-soft);
+}
+.attention.outline {
+  color: var(--attention);
+  border-color: var(--attention);
+}
+.attention.solid {
+  color: var(--ink-on);
+  background: var(--attention);
+}
+
+.critical.soft {
+  color: var(--critical);
+  background: var(--critical-soft);
+}
+.critical.outline {
+  color: var(--critical);
+  border-color: var(--critical);
+}
+.critical.solid {
+  color: var(--ink-on);
+  background: var(--critical);
+}
+
+.accent.soft {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+.accent.outline {
+  color: var(--accent-strong);
+  border-color: var(--accent);
+}
+.accent.solid {
+  color: var(--accent-on);
+  background: var(--accent);
+}

@@ -1,0 +1,45 @@
+.dot {
+  display: inline-block;
+  flex: none;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.md {
+  width: 8px;
+  height: 8px;
+}
+.sm {
+  width: 6px;
+  height: 6px;
+}
+
+.done {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.available {
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.future {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border-strong);
+}
+
+.blocked {
+  background: var(--critical);
+  border-color: var(--critical);
+}

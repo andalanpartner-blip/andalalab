@@ -1,15 +1,13 @@
 import type { DirectionSummary } from "../services/pipeline.service";
 import styles from "./DesignDirectionPanel.module.css";
 import { Meter } from "./ui/Meter";
+import { StageHeader } from "./ui/StageHeader";
 import { humanize } from "../lib/format";
 
 export function DesignDirectionPanel({ summary }: { summary: DirectionSummary }) {
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="direction-heading">
-      <p className={styles.kicker}>The art direction</p>
-      <h2 id="direction-heading" className={styles.title}>
-        Design Direction
-      </h2>
+      <StageHeader kicker="The art direction" title="Design Direction" id="direction-heading" />
 
       <div className={styles.board}>
         <div className={styles.left}>
@@ -29,9 +27,9 @@ export function DesignDirectionPanel({ summary }: { summary: DirectionSummary })
           </div>
         </div>
         <div className={styles.right}>
-          <Meter label="Hierarchy" ratio={summary.hierarchy_strength} />
-          <Meter label="Whitespace" ratio={summary.whitespace} />
-          <Meter label="Contrast" ratio={summary.contrast} />
+          <Meter label="Hierarchy" ratio={summary.hierarchy_strength} emphasis />
+          <Meter label="Whitespace" ratio={summary.whitespace} emphasis />
+          <Meter label="Contrast" ratio={summary.contrast} emphasis />
         </div>
       </div>
     </section>

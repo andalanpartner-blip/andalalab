@@ -3,6 +3,9 @@
 import { useRef, useState } from "react";
 import styles from "./ClarificationStage.module.css";
 import type { ClarificationQuestion } from "../engine";
+import { Input } from "./ui/Field";
+import { Button } from "./ui/Button";
+import { StageHeader } from "./ui/StageHeader";
 
 export type ClarificationStageProps = {
   readonly questions: readonly ClarificationQuestion[];
@@ -34,12 +37,16 @@ export function ClarificationStage({
 
   return (
     <section className={`container reveal ${styles.wrap}`} aria-labelledby="clarify-heading">
-      <p className={styles.kicker}>Before we continue</p>
-      <h2 id="clarify-heading" ref={headingRef} className={styles.heading} tabIndex={-1}>
-        {questions.length === 1
-          ? "Before I design this, I need one quick decision."
-          : `Before I design this, I need ${questions.length} quick decisions.`}
-      </h2>
+      <span ref={headingRef} tabIndex={-1} className={styles.focusAnchor} />
+      <StageHeader
+        kicker="Before we continue"
+        id="clarify-heading"
+        title={
+          questions.length === 1
+            ? "Before I design this, I need one quick decision."
+            : `Before I design this, I need ${questions.length} quick decisions.`
+        }
+      />
 
       <form onSubmit={handleSubmit}>
         <div className={styles.list}>
@@ -48,9 +55,8 @@ export function ClarificationStage({
               <label className={styles.question} htmlFor={`clarify-${index}`}>
                 {item.question}
               </label>
-              <input
+              <Input
                 id={`clarify-${index}`}
-                className={styles.input}
                 type="text"
                 autoComplete="off"
                 value={answers[index] ?? ""}
@@ -66,15 +72,12 @@ export function ClarificationStage({
         </div>
 
         <div className={styles.actions}>
-          <button type="submit" className={styles.continue} disabled={!allAnswered || submitting}>
+          <Button type="submit" disabled={!allAnswered} loading={submitting} trailing="→">
             {submitting ? "Continuing…" : "Continue"}
-            {!submitting && (
-              <span aria-hidden="true">→</span>
-            )}
-          </button>
-          <button type="button" className={styles.startOver} onClick={onStartOver} disabled={submitting}>
+          </Button>
+          <Button type="button" variant="link" onClick={onStartOver} disabled={submitting}>
             Start over
-          </button>
+          </Button>
         </div>
       </form>
     </section>

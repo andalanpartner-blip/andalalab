@@ -1,5 +1,6 @@
 import type { CreativeConcept } from "../types/schemas/concept.schema";
 import styles from "./ConceptBoard.module.css";
+import { StageHeader } from "./ui/StageHeader";
 import { humanize, percent } from "../lib/format";
 
 export type ConceptBoardProps = {
@@ -11,13 +12,12 @@ export type ConceptBoardProps = {
 export function ConceptBoard({ concepts, selectedId, onSelect }: ConceptBoardProps) {
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="concepts-heading">
-      <div className={styles.head}>
-        <p className={styles.kicker}>Three directions, one strategic idea</p>
-        <h2 id="concepts-heading" className={styles.title}>
-          Creative Concepts
-        </h2>
-        <p className={styles.sub}>Choose the direction that should carry through to the design recipe.</p>
-      </div>
+      <StageHeader
+        kicker="Three directions, one strategic idea"
+        title="Creative Concepts"
+        id="concepts-heading"
+        sub="Choose the direction that should carry through to the design recipe."
+      />
 
       <div className={styles.grid}>
         {concepts.map((concept, index) => {

@@ -1,0 +1,51 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.line,
+.block,
+.panel {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 0%,
+    color-mix(in srgb, var(--border) 55%, var(--surface-2)) 50%,
+    var(--surface-2) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius);
+  animation: skeleton-shimmer 1.4s var(--ease) infinite;
+}
+
+.line {
+  height: 12px;
+}
+
+.block {
+  height: 120px;
+}
+
+.panel {
+  height: 200px;
+  border: 1px solid var(--border);
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .block,
+  .panel {
+    animation: none;
+    background: var(--surface-2);
+  }
+}

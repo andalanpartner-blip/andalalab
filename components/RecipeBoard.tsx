@@ -1,24 +1,12 @@
-import type { ReactNode } from "react";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { SelectedGraphicDevice } from "../types/schemas/graphic-treatment.schema";
 import { resolveVisualAdapter, VISUAL_ADAPTER_LABEL, visualAdapterSummary } from "../engine";
 import styles from "./RecipeBoard.module.css";
-import { Collapsible } from "./ui/Collapsible";
+import { Disclosure as Collapsible, DisclosureGroup } from "./ui/Disclosure";
 import { Meter } from "./ui/Meter";
+import { StageHeader } from "./ui/StageHeader";
+import { Definition as Def, DefinitionGrid as DefGrid } from "./ui/Definition";
 import { formatChannel, humanize, percent, titleCase } from "../lib/format";
-
-function Def({ label, value }: { label: string; value: ReactNode }) {
-  return (
-    <div className={styles.defRow}>
-      <span className={styles.defLabel}>{label}</span>
-      <span className={styles.defValue}>{value}</span>
-    </div>
-  );
-}
-
-function DefGrid({ children }: { children: ReactNode }) {
-  return <div className={styles.defGrid}>{children}</div>;
-}
 
 function PillList({ items }: { items: readonly string[] }) {
   return (
@@ -89,15 +77,14 @@ export function RecipeBoard({ recipe }: { recipe: DesignRecipe }) {
 
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="recipe-heading">
-      <div className={styles.head}>
-        <p className={styles.kicker}>Ready to brief a designer or a generator</p>
-        <h2 id="recipe-heading" className={styles.title}>
-          Design Recipe
-        </h2>
-        <p className={styles.sub}>Every value here traces back to the country, movement or industry that produced it.</p>
-      </div>
+      <StageHeader
+        kicker="Ready to brief a designer or a generator"
+        title="Design Recipe"
+        id="recipe-heading"
+        sub="Every value here traces back to the country, movement or industry that produced it."
+      />
 
-      <div className={styles.board}>
+      <DisclosureGroup>
         <Collapsible title="Composition" hint={humanize(recipe.composition.strategy)} defaultOpen>
           <DefGrid>
             <Def label="Strategy" value={humanize(recipe.composition.strategy)} />
@@ -340,7 +327,7 @@ export function RecipeBoard({ recipe }: { recipe: DesignRecipe }) {
         </Collapsible>
 
         <Collapsible title="Culture" hint={`${dimensionEntries.length} dimensions blended`}>
-          <div className={styles.defGrid}>
+          <DefGrid>
             {dimensionEntries.map(([dimension, owner]) => (
               <Def
                 key={dimension}
@@ -348,7 +335,7 @@ export function RecipeBoard({ recipe }: { recipe: DesignRecipe }) {
                 value={`${owner.country_name}${owner.contested ? " · contested" : ""}`}
               />
             ))}
-          </div>
+          </DefGrid>
           <p className={styles.movementLabel}>{recipe.movement.name} — core principles</p>
           <ul className={styles.principleList}>
             {recipe.movement.core_principles.map((principle) => (
@@ -375,7 +362,7 @@ export function RecipeBoard({ recipe }: { recipe: DesignRecipe }) {
             ))}
           </div>
         </Collapsible>
-      </div>
+      </DisclosureGroup>
     </section>
   );
 }

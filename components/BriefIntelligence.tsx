@@ -2,7 +2,8 @@ import type { NormalizedBrief } from "../types/schemas/brief.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
 import type { CountryInfluence } from "../services/pipeline.service";
 import styles from "./BriefIntelligence.module.css";
-import { Tag } from "./ui/Tag";
+import { Badge } from "./ui/Badge";
+import { StageHeader } from "./ui/StageHeader";
 import { derivedFieldKeys, HIGH_CONFIDENCE } from "../lib/derived";
 import { formatAgeRange, formatChannel, humanize, percent } from "../lib/format";
 
@@ -17,25 +18,32 @@ export function BriefIntelligence({ brief, contract, derived, countries }: Brief
   const derivedKeys = derivedFieldKeys(derived);
 
   const confidenceTag = (key: string) => {
-    if (derivedKeys.has(key)) return <Tag>Derived</Tag>;
+    if (derivedKeys.has(key)) {
+      return (
+        <Badge tone="neutral" dot>
+          Derived
+        </Badge>
+      );
+    }
     const confidence = brief.confidence[key];
     if (confidence !== undefined && confidence >= HIGH_CONFIDENCE) {
-      return <Tag tone="accent">High confidence</Tag>;
+      return (
+        <Badge tone="neutral" dot>
+          High confidence
+        </Badge>
+      );
     }
     return null;
   };
 
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="intel-heading">
-      <div className={styles.head}>
-        <div>
-          <p className={styles.kicker}>What I understood</p>
-          <h2 id="intel-heading" className={styles.title}>
-            Brief Intelligence
-          </h2>
-        </div>
-        <p className={styles.coreMessage}>{contract.core_message}</p>
-      </div>
+      <StageHeader
+        kicker="What I understood"
+        title="Brief Intelligence"
+        id="intel-heading"
+        aside={<p className={styles.coreMessage}>{contract.core_message}</p>}
+      />
 
       <div className={styles.grid}>
         <div className={styles.cell}>

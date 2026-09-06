@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import styles from "./BriefStage.module.css";
+import { Button } from "./ui/Button";
 
 const CHIPS: readonly { label: string; starter: string }[] = [
   { label: "Grand Opening", starter: "Buat materi promosi grand opening untuk " },
@@ -97,21 +98,14 @@ export function BriefStage({ value, onChange, onSubmit, submitting }: BriefStage
         </div>
 
         <div className={styles.actions}>
-          <button type="submit" className={styles.submit} disabled={!canSubmit}>
-            {submitting ? (
-              <>
-                <span className={styles.spinner} aria-hidden="true" />
-                Reading your brief…
-              </>
-            ) : (
-              <>
-                Analyze Brief
-                <span className={styles.arrow} aria-hidden="true">
-                  →
-                </span>
-              </>
-            )}
-          </button>
+          <Button
+            type="submit"
+            disabled={value.trim().length === 0}
+            loading={submitting}
+            trailing="→"
+          >
+            {submitting ? "Reading your brief…" : "Analyze Brief"}
+          </Button>
         </div>
       </form>
     </section>

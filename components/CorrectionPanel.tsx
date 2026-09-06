@@ -5,13 +5,13 @@ import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
 import type { DesignDirection } from "../types/schemas/direction.schema";
 import type { CreativeConcept } from "../types/schemas/concept.schema";
-import type {
-  CorrectionField,
-  CorrectionReport,
-  DesignCriticReport
-} from "../engine";
+import type { CorrectionField, CorrectionReport, DesignCriticReport } from "../engine";
 import styles from "./CorrectionPanel.module.css";
 import { titleCase } from "../lib/format";
+import { StageHeader } from "./ui/StageHeader";
+import { Field, Select, Input } from "./ui/Field";
+import { Button } from "./ui/Button";
+import { Badge, type BadgeTone } from "./ui/Badge";
 
 /** The bounded P6 correction surface, grouped for the picker. */
 const FIELDS: { group: string; fields: CorrectionField[] }[] = [
@@ -66,6 +66,12 @@ const VERDICT_COPY: Record<CorrectionReport["outcome"], string> = {
   noop: "Nothing changed"
 };
 
+const OUTCOME_TONE: Record<CorrectionReport["outcome"], BadgeTone> = {
+  adjustment: "ok",
+  redesign: "attention",
+  noop: "neutral"
+};
+
 export function CorrectionPanel({ recipe, contract, direction, concept, onCorrected }: CorrectionPanelProps) {
   const [field, setField] = useState<CorrectionField>("whitespace");
   const [mode, setMode] = useState<"set" | "increase" | "decrease">("increase");
@@ -105,19 +111,20 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
 
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="correction-heading">
-      <p className={styles.kicker}>P6 — deterministic, no AI</p>
-      <h2 id="correction-heading" className={styles.title}>
-        Correction
-      </h2>
-      <p className={styles.sub}>
-        Nudge the measurable design parameters and a few biases. Anything that would change the movement,
-        layout, composition, concept, objective or message is a new direction, not a correction.
-      </p>
+      <StageHeader
+        kicker="P6 — deterministic, no AI"
+        title="Correction"
+        id="correction-heading"
+        sub="Nudge the measurable design parameters and a few biases. Anything that would change the movement, layout, composition, concept, objective or message is a new direction, not a correction."
+      />
 
       <div className={styles.controls}>
-        <label className={styles.control}>
-          <span>Field</span>
-          <select value={field} onChange={(e) => setField(e.target.value as CorrectionField)}>
+        <Field label="Field" htmlFor="correction-field">
+          <Select
+            id="correction-field"
+            value={field}
+            onChange={(e) => setField(e.target.value as CorrectionField)}
+          >
             {FIELDS.map((g) => (
               <optgroup key={g.group} label={g.group}>
                 {g.fields.map((f) => (
@@ -127,21 +134,24 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
                 ))}
               </optgroup>
             ))}
-          </select>
-        </label>
+          </Select>
+        </Field>
 
-        <label className={styles.control}>
-          <span>Change</span>
-          <select value={mode} onChange={(e) => setMode(e.target.value as typeof mode)}>
+        <Field label="Change" htmlFor="correction-mode">
+          <Select
+            id="correction-mode"
+            value={mode}
+            onChange={(e) => setMode(e.target.value as typeof mode)}
+          >
             <option value="increase">Increase by</option>
             <option value="decrease">Decrease by</option>
             <option value="set">Set to</option>
-          </select>
-        </label>
+          </Select>
+        </Field>
 
-        <label className={styles.control}>
-          <span>Amount</span>
-          <input
+        <Field label="Amount" htmlFor="correction-amount">
+          <Input
+            id="correction-amount"
             type="number"
             step={0.05}
             min={0}
@@ -149,11 +159,13 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
             value={amount}
             onChange={(e) => setAmount(Number(e.target.value))}
           />
-        </label>
+        </Field>
 
-        <button type="button" className={styles.apply} onClick={() => void submit()} disabled={busy}>
-          {busy ? "Applying…" : "Apply correction"}
-        </button>
+        <div className={styles.applyCell}>
+          <Button type="button" onClick={() => void submit()} loading={busy}>
+            {busy ? "Applying…" : "Apply correction"}
+          </Button>
+        </div>
       </div>
 
       <p className={styles.current}>
@@ -163,13 +175,17 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
       {result ? (
         <div className={`${styles.result} ${styles[`result_${result.status}`]}`}>
           {result.status === "ERROR" ? (
-            <p>{result.message}</p>
+            <p className={styles.resultReason}>{result.message}</p>
           ) : (
             <>
-              <p className={styles.resultHead}>{VERDICT_COPY[result.correction.outcome]}</p>
+              <p className={styles.resultHead}>
+                <Badge tone={OUTCOME_TONE[result.correction.outcome]} variant="soft">
+                  {VERDICT_COPY[result.correction.outcome]}
+                </Badge>
+              </p>
               <p className={styles.resultReason}>{result.correction.reason}</p>
               {result.correction.changes.length > 0 ? (
-                <ul>
+                <ul className={styles.changeList}>
                   {result.correction.changes.map((c) => (
                     <li key={c.field}>
                       {titleCase(c.field)}: requested {c.requested.toFixed(3)} → resolved {c.resolved.toFixed(3)}

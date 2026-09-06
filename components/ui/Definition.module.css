@@ -1,0 +1,30 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--gap-stack) var(--space-5);
+}
+
+.grid.one {
+  grid-template-columns: 1fr;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.value {
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+  line-height: var(--lh-normal);
+}

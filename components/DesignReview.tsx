@@ -1,6 +1,8 @@
 import type { DesignCriticReport, CriticFinding } from "../engine";
 import styles from "./DesignReview.module.css";
 import { titleCase } from "../lib/format";
+import { StageHeader } from "./ui/StageHeader";
+import { Badge, type BadgeTone } from "./ui/Badge";
 
 const VERDICT_COPY: Record<DesignCriticReport["verdict"], string> = {
   PASS: "Pass",
@@ -8,10 +10,22 @@ const VERDICT_COPY: Record<DesignCriticReport["verdict"], string> = {
   BLOCK: "Block"
 };
 
+const VERDICT_TONE: Record<DesignCriticReport["verdict"], BadgeTone> = {
+  PASS: "ok",
+  REVIEW: "attention",
+  BLOCK: "critical"
+};
+
 const SEVERITY_LABEL: Record<CriticFinding["severity"], string> = {
   P0: "Critical",
   P1: "Review",
   P2: "Note"
+};
+
+const SEVERITY_TONE: Record<CriticFinding["severity"], BadgeTone> = {
+  P0: "critical",
+  P1: "attention",
+  P2: "neutral"
 };
 
 const AREA_LABEL: Partial<Record<CriticFinding["area"], string>> = {
@@ -23,13 +37,16 @@ const AREA_LABEL: Partial<Record<CriticFinding["area"], string>> = {
 export function DesignReview({ report }: { report: DesignCriticReport }) {
   return (
     <section className={`container reveal ${styles.section}`} aria-labelledby="review-heading">
-      <p className={styles.kicker}>Pre-generation check — deterministic, no AI</p>
-      <h2 id="review-heading" className={styles.title}>
-        Design Review
-      </h2>
+      <StageHeader
+        kicker="Pre-generation check — deterministic, no AI"
+        title="Design Review"
+        id="review-heading"
+      />
 
       <div className={`${styles.verdict} ${styles[`verdict_${report.verdict}`]}`}>
-        <span className={styles.badge}>{VERDICT_COPY[report.verdict]}</span>
+        <Badge tone={VERDICT_TONE[report.verdict]} variant="soft">
+          {VERDICT_COPY[report.verdict]}
+        </Badge>
         <span className={styles.summary}>{report.summary}</span>
       </div>
 
@@ -38,7 +55,9 @@ export function DesignReview({ report }: { report: DesignCriticReport }) {
           {report.findings.map((finding, index) => (
             <li key={`${finding.check}-${index}`} className={styles[`finding_${finding.severity}`]}>
               <div className={styles.findingHead}>
-                <span className={styles.severity}>{SEVERITY_LABEL[finding.severity]}</span>
+                <Badge tone={SEVERITY_TONE[finding.severity]} variant="soft">
+                  {SEVERITY_LABEL[finding.severity]}
+                </Badge>
                 <span className={styles.area}>{AREA_LABEL[finding.area] ?? titleCase(finding.area)}</span>
               </div>
               <p className={styles.message}>{finding.message}</p>

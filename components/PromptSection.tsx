@@ -5,6 +5,7 @@ import { compilePromptSet, type PromptLanguage, type PromptSet } from "../engine
 import type { CreativeConcept } from "../types/schemas/concept.schema";
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import { CopyButton } from "./ui/CopyButton";
+import { Panel } from "./ui/Panel";
 import styles from "./PromptSection.module.css";
 
 export type PromptSectionProps = {
@@ -81,18 +82,24 @@ function PromptCard({
   dominant?: boolean;
 }) {
   return (
-    <div className={dominant ? `${styles.card} ${styles.dominant}` : styles.card}>
-      <div className={styles.cardHead}>
-        <h3 className={styles.cardTitle}>{title}</h3>
-        <CopyButton
-          text={text}
-          label={copy.copyLabel}
-          copiedLabel={copy.copiedLabel}
-          variant={dominant ? "inverted" : "default"}
-        />
-      </div>
+    <Panel
+      tone={dominant ? "inverted" : "reading"}
+      padded={false}
+      className={dominant ? styles.dominant : undefined}
+      header={
+        <>
+          <h3 className={styles.cardTitle}>{title}</h3>
+          <CopyButton
+            text={text}
+            label={copy.copyLabel}
+            copiedLabel={copy.copiedLabel}
+            variant={dominant ? "inverted" : "default"}
+          />
+        </>
+      }
+    >
       <pre className={styles.text}>{text}</pre>
-    </div>
+    </Panel>
   );
 }
 

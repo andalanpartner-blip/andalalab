@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./ErrorBanner.module.css";
+import { Button } from "./ui/Button";
 
 export type ErrorBannerProps = {
   readonly title?: string;
@@ -11,6 +12,11 @@ export type ErrorBannerProps = {
 
 export function ErrorBanner({ title = "Something needs a second look", message, onRetry }: ErrorBannerProps) {
   const ref = useRef<HTMLDivElement>(null);
+
+  // Move focus to the alert so a keyboard / screen-reader user is taken to it.
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
 
   return (
     <div className={`container`}>
@@ -36,9 +42,9 @@ export function ErrorBanner({ title = "Something needs a second look", message, 
           <p className={styles.message}>{message}</p>
           {onRetry ? (
             <div className={styles.actions}>
-              <button type="button" className={styles.retry} onClick={onRetry}>
+              <Button type="button" variant="link" onClick={onRetry}>
                 Try again
-              </button>
+              </Button>
             </div>
           ) : null}
         </div>

@@ -1,15 +1,19 @@
 import type { ReactNode } from "react";
-import styles from "./Collapsible.module.css";
+import styles from "./Disclosure.module.css";
 
-export type CollapsibleProps = {
-  readonly title: string;
-  readonly hint?: string;
+export type DisclosureProps = {
+  readonly title: ReactNode;
+  readonly hint?: ReactNode;
   readonly defaultOpen?: boolean;
   readonly children: ReactNode;
 };
 
-/** A native <details> accordion section — free keyboard support, no JS needed. */
-export function Collapsible({ title, hint, defaultOpen = false, children }: CollapsibleProps) {
+/**
+ * A native <details> section — free keyboard support, no JS. (Formerly
+ * `Collapsible`.) Grouped inside a `<DisclosureGroup>` for a shared border
+ * treatment; also works standalone.
+ */
+export function Disclosure({ title, hint, defaultOpen = false, children }: DisclosureProps) {
   return (
     <details className={styles.details} open={defaultOpen}>
       <summary className={styles.summary}>
@@ -24,4 +28,8 @@ export function Collapsible({ title, hint, defaultOpen = false, children }: Coll
       <div className={styles.content}>{children}</div>
     </details>
   );
+}
+
+export function DisclosureGroup({ children }: { children: ReactNode }) {
+  return <div className={styles.group}>{children}</div>;
 }

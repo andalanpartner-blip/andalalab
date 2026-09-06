@@ -3,63 +3,10 @@
   padding-bottom: var(--space-9);
 }
 
-.head {
-  margin-bottom: var(--space-6);
-}
-
-.kicker {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--faint);
-  margin-bottom: var(--space-2);
-}
-
-.title {
-  font-size: clamp(22px, 2.8vw, 28px);
-  letter-spacing: -0.01em;
-  font-weight: 610;
-  margin-bottom: var(--space-2);
-}
-
-.sub {
-  font-size: 14.5px;
-  color: var(--muted);
-}
-
-.board {
-  border: 1px solid var(--border);
-}
-
-.defGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-4) var(--space-5);
-}
-
-.defRow {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.defLabel {
-  font-size: 11px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-
-.defValue {
-  font-size: 14.5px;
-  color: var(--ink);
-  line-height: 1.5;
-}
-
 .meterStack {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--gap-stack);
   margin-top: var(--space-5);
 }
 
@@ -72,10 +19,11 @@
 
 .pill {
   padding: 4px 10px;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--muted);
   background: var(--surface-2);
   border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .swatchRow {
@@ -89,7 +37,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--muted);
 }
 
@@ -106,7 +54,7 @@
   align-items: center;
   gap: 6px;
   margin-top: var(--space-3);
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--muted);
 }
 
@@ -123,9 +71,9 @@
 }
 
 .principleList li {
-  font-size: 13.5px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
-  line-height: 1.5;
+  line-height: var(--lh-normal);
 }
 
 .statementList {
@@ -138,9 +86,9 @@
 .statement {
   display: flex;
   gap: 10px;
-  font-size: 13.5px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
-  line-height: 1.5;
+  line-height: var(--lh-normal);
 }
 
 .movementLabel {
@@ -152,7 +100,7 @@
 }
 
 .movementNote {
-  font-size: 13px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
   margin-top: var(--space-3);
 }

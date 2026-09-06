@@ -1,106 +1,63 @@
 .section {
-  margin-top: 2.5rem;
-}
-
-.kicker {
-  font-size: 11px;
-  font-weight: 620;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--faint);
-  margin: 0 0 0.35rem;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin: 0 0 1rem;
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-2);
 }
 
 .verdict {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.5rem 0.9rem;
-  padding: 0.85rem 1rem;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-4) var(--pad-panel);
   border: 1px solid var(--border);
   border-left-width: 3px;
-  border-radius: var(--radius, 8px);
+  border-radius: var(--radius);
   background: var(--surface);
 }
 
 .verdict_PASS {
-  border-left-color: var(--accent, #2f7d4f);
+  border-left-color: var(--ok);
 }
 
 .verdict_REVIEW {
-  border-left-color: #b9770e;
+  border-left-color: var(--attention);
 }
 
 .verdict_BLOCK {
-  border-left-color: var(--danger, #b3261e);
-}
-
-.badge {
-  font-size: 12px;
-  font-weight: 680;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-
-.verdict_REVIEW .badge {
-  color: #b9770e;
-}
-
-.verdict_BLOCK .badge {
-  color: var(--danger, #b3261e);
+  border-left-color: var(--critical);
 }
 
 .summary {
-  font-size: 13.5px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
 }
 
 .findings {
   list-style: none;
-  margin: 0.9rem 0 0;
+  margin: var(--space-4) 0 0;
   padding: 0;
   display: grid;
-  gap: 0.6rem;
+  gap: var(--space-3);
 }
 
 .finding_P0,
 .finding_P1,
 .finding_P2 {
-  padding: 0.7rem 0.85rem;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--border);
-  border-radius: var(--radius, 8px);
-  background: var(--paper, transparent);
+  border-radius: var(--radius);
+  background: var(--paper);
 }
 
 .finding_P0 {
-  border-color: var(--danger, #b3261e);
+  border-color: var(--critical);
 }
 
 .findingHead {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.3rem;
-}
-
-.severity {
-  font-size: 10.5px;
-  font-weight: 680;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-
-.finding_P0 .severity {
-  color: var(--danger, #b3261e);
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .area {
@@ -110,22 +67,22 @@
 
 .message {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-normal);
   color: var(--ink);
 }
 
 .evidence {
-  margin: 0.35rem 0 0;
+  margin: var(--space-2) 0 0;
   font-size: 11.5px;
-  font-family: var(--font-mono, ui-monospace, monospace);
+  font-family: var(--font-mono);
   color: var(--muted);
   word-break: break-word;
 }
 
 .note {
-  margin: 0.9rem 0 0;
-  font-size: 12.5px;
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-caption);
   line-height: 1.55;
   color: var(--muted);
 }

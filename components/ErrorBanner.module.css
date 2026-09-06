@@ -2,14 +2,15 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);
-  padding: var(--space-5);
-  background: var(--danger-soft);
-  border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--border));
+  padding: var(--pad-panel);
+  background: var(--critical-soft);
+  border: 1px solid color-mix(in srgb, var(--critical) 30%, var(--border));
+  border-radius: var(--radius);
 }
 
 .icon {
   flex: none;
-  color: var(--danger);
+  color: var(--critical);
   margin-top: 2px;
 }
 
@@ -19,29 +20,18 @@
 }
 
 .title {
-  font-size: 14.5px;
-  font-weight: 620;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
   color: var(--ink);
   margin-bottom: 4px;
 }
 
 .message {
-  font-size: 14px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
-  line-height: 1.5;
+  line-height: var(--lh-normal);
 }
 
 .actions {
   margin-top: var(--space-3);
-}
-
-.retry {
-  font-size: 13.5px;
-  font-weight: 560;
-  color: var(--ink);
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--ink);
-  padding: 0;
-  cursor: pointer;
 }

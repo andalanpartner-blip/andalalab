@@ -3,34 +3,18 @@
   padding-bottom: var(--space-2);
 }
 
-.head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-  flex-wrap: wrap;
-}
-
-.kicker {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--faint);
-  margin-bottom: var(--space-2);
-}
-
-.title {
-  font-size: clamp(22px, 2.8vw, 28px);
-  letter-spacing: -0.01em;
-  font-weight: 610;
-}
-
 .coreMessage {
-  max-width: 60ch;
-  font-size: 15px;
+  max-width: 46ch;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
-  line-height: 1.6;
+  line-height: var(--lh-normal);
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .coreMessage {
+    text-align: left;
+  }
 }
 
 .grid {
@@ -41,7 +25,7 @@
 }
 
 .cell {
-  padding: var(--space-5);
+  padding: var(--pad-panel);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   background: var(--surface);
@@ -65,13 +49,13 @@
 }
 
 .value {
-  font-size: 16px;
+  font-size: var(--fs-h3);
   color: var(--ink);
   line-height: 1.4;
 }
 
 .metaLine {
-  font-size: 12.5px;
+  font-size: var(--fs-caption);
   color: var(--faint);
 }
 
@@ -88,7 +72,7 @@
 }
 
 .barName {
-  font-size: 13px;
+  font-size: var(--fs-body-sm);
   color: var(--muted);
   min-width: 90px;
 }
@@ -106,8 +90,9 @@
 }
 
 .barPct {
-  font-size: 12px;
+  font-size: var(--fs-caption);
   color: var(--faint);
   min-width: 34px;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }

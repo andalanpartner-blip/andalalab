@@ -1,6 +1,7 @@
 import type { CreativeConcept } from "../types/schemas/concept.schema";
 import styles from "./SelectedConcept.module.css";
 import { humanize } from "../lib/format";
+import { Button } from "./ui/Button";
 
 export type SelectedConceptProps = {
   readonly concept: CreativeConcept;
@@ -39,10 +40,15 @@ export function SelectedConcept({ concept, onBuildRecipe, buildingRecipe, hasRec
       </div>
 
       <div className={styles.footer}>
-        <button type="button" className={styles.buildButton} onClick={onBuildRecipe} disabled={buildingRecipe}>
+        <Button
+          type="button"
+          className={styles.buildButton}
+          onClick={onBuildRecipe}
+          loading={buildingRecipe}
+          trailing="→"
+        >
           {buildingRecipe ? "Assembling recipe…" : hasRecipe ? "Rebuild Design Recipe" : "Build Design Recipe"}
-          {!buildingRecipe && <span aria-hidden="true">→</span>}
-        </button>
+        </Button>
       </div>
     </section>
   );
