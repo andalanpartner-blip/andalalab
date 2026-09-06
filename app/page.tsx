@@ -8,8 +8,8 @@ import { ClarificationStage } from "../components/ClarificationStage";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { BriefIntelligence } from "../components/BriefIntelligence";
 import { DesignDirectionPanel } from "../components/DesignDirectionPanel";
-import { ConceptBoard } from "../components/ConceptBoard";
-import { SelectedConcept } from "../components/SelectedConcept";
+import { ConceptCompare } from "../components/ConceptCompare";
+import { ConceptStrip } from "../components/ConceptStrip";
 import { RecipeBoard } from "../components/RecipeBoard";
 import { DesignReview } from "../components/DesignReview";
 import { VisualReview } from "../components/VisualReview";
@@ -368,24 +368,20 @@ export default function Page() {
         if (!result) return null;
         return (
           <>
-            <ConceptBoard
-              concepts={result.concepts.concepts}
-              selectedId={selectedConceptId ?? result.concepts.selected.id}
-              onSelect={handleSelectConcept}
-            />
-            {selectedConcept ? (
-              <SelectedConcept
-                concept={selectedConcept}
-                onBuildRecipe={() => void handleBuildRecipe()}
-                buildingRecipe={recipeLoading}
-                hasRecipe={recipe !== null}
-              />
-            ) : null}
             {recipeError ? (
               <div className={styles.recipeError}>
                 <ErrorBanner message={recipeError} onRetry={() => void handleBuildRecipe()} />
               </div>
             ) : null}
+            <ConceptCompare
+              concepts={result.concepts.concepts}
+              selectedId={selectedConceptId ?? result.concepts.selected.id}
+              onSelect={handleSelectConcept}
+              onBuildRecipe={() => void handleBuildRecipe()}
+              buildingRecipe={recipeLoading}
+              hasRecipe={recipe !== null}
+              hasDownstream={recipe !== null || review !== null}
+            />
           </>
         );
 
@@ -409,6 +405,9 @@ export default function Page() {
         }
         return (
           <>
+            {selectedConcept ? (
+              <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
+            ) : null}
             <RecipeBoard recipe={recipe} />
             <div className={styles.stageActions}>
               <Button onClick={() => goToStage("prompt")} trailing="→">
@@ -425,6 +424,9 @@ export default function Page() {
         if (!recipe) return null;
         return (
           <>
+            {selectedConcept ? (
+              <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
+            ) : null}
             <PromptSection recipe={recipe} concept={selectedConcept} />
             <div className={styles.stageActions}>
               <Button variant="secondary" onClick={() => goToStage("review")}>
@@ -438,6 +440,9 @@ export default function Page() {
         if (!recipe) return null;
         return (
           <>
+            {selectedConcept ? (
+              <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
+            ) : null}
             {critic ? <DesignReview report={critic} /> : null}
             {review ? <VisualReview report={review} /> : null}
             <div className={styles.stageActions}>

@@ -1,0 +1,44 @@
+.strip {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.kicker {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.type {
+  font-size: 11px;
+  color: var(--faint);
+}
+
+.edit {
+  margin-left: auto;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.edit:hover {
+  color: var(--ink);
+}
