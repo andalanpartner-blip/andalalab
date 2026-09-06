@@ -74,7 +74,7 @@ async function generate(name = "kopi-lawas-promotion", opts: { deliverImage?: bo
 const readSrc = (rel: string) => readFileSync(new URL(rel, import.meta.url), "utf8");
 const reviewViewSrc = readSrc("../../lib/review-view.ts");
 const reviewStageSrc = readSrc("../../components/workspace/ReviewStage.tsx");
-const pageSrc = readSrc("../../app/page.tsx");
+const pageSrc = readSrc("../../components/workspace/Workspace.tsx");
 
 // --- 1 -----------------------------------------------------------
 

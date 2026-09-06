@@ -6,3 +6,6 @@ next-env.d.ts
 .DS_Store
 .env*
 !.env.example
+
+# P2.20 local runtime data store
+.andala-data/

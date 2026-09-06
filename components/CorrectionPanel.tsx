@@ -13,6 +13,7 @@ import type {
 } from "../engine";
 import styles from "./CorrectionPanel.module.css";
 import { titleCase } from "../lib/format";
+import { useProjectId } from "./workspace/project-context";
 import { StageHeader } from "./ui/StageHeader";
 import { Field, Select, Input } from "./ui/Field";
 import { Button } from "./ui/Button";
@@ -81,6 +82,7 @@ const OUTCOME_TONE: Record<CorrectionReport["outcome"], BadgeTone> = {
 };
 
 export function CorrectionPanel({ recipe, contract, direction, concept, onCorrected }: CorrectionPanelProps) {
+  const projectId = useProjectId();
   const [field, setField] = useState<CorrectionField>("whitespace");
   const [mode, setMode] = useState<"set" | "increase" | "decrease">("increase");
   const [amount, setAmount] = useState(0.05);
@@ -102,6 +104,7 @@ export function CorrectionPanel({ recipe, contract, direction, concept, onCorrec
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        projectId,
         parentRecipe: recipe,
         contract,
         direction,

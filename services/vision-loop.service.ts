@@ -87,8 +87,10 @@ export type InspectVisualResult = InspectVisualOkResult | InspectVisualFailureRe
 export type VisionLoopDeps = EvidenceServiceDeps;
 
 /** Real dependencies — evidence observer + datasets/ids/clock. */
-export function getVisionLoopDeps(): VisionLoopDeps {
-  return getEvidenceDeps();
+export function getVisionLoopDeps(
+  options: { ledger?: import("../ports/cost.port").CostLedgerPort; allowReplay?: boolean } = {}
+): VisionLoopDeps {
+  return getEvidenceDeps(options);
 }
 
 /**

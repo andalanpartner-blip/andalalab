@@ -22,6 +22,7 @@ import type { DesignCritique } from "../../types/schemas/design-critique.schema"
 import type { CorrectionRecommendation } from "../../types/schemas/correction-recommendation.schema";
 import type { CorrectionCycle } from "../../types/schemas/correction-cycle.schema";
 import type { CreativeDecision } from "../../types/schemas/creative-decision.schema";
+import { useProjectId } from "./project-context";
 
 /**
  * The optional vision-assisted inspection panel (P2.17).
@@ -99,6 +100,7 @@ export function VisualInspection({
   imageDataUrl,
   onCorrectionApplied
 }: VisualInspectionProps) {
+  const projectId = useProjectId();
   const [state, setState] = useState<"idle" | "inspecting" | "inspected" | "applying">("idle");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Extract<InspectResponse, { status: "OK" }> | null>(null);
@@ -114,6 +116,7 @@ export function VisualInspection({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "inspect",
+          projectId,
           artifact,
           recipe,
           contract,
@@ -134,7 +137,7 @@ export function VisualInspection({
       setError("The inspection request could not be sent.");
       setState("idle");
     }
-  }, [artifact, recipe, contract, blueprint, imageDataUrl]);
+  }, [artifact, recipe, contract, blueprint, imageDataUrl, projectId]);
 
   const applyOption = useCallback(
     async (code: string) => {
@@ -159,7 +162,7 @@ export function VisualInspection({
             // P2.18 — lets the server record the `needs_correction` decision
             request,
             parentBlueprint: blueprint,
-            projectId: "local"
+            projectId
           })
         });
         const data = (await res.json()) as ApplyResponse;
@@ -188,7 +191,7 @@ export function VisualInspection({
         setState("inspected");
       }
     },
-    [result, artifact, request, recipe, contract, direction, blueprint, concept, onCorrectionApplied]
+    [result, artifact, request, recipe, contract, direction, blueprint, concept, projectId, onCorrectionApplied]
   );
 
   return (

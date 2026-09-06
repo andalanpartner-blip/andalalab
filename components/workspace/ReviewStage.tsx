@@ -25,6 +25,7 @@ import type { DesignCritique } from "../../types/schemas/design-critique.schema"
 import type { CorrectionRecommendation } from "../../types/schemas/correction-recommendation.schema";
 import type { CorrectionCycle } from "../../types/schemas/correction-cycle.schema";
 import { layoutContextLabel } from "../../lib/generate-view";
+import { useProjectId } from "./project-context";
 import {
   DECISION_ACTION_LABEL,
   STALE_BLUEPRINT_NOTICE,
@@ -124,6 +125,7 @@ export function ReviewStage({
   onDecision,
   onCorrectionApplied
 }: ReviewStageProps) {
+  const projectId = useProjectId();
   const sectionRef = useRef<HTMLElement>(null);
   const [decisionBusy, setDecisionBusy] = useState(false);
   const [decisionError, setDecisionError] = useState<string | null>(null);
@@ -145,7 +147,7 @@ export function ReviewStage({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             action,
-            projectId: "local",
+            projectId,
             artifact,
             recipe,
             blueprint,
@@ -173,7 +175,7 @@ export function ReviewStage({
         setDecisionBusy(false);
       }
     },
-    [artifact, request, recipe, blueprint, evidence, critique, recommendation, correctionCycle, onDecision, onNavigate]
+    [projectId, artifact, request, recipe, blueprint, evidence, critique, recommendation, correctionCycle, onDecision, onNavigate]
   );
 
   const sendToCorrection = useCallback(() => {

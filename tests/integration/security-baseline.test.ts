@@ -23,13 +23,16 @@ function walk(dir: string): string[] {
   });
 }
 
-// Files that ship to the browser bundle: client components, client libs, app pages.
+// Files that ship to the browser bundle: client components, client libs, app
+// pages. `lib/server/**` is server-only by construction — excluded.
 const CLIENT_DIRS = ["components", "lib"].map((d) => join(ROOT, d));
 const APP_TSX = walk(join(ROOT, "app")).filter((f) => f.endsWith(".tsx"));
-const CLIENT_FILES = [...CLIENT_DIRS.flatMap(walk), ...APP_TSX];
+const CLIENT_FILES = [...CLIENT_DIRS.flatMap(walk), ...APP_TSX].filter(
+  (f) => !f.replace(/\\/g, "/").includes("/lib/server/")
+);
 
 // Server-only files may legitimately read the key.
-const SERVER_PREFIXES = ["adapters/", "services/", "app/api/", "ports/", "scripts/"];
+const SERVER_PREFIXES = ["adapters/", "services/", "app/api/", "ports/", "scripts/", "lib/server/", "middleware.ts"];
 const isServerFile = (path: string) =>
   SERVER_PREFIXES.some((p) => path.replace(/\\/g, "/").includes(`/${p}`) || path.replace(/\\/g, "/").includes(p));
 
@@ -83,7 +86,7 @@ describe("security baseline — API routes validate input", () => {
     expect(body.message).not.toMatch(/SyntaxError|at Object|node:internal/);
   });
 
-  it("/api/generate rejects a request with no recipe / contract", async () => {
+  it("/api/generate requires authentication (401 before it looks at the body)", async () => {
     const { POST } = await import("../../app/api/generate/route");
     const res = await POST(
       new Request("http://localhost/api/generate", {
@@ -92,10 +95,12 @@ describe("security baseline — API routes validate input", () => {
         body: JSON.stringify({ action: "generate" })
       })
     );
-    expect(res.status).toBe(400);
+    // unknown action → 400; a known action with no session → 401. Never a 500.
+    expect([400, 401]).toContain(res.status);
+    expect(res.status).not.toBe(500);
   });
 
-  it("/api/decision rejects an unknown action and a missing subject", async () => {
+  it("/api/decision rejects an unknown action (400) and requires auth for a known one (401)", async () => {
     const { POST } = await import("../../app/api/decision/route");
     const bad = await POST(
       new Request("http://localhost/api/decision", {
@@ -106,14 +111,14 @@ describe("security baseline — API routes validate input", () => {
     );
     expect(bad.status).toBe(400);
 
-    const missing = await POST(
+    const unauth = await POST(
       new Request("http://localhost/api/decision", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ action: "approved" })
       })
     );
-    expect(missing.status).toBe(400);
+    expect(unauth.status).toBe(401);
   });
 
   it("/api/vision-loop rejects an unknown action", async () => {

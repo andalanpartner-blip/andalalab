@@ -16,6 +16,7 @@ import type {
   GenerationRequest
 } from "../../types/schemas/visual-generation.schema";
 import type { GenerationEstimate, GenerationIssueCode } from "../../ports/visual-generation.port";
+import { useProjectId } from "./project-context";
 import {
   artifactRows,
   formatEstimatedCost,
@@ -39,6 +40,7 @@ import {
 
 type PostBody = {
   action: "preview" | "generate";
+  projectId: string | null;
   recipe: DesignRecipe;
   contract: DesignContract;
   concept: CreativeConcept | null;
@@ -81,6 +83,7 @@ export function GenerateStage({
   onNavigate,
   onGenerated
 }: GenerateStageProps) {
+  const projectId = useProjectId();
   const [state, setState] = useState<GenerateState>("previewing");
   const [preview, setPreview] = useState<{ request: GenerationRequest; estimate: GenerationEstimate } | null>(null);
   const [result, setResult] = useState<{ artifact: GeneratedArtifact; imageDataUrl?: string } | null>(null);
@@ -94,13 +97,14 @@ export function GenerateStage({
   const body = useCallback(
     (action: "preview" | "generate"): PostBody => ({
       action,
+      projectId,
       recipe,
       contract,
       concept,
       blueprint,
       promptLanguage
     }),
-    [recipe, contract, concept, blueprint, promptLanguage]
+    [projectId, recipe, contract, concept, blueprint, promptLanguage]
   );
   // Keep the latest body without making it an effect dependency — the preview
   // must re-run only when the DESIGN changes (its recipe hash), not on every

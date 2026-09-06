@@ -68,13 +68,15 @@ export type GenerationServiceDeps = {
  * `data:` URL to the browser for THAT response only. Nothing is persisted.
  */
 export function getGenerationDeps(
-  onImageBytes?: (bytes: Uint8Array, mimeType: string) => void
+  onImageBytes?: (bytes: Uint8Array, mimeType: string) => void,
+  options: { ledger?: import("../ports/cost.port").CostLedgerPort; allowFake?: boolean } = {}
 ): GenerationServiceDeps {
   const { datasets, ids, clock } = getEngineDeps();
-  const ledger = createCostLedger({ clock: systemClock });
+  const ledger = options.ledger ?? createCostLedger({ clock: systemClock });
 
+  const wantsFake = process.env["GENERATION_PROVIDER"]?.trim() === "fake";
   const generator =
-    process.env["GENERATION_PROVIDER"]?.trim() === "fake"
+    wantsFake && options.allowFake !== false
       ? createFakeVisualGeneration({ ledger, clock: systemClock, ids, deliverImage: true, onImageBytes })
       : createGeminiImageGeneration({
           apiKey: process.env["GEMINI_API_KEY"]?.trim() ?? "",

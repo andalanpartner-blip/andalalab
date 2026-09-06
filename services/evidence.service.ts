@@ -44,12 +44,15 @@ export type EvidenceServiceDeps = {
  * offline verification. The credential is the same `GEMINI_API_KEY` — never
  * hardcoded, never logged, never sent to the browser.
  */
-export function getEvidenceDeps(): EvidenceServiceDeps {
+export function getEvidenceDeps(
+  options: { ledger?: import("../ports/cost.port").CostLedgerPort; allowReplay?: boolean } = {}
+): EvidenceServiceDeps {
   const { datasets, ids, clock } = getEngineDeps();
-  const ledger = createCostLedger({ clock: systemClock });
+  const ledger = options.ledger ?? createCostLedger({ clock: systemClock });
 
+  const wantsReplay = process.env["EVIDENCE_PROVIDER"]?.trim() === "replay";
   const observer =
-    process.env["EVIDENCE_PROVIDER"]?.trim() === "replay"
+    wantsReplay && options.allowReplay !== false
       ? createReplayVisualEvidence({ ledger, clock: systemClock, ids, datasetVersion: datasets.version })
       : createGeminiVisualEvidence({
           apiKey: process.env["GEMINI_API_KEY"]?.trim() ?? "",

@@ -1,0 +1,90 @@
+.main {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background: var(--bg, #f5f3ee);
+}
+
+.card {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  border: 1px solid var(--border, #ddd8cc);
+  border-radius: var(--radius, 4px);
+  background: var(--surface, #fff);
+}
+
+.brand {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint, #9a9385);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--ink, #1c1a15);
+}
+
+.sub {
+  margin: 0 0 var(--space-3);
+  font-size: 13px;
+  color: var(--muted, #6b6459);
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted, #6b6459);
+}
+
+.input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong, #c9c3b4);
+  border-radius: var(--radius, 4px);
+  font-size: 14px;
+  background: var(--surface, #fff);
+  color: var(--ink, #1c1a15);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--accent, #2b2b2b);
+  outline-offset: 1px;
+}
+
+.error {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radius, 4px);
+  background: var(--attention-soft, #fdf0e6);
+  border: 1px solid var(--border-strong, #c9c3b4);
+  font-size: 13px;
+  color: var(--ink, #1c1a15);
+}
+
+.button {
+  margin-top: var(--space-2);
+  padding: 11px 14px;
+  border: 0;
+  border-radius: var(--radius, 4px);
+  background: var(--ink, #1c1a15);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
