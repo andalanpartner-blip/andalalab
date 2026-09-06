@@ -20,6 +20,10 @@ import {
   resolveVisualType,
   type PromptLanguage
 } from "../engine";
+import { systemClock } from "../ports/clock.port";
+import { createCostLedger } from "./cost.service";
+import { getEngineDeps } from "./pipeline.service";
+import { createGeminiImageGeneration } from "../adapters/visual-generation/gemini-image";
 
 /**
  * Visual generation — the EXPLICIT downstream action (P2.11).
@@ -43,6 +47,31 @@ export type GenerationServiceDeps = {
   readonly clock: ClockPort;
   readonly generator: VisualGenerationPort;
 };
+
+let cachedGenerator: VisualGenerationPort | null = null;
+
+/**
+ * Real, process-wide generation dependencies (P2.12).
+ *
+ * Reuses the pipeline's cached datasets / ids / clock and adds a Gemini
+ * image-backed `VisualGenerationPort`. The credential is read here from the
+ * same `GEMINI_API_KEY` env var the text adapter uses — never hardcoded, never
+ * logged. Image generation stays a separate provider concern from the LLM text
+ * integration; both just happen to read the same key.
+ */
+export function getGenerationDeps(): GenerationServiceDeps {
+  const { datasets, ids, clock } = getEngineDeps();
+  if (!cachedGenerator) {
+    const ledger = createCostLedger({ clock: systemClock });
+    cachedGenerator = createGeminiImageGeneration({
+      apiKey: process.env["GEMINI_API_KEY"]?.trim() ?? "",
+      clock: systemClock,
+      ids,
+      ledger
+    });
+  }
+  return { datasets, ids, clock, generator: cachedGenerator };
+}
 
 export type VisualGenerationInput = {
   readonly recipe: unknown;
