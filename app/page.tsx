@@ -12,12 +12,12 @@ import { ConceptCompare } from "../components/ConceptCompare";
 import { ConceptStrip } from "../components/ConceptStrip";
 import { RecipeStageSummary } from "../components/RecipeStageSummary";
 import { DecisionLedger } from "../components/DecisionLedger";
-import { ReviewSummary } from "../components/ReviewSummary";
 import { ComplianceChip } from "../components/ComplianceChip";
 import { CorrectionPanel } from "../components/CorrectionPanel";
 import { PromptOutput } from "../components/PromptOutput";
 import { LayoutBlueprint, LayoutBackLink } from "../components/LayoutBlueprint";
 import { GenerateStage } from "../components/workspace/GenerateStage";
+import { ReviewStage } from "../components/workspace/ReviewStage";
 import { FinalStage } from "../components/workspace/FinalStage";
 import { WorkspaceShell } from "../components/workspace/WorkspaceShell";
 import { AIStatus, type AIStatusStep } from "../components/workspace/AIStatus";
@@ -36,6 +36,10 @@ import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from
 import type { DesignRecipe } from "../types/schemas/recipe.schema";
 import type { DesignContract } from "../types/schemas/contract.schema";
 import type { DesignDirection } from "../types/schemas/direction.schema";
+import type {
+  GeneratedArtifact,
+  GenerationRequest
+} from "../types/schemas/visual-generation.schema";
 import {
   deriveStageStates,
   defaultStage,
@@ -132,6 +136,21 @@ export default function Page() {
   const [recipeLoading, setRecipeLoading] = useState(false);
   const [recipeError, setRecipeError] = useState<string | null>(null);
 
+  /**
+   * The generated visual, threaded from the Generate stage into Review. Cleared
+   * whenever the design changes (new brief, new concept, rebuilt recipe) — but
+   * deliberately KEPT after a correction so Review can show the mismatch.
+   */
+  const [generatedArtifact, setGeneratedArtifact] = useState<GeneratedArtifact | null>(null);
+  const [generatedRequest, setGeneratedRequest] = useState<GenerationRequest | null>(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
+
+  const clearGeneratedVisual = useCallback(() => {
+    setGeneratedArtifact(null);
+    setGeneratedRequest(null);
+    setGeneratedImageUrl(null);
+  }, []);
+
   const [activeStage, setActiveStage] = useState<StageId>("brief");
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [changedPaths, setChangedPaths] = useState<readonly string[]>([]);
@@ -208,6 +227,7 @@ export default function Page() {
         setRecipeContract(null);
         setRecipeDirection(null);
         setRecipeError(null);
+        clearGeneratedVisual();
         setClarify(null);
         setPhase("ready");
         goToStage("strategy", { force: true });
@@ -223,7 +243,7 @@ export default function Page() {
 
       setBriefBusy(false);
     },
-    [goToStage]
+    [goToStage, clearGeneratedVisual]
   );
 
   const handleAnalyze = useCallback(() => {
@@ -258,8 +278,9 @@ export default function Page() {
     setRecipeContract(null);
     setRecipeDirection(null);
     setRecipeError(null);
+    clearGeneratedVisual();
     goToStage("brief", { force: true });
-  }, [goToStage]);
+  }, [goToStage, clearGeneratedVisual]);
 
   const handleEditBrief = useCallback(() => {
     setPhase("input");
@@ -267,19 +288,23 @@ export default function Page() {
     goToStage("brief", { force: true });
   }, [lastRequest, briefDraft, goToStage]);
 
-  const handleSelectConcept = useCallback((id: string) => {
-    setSelectedConceptId((current) => {
-      if (current === id) return current;
-      setRecipe(null);
-      setCritic(null);
-      setReview(null);
-      setBlueprint(null);
-      setRecipeContract(null);
-      setRecipeDirection(null);
-      setRecipeError(null);
-      return id;
-    });
-  }, []);
+  const handleSelectConcept = useCallback(
+    (id: string) => {
+      setSelectedConceptId((current) => {
+        if (current === id) return current;
+        setRecipe(null);
+        setCritic(null);
+        setReview(null);
+        setBlueprint(null);
+        setRecipeContract(null);
+        setRecipeDirection(null);
+        setRecipeError(null);
+        clearGeneratedVisual();
+        return id;
+      });
+    },
+    [clearGeneratedVisual]
+  );
 
   const handleBuildRecipe = useCallback(async () => {
     if (!result || !selectedConceptId) return;
@@ -305,12 +330,13 @@ export default function Page() {
       setBlueprint(data.blueprint);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
+      clearGeneratedVisual();
     } else {
       setRecipeError(data.message);
       goToStage("concept", { force: true });
     }
     setRecipeLoading(false);
-  }, [result, selectedConceptId, goToStage]);
+  }, [result, selectedConceptId, goToStage, clearGeneratedVisual]);
 
   const selectedConcept =
     result?.concepts.concepts.find((entry) => entry.id === selectedConceptId) ?? null;
@@ -508,6 +534,11 @@ export default function Page() {
             concept={selectedConcept}
             blueprint={blueprint}
             onNavigate={goToStage}
+            onGenerated={(artifact, request, imageDataUrl) => {
+              setGeneratedArtifact(artifact);
+              setGeneratedRequest(request);
+              setGeneratedImageUrl(imageDataUrl);
+            }}
           />
         );
 
@@ -521,18 +552,24 @@ export default function Page() {
         );
 
       case "review":
-        if (!recipe || !critic) return null;
+        if (!recipe || !critic || !recipeContract) return null;
         return (
           <>
             {selectedConcept ? (
               <ConceptStrip concept={selectedConcept} onEdit={() => goToStage("concept")} />
             ) : null}
-            <ReviewSummary report={review} critic={critic} onNavigate={goToStage} />
-            <div className={styles.stageActions}>
-              <Button variant="secondary" onClick={() => goToStage("correct")}>
-                Make a correction
-              </Button>
-            </div>
+            <ReviewStage
+              recipe={recipe}
+              contract={recipeContract}
+              concept={selectedConcept}
+              blueprint={blueprint}
+              critic={critic}
+              review={review}
+              artifact={generatedArtifact}
+              request={generatedRequest}
+              imageDataUrl={generatedImageUrl}
+              onNavigate={goToStage}
+            />
           </>
         );
 

@@ -1,0 +1,286 @@
+.section {
+  padding-top: var(--space-2);
+}
+
+/* the section is focused programmatically on entry for screen-reader users —
+   it is a container, so it takes no visible ring (keyboard focus on the
+   controls inside still shows the global :focus-visible ring). */
+.section:focus {
+  outline: none;
+}
+
+/* stale / mismatch banner --------------------------------------- */
+
+.stale {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--attention);
+  border-radius: var(--radius);
+  background: var(--attention-soft);
+}
+
+.staleHead {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.staleLine {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-body-sm);
+  color: var(--muted);
+  line-height: var(--lh-normal);
+  max-width: 60ch;
+}
+
+.inlineLink {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.testNotice {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  background: var(--surface-2);
+}
+
+/* two-column layout -------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+}
+
+.visualCol {
+  min-width: 0;
+}
+
+.infoCol {
+  min-width: 0;
+}
+
+.figure {
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  max-width: var(--canvas-max);
+  height: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  image-rendering: auto;
+}
+
+.caption {
+  margin-top: var(--space-2);
+  font-size: var(--fs-caption);
+  color: var(--faint);
+}
+
+.metadataOnly,
+.noVisual {
+  width: 100%;
+  max-width: var(--canvas-max);
+  padding: var(--space-6);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.metadataHead,
+.noVisualHead {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.metadataBody,
+.noVisualBody {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-body-sm);
+  color: var(--muted);
+  line-height: var(--lh-normal);
+}
+
+.noVisualBody {
+  max-width: 48ch;
+}
+
+/* shared row list --------------------------------------------- */
+
+.blockHeading {
+  margin: var(--space-6) 0 var(--space-3);
+  font-size: var(--fs-kicker);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.infoCol .blockHeading:first-child {
+  margin-top: 0;
+}
+
+.rows {
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-body-sm);
+}
+
+.row dt {
+  color: var(--muted);
+  flex: none;
+}
+
+.row dd {
+  margin: 0;
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  word-break: break-word;
+}
+
+/* context strips --------------------------------------------- */
+
+.strips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.strip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.strip:hover,
+.strip:focus-visible {
+  border-color: var(--border-strong);
+  background: var(--surface-2);
+}
+
+.stripLabel {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.stripValue {
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.stripLink {
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* provenance ------------------------------------------------- */
+
+.provenance {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.provenanceHead {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+
+.provenanceKicker {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-right: var(--space-2);
+}
+
+/* the human decision --------------------------------------- */
+
+.decision {
+  margin-top: var(--stage-gap);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border);
+}
+
+.decisionLine {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.decisionNote {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-caption);
+  color: var(--muted);
+  line-height: var(--lh-normal);
+  max-width: 60ch;
+}
+
+@media (max-width: 640px) {
+  .actions :global(button) {
+    min-height: 44px;
+    flex: 1 1 auto;
+  }
+  .strip {
+    min-height: 44px;
+    width: 100%;
+  }
+}

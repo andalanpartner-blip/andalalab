@@ -145,7 +145,7 @@ describe("view models are pure reads over the artifacts", () => {
     expect(preview.status).toBe("OK");
     if (preview.status !== "OK") return;
 
-    const ctx = promptContextLabel(preview.request, preview.estimate);
+    const ctx = promptContextLabel(preview.request);
     expect(ctx).toContain("English");
     expect(ctx.toLowerCase()).toContain(preview.request.config.prompt_tier.replace("-", " "));
 

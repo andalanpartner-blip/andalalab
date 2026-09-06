@@ -159,7 +159,12 @@ export function layoutContextLabel(blueprint: LayoutBlueprint): string {
   return `${n} zone${n === 1 ? "" : "s"} · focal on ${focalZoneLabel(blueprint).toLowerCase()}`;
 }
 
-export function promptContextLabel(request: GenerationRequest, estimate: GenerationEstimate): string {
-  const lang = request.config.prompt_language === "id" ? "Bahasa Indonesia" : "English";
-  return `${titleCase(request.config.prompt_tier.replace("-", " "))} tier · ${lang} · ${titleCase(estimate.adapter_id)}`;
+export function promptLanguageLabel(language: "en" | "id"): string {
+  return language === "id" ? "Bahasa Indonesia" : "English";
+}
+
+export function promptContextLabel(request: GenerationRequest): string {
+  return `${titleCase(request.config.prompt_tier.replace("-", " "))} tier · ${promptLanguageLabel(
+    request.config.prompt_language
+  )} · ${titleCase(request.provenance.adapter_id)}`;
 }

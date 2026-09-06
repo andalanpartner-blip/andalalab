@@ -61,6 +61,15 @@ export type GenerateStageProps = {
   readonly blueprint: LayoutBlueprint | null;
   readonly promptLanguage?: "en" | "id";
   readonly onNavigate: (stage: StageId) => void;
+  /**
+   * Called once on a successful generation so the workspace can thread the
+   * artifact into the Review stage. `imageDataUrl` is transient (session only).
+   */
+  readonly onGenerated?: (
+    artifact: GeneratedArtifact,
+    request: GenerationRequest,
+    imageDataUrl: string | null
+  ) => void;
 };
 
 export function GenerateStage({
@@ -69,7 +78,8 @@ export function GenerateStage({
   concept,
   blueprint,
   promptLanguage = "en",
-  onNavigate
+  onNavigate,
+  onGenerated
 }: GenerateStageProps) {
   const [state, setState] = useState<GenerateState>("previewing");
   const [preview, setPreview] = useState<{ request: GenerationRequest; estimate: GenerationEstimate } | null>(null);
@@ -154,6 +164,7 @@ export function GenerateStage({
       if (data.status === "OK") {
         setResult({ artifact: data.artifact, imageDataUrl: data.imageDataUrl });
         setState((s) => nextGenerateState(s, { type: "generate_ok" }));
+        onGenerated?.(data.artifact, data.request, data.imageDataUrl ?? null);
       } else {
         const code = data.issues?.[0]?.code ?? null;
         setErrorCode(code);
@@ -167,7 +178,7 @@ export function GenerateStage({
     } finally {
       generatingRef.current = false;
     }
-  }, [body]);
+  }, [body, onGenerated]);
 
   const aside =
     state === "success" ? (
@@ -206,7 +217,7 @@ export function GenerateStage({
         {preview ? (
           <button type="button" className={styles.contextItem} onClick={() => onNavigate("prompt")}>
             <span className={styles.contextLabel}>Prompt ready</span>
-            <span className={styles.contextValue}>{promptContextLabel(preview.request, preview.estimate)}</span>
+            <span className={styles.contextValue}>{promptContextLabel(preview.request)}</span>
             <span className={styles.contextLink}>Open prompt →</span>
           </button>
         ) : null}
