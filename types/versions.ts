@@ -25,7 +25,10 @@ export const SCHEMA_VERSIONS = {
   contract: "1.0.0",
   direction: "1.0.0",
   recipe: "1.0.0",
-  concept: "1.0.0"
+  concept: "1.0.0",
+  // P2.10 — Layout Blueprint. A derived, deterministic, content-hashed artifact
+  // (ADR 0004 § P2.10). Additive: nothing upstream reads it.
+  layoutBlueprint: "1.0.0"
 } as const;
 
 export type SchemaKey = keyof typeof SCHEMA_VERSIONS;
