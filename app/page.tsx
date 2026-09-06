@@ -10,7 +10,8 @@ import { BriefIntelligence } from "../components/BriefIntelligence";
 import { DesignDirectionPanel } from "../components/DesignDirectionPanel";
 import { ConceptCompare } from "../components/ConceptCompare";
 import { ConceptStrip } from "../components/ConceptStrip";
-import { RecipeBoard } from "../components/RecipeBoard";
+import { RecipeStageSummary } from "../components/RecipeStageSummary";
+import { DecisionLedger } from "../components/DecisionLedger";
 import { ReviewSummary } from "../components/ReviewSummary";
 import { ComplianceChip } from "../components/ComplianceChip";
 import { CorrectionPanel } from "../components/CorrectionPanel";
@@ -111,6 +112,7 @@ export default function Page() {
   const [recipeError, setRecipeError] = useState<string | null>(null);
 
   const [activeStage, setActiveStage] = useState<StageId>("brief");
+  const [ledgerOpen, setLedgerOpen] = useState(false);
 
   // -- stage state model -------------------------------------------------
   const stageStates = useMemo(
@@ -420,7 +422,7 @@ export default function Page() {
                 <ComplianceChip critic={critic} onOpen={() => goToStage("review")} />
               </div>
             ) : null}
-            <RecipeBoard recipe={recipe} />
+            <RecipeStageSummary recipe={recipe} onOpenLedger={() => setLedgerOpen(true)} />
             <div className={styles.stageActions}>
               <Button onClick={() => goToStage("prompt")} trailing="→">
                 See the prompt
@@ -510,8 +512,10 @@ export default function Page() {
         states={railStates}
         active={activeStage}
         onNavigate={(id) => goToStage(id)}
-        ledger={recipe ? <RecipeBoard recipe={recipe} /> : null}
+        ledger={recipe ? <DecisionLedger recipe={recipe} /> : null}
         ledgerAvailable={recipe !== null}
+        ledgerOpen={ledgerOpen}
+        onLedgerOpenChange={setLedgerOpen}
         aiStatus={<AIStatus step={aiStep} />}
         toolbar={
           phase === "ready" ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import styles from "./WorkspaceShell.module.css";
 import { StageRail } from "./StageRail";
 import { Button } from "../ui/Button";
@@ -11,9 +11,12 @@ export type WorkspaceShellProps = {
   readonly states: Record<StageId, StageState>;
   readonly active: StageId;
   readonly onNavigate: (stage: StageId) => void;
-  /** The decision ledger content (RecipeBoard today, DecisionLedger from slice 7). */
+  /** The decision ledger content (DecisionLedger). */
   readonly ledger: ReactNode;
   readonly ledgerAvailable: boolean;
+  /** Ledger open state is controlled so any stage can open it. */
+  readonly ledgerOpen: boolean;
+  readonly onLedgerOpenChange: (open: boolean) => void;
   /** Right-aligned actions above the canvas, e.g. "Start a new brief". */
   readonly toolbar?: ReactNode;
   /** The AIStatus line — an always-present slot below the toolbar. */
@@ -27,14 +30,16 @@ export function WorkspaceShell({
   onNavigate,
   ledger,
   ledgerAvailable,
+  ledgerOpen,
+  onLedgerOpenChange,
   toolbar,
   aiStatus,
   children
 }: WorkspaceShellProps) {
-  const [ledgerOpen, setLedgerOpen] = useState(false);
+  const setLedgerOpen = onLedgerOpenChange;
 
   // Close the ledger on stage change and on Escape.
-  useEffect(() => setLedgerOpen(false), [active]);
+  useEffect(() => setLedgerOpen(false), [active, setLedgerOpen]);
   useEffect(() => {
     if (!ledgerOpen) return;
     const onKey = (e: KeyboardEvent) => {
