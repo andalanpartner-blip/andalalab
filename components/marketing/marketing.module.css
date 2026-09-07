@@ -312,16 +312,64 @@
 }
 .heroTrack {
   position: relative;
-  width: min(1100px, 92vw);
+  width: min(1120px, 92vw);
   height: min(560px, 62vh);
 }
+/* The cards fan across a wide editorial band. Each card owns a horizontal
+   slot (`left: %` of the track), a vertical offset, a rotation and a scale —
+   the dominant "Generate" card sits near centre at the largest scale. These
+   values are the settled composition and the no-JS / pre-hydration fallback;
+   HeroStage overrides `transform` (and pins `left: 50%`) once it runs, then
+   interpolates a slightly-scattered start toward exactly this state on scroll. */
 .heroCard {
   position: absolute;
-  left: 50%;
   top: 50%;
-  width: clamp(190px, 22vw, 268px);
-  transform: translate(-50%, -50%);
+  width: clamp(178px, 19.5vw, 244px);
+  transform: translate(-50%, -50%) translateY(var(--hc-y, 0)) rotate(var(--hc-r, 0deg))
+    scale(var(--hc-s, 1));
   will-change: transform;
+}
+.heroCard[data-kind="brief"] {
+  left: 20%;
+  --hc-y: -18%;
+  --hc-r: -5deg;
+  --hc-s: 0.82;
+  z-index: 2;
+}
+.heroCard[data-kind="concept"] {
+  left: 32%;
+  --hc-y: 24%;
+  --hc-r: -3deg;
+  --hc-s: 0.9;
+  z-index: 3;
+}
+.heroCard[data-kind="recipe"] {
+  left: 44%;
+  --hc-y: -4%;
+  --hc-r: -1.5deg;
+  --hc-s: 0.99;
+  z-index: 5;
+}
+.heroCard[data-kind="generate"] {
+  left: 53%;
+  --hc-y: 0%;
+  --hc-r: 0deg;
+  --hc-s: 1.14;
+  z-index: 8;
+}
+.heroCard[data-kind="review"] {
+  left: 67%;
+  --hc-y: -14%;
+  --hc-r: 2.5deg;
+  --hc-s: 0.96;
+  z-index: 4;
+}
+.heroCard[data-kind="final"] {
+  left: 80%;
+  --hc-y: 20%;
+  --hc-r: 4.5deg;
+  --hc-s: 0.85;
+  z-index: 3;
 }
 
 /* workflow artifact card */
@@ -1198,6 +1246,24 @@
   }
 }
 
+/* Tablet: keep the wide hero band but pull the outer cards in so six artifacts
+   stay a legible collection without clipping. (HeroStage tightens the spread
+   proportionally too; this is the no-JS fallback.) */
+@media (max-width: 1024px) {
+  .heroCard[data-kind="brief"] {
+    left: 23%;
+  }
+  .heroCard[data-kind="concept"] {
+    left: 34%;
+  }
+  .heroCard[data-kind="review"] {
+    left: 65%;
+  }
+  .heroCard[data-kind="final"] {
+    left: 77%;
+  }
+}
+
 @media (max-width: 900px) {
   .navLinks {
     display: none;
@@ -1311,8 +1377,13 @@
     left: auto;
     top: auto;
     transform: none !important;
-    width: 100%;
+    width: 90%;
+    margin-inline: auto;
     z-index: auto !important;
+  }
+  /* Stacked composition with the centre card dominant. */
+  .heroCard[data-kind="generate"] {
+    width: 100%;
   }
   .sectionHead {
     text-align: left;

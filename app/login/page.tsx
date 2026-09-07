@@ -52,6 +52,12 @@ export default function LoginPage() {
         <h1 className={styles.title}>Sign in</h1>
         <p className={styles.sub}>Private team workspace. Ask an admin for an account.</p>
 
+        {process.env.NODE_ENV !== "production" ? (
+          <p className={styles.devHint}>
+            Local development workspace — ask the admin for credentials.
+          </p>
+        ) : null}
+
         <label className={styles.label}>
           Email
           <input

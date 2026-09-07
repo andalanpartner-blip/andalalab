@@ -3,17 +3,20 @@
 import { useEffect, useRef } from "react";
 import styles from "./marketing.module.css";
 import { WorkflowArtifact, type WorkflowKind } from "./Artifacts";
+import { heroPoseAt } from "./hero-choreography";
 
 /**
  * The hero's scroll-driven composition.
  *
- * Six creative artifacts begin scattered and layered; as the sticky hero
- * scrolls they settle into a legible left-to-right sequence and the central
- * "Generate" artifact grows slightly. Pure CSS transforms, one rAF-batched
- * scroll listener, no library.
+ * Six creative artifacts sit across a wide editorial band — a dominant central
+ * "Generate" card with supporting cards fanning left and right. They begin
+ * slightly scattered; as the sticky hero scrolls they settle onto that band.
+ * The band never collapses toward the centre. Pure CSS transforms, one
+ * rAF-batched scroll listener, no library.
  *
- * Progressive enhancement: with JS off or `prefers-reduced-motion` on, the
- * cards render in their settled positions and nothing moves.
+ * Progressive enhancement: with JS off the CSS `data-kind` slots already show
+ * the settled band; with `prefers-reduced-motion` the effect jumps straight to
+ * it and nothing moves.
  */
 
 type Card = { kind: WorkflowKind; index: string; label: string };
@@ -27,55 +30,35 @@ const CARDS: Card[] = [
   { kind: "final", index: "06", label: "Final" }
 ];
 
-// Scattered start pose per card: [x%, y%, rotateDeg, scale, z]
-const START: Array<[number, number, number, number, number]> = [
-  [-4, 14, -9, 0.9, 1],
-  [12, -8, 6, 0.94, 2],
-  [-14, 2, -4, 1.0, 3],
-  [4, 10, 3, 1.06, 6],
-  [22, 4, 8, 0.92, 4],
-  [-2, -14, -6, 0.88, 5]
-];
-// Settled end pose: an even row, gentle arc, central card largest
-const END: Array<[number, number, number, number, number]> = [
-  [-40, 6, -3, 0.9, 1],
-  [-24, -2, -2, 0.95, 2],
-  [-9, 1, -1, 1.0, 3],
-  [8, 0, 0, 1.12, 6],
-  [24, 2, 2, 0.97, 4],
-  [40, 8, 4, 0.9, 2]
-];
-
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-
 export function HeroStage() {
-  const stickyRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const sticky = stickyRef.current;
+    const stage = stageRef.current;
     const track = trackRef.current;
-    if (!sticky || !track) return;
+    if (!stage || !track) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let raf = 0;
 
     const apply = (p: number) => {
-      const t = ease(Math.max(0, Math.min(1, p)));
+      const t = Math.max(0, Math.min(1, p));
       track.style.setProperty("--p", String(t));
+      const trackWidth = track.clientWidth;
+      const viewportWidth = window.innerWidth;
       CARDS.forEach((_, i) => {
         const el = cardRefs.current[i];
         if (!el) return;
-        const s = START[i]!;
-        const e = END[i]!;
-        const x = lerp(s[0], e[0], t);
-        const y = lerp(s[1], e[1], t);
-        const r = lerp(s[2], e[2], t);
-        const sc = lerp(s[3], e[3], t);
-        el.style.transform = `translate(-50%, -50%) translate(${x}%, ${y}%) rotate(${r}deg) scale(${sc})`;
-        el.style.zIndex = String(Math.round(lerp(s[4], e[4], t) * 10));
+        // JS owns horizontal placement now; the CSS `left:%` slot was only the
+        // no-JS fallback.
+        el.style.left = "50%";
+        const pose = heroPoseAt(i, t, trackWidth, viewportWidth);
+        el.style.transform =
+          `translate(-50%, -50%) translate(${pose.x.toFixed(1)}px, ${pose.y.toFixed(1)}%) ` +
+          `rotate(${pose.rotate.toFixed(2)}deg) scale(${pose.scale.toFixed(3)})`;
+        el.style.zIndex = String(pose.z);
       });
     };
 
@@ -85,9 +68,8 @@ export function HeroStage() {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
-        const rect = sticky.getBoundingClientRect();
-        const total = sticky.offsetHeight - window.innerHeight;
-        const p = total > 0 ? -rect.top / total : 0;
+        const total = stage.offsetHeight - window.innerHeight;
+        const p = total > 0 ? -stage.getBoundingClientRect().top / total : 1;
         apply(p);
       });
     };
@@ -111,7 +93,7 @@ export function HeroStage() {
   }, []);
 
   return (
-    <div ref={stickyRef} className={styles.heroStage}>
+    <div ref={stageRef} className={styles.heroStage}>
       <div className={styles.heroSticky}>
         <div ref={trackRef} className={styles.heroTrack} aria-hidden="true">
           {CARDS.map((card, i) => (

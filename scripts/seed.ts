@@ -1,59 +1,81 @@
 import { createJsonFileStorage } from "../adapters/storage/json-file";
-import { ensureWorkspace, createUser } from "../services/team.service";
-import type { Role } from "../lib/server/auth/rbac";
+import { seedTeam, type SeedUserInput } from "../services/seed.service";
+import { dataDir } from "../lib/server/env";
+import { isRole, type Role } from "../lib/server/auth/rbac";
 
 /**
  * Seed the private Andala workspace + team users (P2.20-D).
  *
- * There is NO public signup — this script (run by an operator) is the only way
- * users are created. Credentials come from env vars so nothing sensitive is
- * committed:
+ *   pnpm seed
  *
- *   ANDALA_DATA_DIR=... \
- *   ANDALA_SEED='[{"email":"a@x.co","name":"A","password":"...","role":"admin"}, ...]' \
- *   pnpm tsx scripts/seed.ts
+ * There is NO public signup — this script (run explicitly by a developer or
+ * operator) is the only way users are created. Credentials come from env vars
+ * so nothing sensitive is committed:
  *
- * or the single-admin shortcut:
+ *   Local development (the common case):
+ *     ADMIN_EMAIL=you@local.test ADMIN_PASSWORD='at least 10 chars' pnpm seed
  *
- *   ANDALA_ADMIN_EMAIL=... ANDALA_ADMIN_NAME=... ANDALA_ADMIN_PASSWORD=... pnpm tsx scripts/seed.ts
+ *   Operator, full team:
+ *     ANDALA_DATA_DIR=/data \
+ *     ANDALA_SEED='[{"email":"…","name":"…","password":"…","role":"admin"}, …]' \
+ *     pnpm seed
+ *
+ * The data directory falls back to the development default (`.andala-data`) when
+ * `ANDALA_DATA_DIR` is unset; outside development it is required (fail-closed).
+ * The password is read but never printed.
  */
 
-type SeedUser = { email: string; name: string; password: string; role: Role };
+function coerceRole(value: unknown): Role {
+  if (isRole(value)) return value;
+  throw new Error(`invalid role ${JSON.stringify(value)} — expected admin | designer | account`);
+}
 
-function readSeed(): SeedUser[] {
+function readSeed(): SeedUserInput[] {
   const json = process.env["ANDALA_SEED"];
   if (json) {
-    const parsed = JSON.parse(json) as SeedUser[];
+    const parsed = JSON.parse(json) as unknown;
     if (!Array.isArray(parsed)) throw new Error("ANDALA_SEED must be a JSON array");
-    return parsed;
+    return parsed.map((raw) => {
+      const u = raw as Record<string, unknown>;
+      if (typeof u["email"] !== "string" || typeof u["password"] !== "string") {
+        throw new Error("each ANDALA_SEED entry needs an email and a password");
+      }
+      return {
+        email: u["email"],
+        name: typeof u["name"] === "string" && u["name"].trim() ? u["name"] : "Admin",
+        password: u["password"],
+        role: coerceRole(u["role"] ?? "admin")
+      };
+    });
   }
-  const email = process.env["ANDALA_ADMIN_EMAIL"];
-  const name = process.env["ANDALA_ADMIN_NAME"] ?? "Admin";
-  const password = process.env["ANDALA_ADMIN_PASSWORD"];
+
+  const email = process.env["ADMIN_EMAIL"] ?? process.env["ANDALA_ADMIN_EMAIL"];
+  const name = process.env["ADMIN_NAME"] ?? process.env["ANDALA_ADMIN_NAME"] ?? "Admin";
+  const password = process.env["ADMIN_PASSWORD"] ?? process.env["ANDALA_ADMIN_PASSWORD"];
   if (!email || !password) {
-    throw new Error("Set ANDALA_SEED (JSON array) or ANDALA_ADMIN_EMAIL + ANDALA_ADMIN_PASSWORD.");
+    throw new Error(
+      "Set ADMIN_EMAIL and ADMIN_PASSWORD (or ANDALA_SEED as a JSON array). See docs/local-development.md."
+    );
   }
   return [{ email, name, password, role: "admin" }];
 }
 
-async function main() {
-  const dir = process.env["ANDALA_DATA_DIR"];
-  if (!dir) throw new Error("ANDALA_DATA_DIR must be set.");
-  const store = createJsonFileStorage(dir);
-  await ensureWorkspace(store);
+async function main(): Promise<void> {
+  const users = readSeed();
+  const store = createJsonFileStorage(dataDir());
+  const report = await seedTeam(store, users);
 
-  for (const user of readSeed()) {
-    try {
-      const { user: created } = await createUser(store, user);
-      console.log(`+ ${created.email} (${user.role})`);
-    } catch (error) {
-      console.log(`· skipped ${user.email}: ${(error as Error).message}`);
-    }
+  console.log("Seed complete.");
+  for (const { email, role } of report.created) {
+    console.log(`${role[0]!.toUpperCase()}${role.slice(1)}: ${email}`);
   }
-  console.log("seed complete");
+  for (const email of report.existed) {
+    console.log(`Already present: ${email}`);
+  }
+  console.log(`Workspace: ${report.workspace}`);
 }
 
 void main().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(error instanceof Error ? error.message : String(error));
   process.exit(1);
 });

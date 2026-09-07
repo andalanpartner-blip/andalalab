@@ -24,18 +24,30 @@ rather than serving degraded.
 
 ## Seeding the team
 
-No public registration. An operator runs:
+No public registration. An operator runs `pnpm seed` (credentials from the
+environment, never committed, never printed). It ensures the workspace and each
+user + membership and is idempotent.
+
+Single admin:
+
+```
+ANDALA_DATA_DIR=/data ADMIN_EMAIL=… ADMIN_PASSWORD=… pnpm seed
+```
+
+Full team:
 
 ```
 ANDALA_DATA_DIR=/data \
 ANDALA_SEED='[{"email":"…","name":"…","password":"…","role":"admin"},
               {"email":"…","name":"…","password":"…","role":"designer"},
               {"email":"…","name":"…","password":"…","role":"account"}]' \
-pnpm tsx scripts/seed.ts
+pnpm seed
 ```
 
 Roles: `admin` (full workflow + team + usage + settings), `designer` (full
 creative workflow + approve), `account` (create projects + briefs + view final).
+
+For local setup see [local-development.md](local-development.md).
 
 ## Runtime
 

@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "seed": "tsx scripts/seed.ts",
     "validate:data": "tsx scripts/validate-data.ts",
     "reality-check": "tsx scripts/reality-check.ts",
     "evaluate:briefs": "tsx scripts/evaluate-briefs.ts",

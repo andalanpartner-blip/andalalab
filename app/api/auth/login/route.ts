@@ -3,6 +3,8 @@ import { getStorage } from "../../../../services/storage.service";
 import { authenticate } from "../../../../services/team.service";
 import { issueSession, sessionCookie } from "../../../../lib/server/auth/session";
 import { checkRateLimit } from "../../../../lib/server/rate-limit";
+import { appEnv } from "../../../../lib/server/env";
+import { COLLECTIONS } from "../../../../ports/storage.port";
 
 /**
  * Sign in (P2.20-B). No public signup — accounts are created by an admin.
@@ -27,8 +29,20 @@ export async function POST(request: Request): Promise<Response> {
     return NextResponse.json({ status: "ERROR", message: "Enter your email and password." }, { status: 400 });
   }
 
-  const actor = await authenticate(getStorage(), body.email, body.password);
+  const store = getStorage();
+  const actor = await authenticate(store, body.email, body.password);
   if (!actor) {
+    // Development-only nicety: point a developer at the seed when there is no
+    // account yet. Never weakens auth — still a 401, and gated to development.
+    if (appEnv() === "development") {
+      const users = await store.list(COLLECTIONS.users);
+      if (users.length === 0) {
+        return NextResponse.json(
+          { status: "ERROR", message: "No development account exists yet. Run `pnpm seed`." },
+          { status: 401 }
+        );
+      }
+    }
     return NextResponse.json({ status: "ERROR", message: "Email or password is incorrect." }, { status: 401 });
   }
 
