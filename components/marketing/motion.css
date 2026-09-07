@@ -46,6 +46,16 @@
   transition-delay: calc(var(--i, 0) * 60ms);
 }
 
+/* On small screens the section fade still runs, but nested staggered lists
+   (e.g. the workflow steps) are never held hidden waiting on the reveal —
+   decorative sub-motion is dropped on mobile per the design direction. */
+@media (max-width: 640px) {
+  .m-js .m-reveal:not(.is-in) [data-stagger] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .m-reveal,
   .m-reveal [data-stagger] > * {

@@ -1371,8 +1371,10 @@
   }
   .orbitNodes li {
     position: static !important;
+    /* On mobile the orbit is a plain list — never gated on the scroll reveal
+       (out-specifies the `.m-js .orbit:not(.is-in)` hide rule). */
     transform: none !important;
-    opacity: 1;
+    opacity: 1 !important;
     flex-direction: row;
     width: 100%;
     gap: 12px;
