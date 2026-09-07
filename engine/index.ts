@@ -36,6 +36,23 @@ export {
 } from "./movement/resolve";
 export { resolveVisualType, resolveAspectRatio, visualTypeDkvBands } from "./visual-type/resolve";
 export { resolveLayout, layoutSupportsVisualType, candidateLayouts } from "./layout/resolve";
+export {
+  LAYOUT_TEMPLATES,
+  templateAvailability,
+  templateForLayout,
+  templateById,
+  layoutTemplateOverview,
+  type LayoutTemplate,
+  type LayoutTemplateOverview,
+  type SchematicNode,
+  type SchematicBlock,
+  type TemplateAvailability
+} from "./layout/templates";
+export {
+  retargetLayout,
+  type RetargetLayoutInput,
+  type RetargetLayoutResult
+} from "./layout/retarget";
 
 // --- P1: deterministic design core ---------------------------------------
 export {

@@ -16,6 +16,7 @@ import { ComplianceChip } from "../ComplianceChip";
 import { CorrectionPanel } from "../CorrectionPanel";
 import { PromptOutput } from "../PromptOutput";
 import { LayoutBlueprint, LayoutBackLink } from "../LayoutBlueprint";
+import { LayoutTemplates, type LayoutRetargetPayload } from "./LayoutTemplates";
 import { GenerateStage } from "./GenerateStage";
 import { ReviewStage } from "./ReviewStage";
 import { FinalStage } from "./FinalStage";
@@ -31,7 +32,8 @@ import type {
   ClarificationQuestion,
   DesignCriticReport,
   VisualReviewReport,
-  LayoutBlueprint as LayoutBlueprintArtifact
+  LayoutBlueprint as LayoutBlueprintArtifact,
+  LayoutTemplateOverview
 } from "../../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../../services/pipeline.service";
 import type { DesignRecipe } from "../../types/schemas/recipe.schema";
@@ -151,6 +153,23 @@ export function Workspace({ projectId }: { projectId: string }) {
   const [critic, setCritic] = useState<DesignCriticReport | null>(null);
   const [review, setReview] = useState<VisualReviewReport | null>(null);
   const [blueprint, setBlueprint] = useState<LayoutBlueprintArtifact | null>(null);
+  /** P2.10 — the nine visual layout templates picture for the current design. */
+  const [layoutTemplates, setLayoutTemplates] = useState<LayoutTemplateOverview | null>(null);
+  /**
+   * The AI's layout recommendation, frozen at recipe-build time. Retargeting the
+   * layout updates `layoutTemplates` but not this — so "AI recommended" vs
+   * "Designer selected" stays legible across the whole design session.
+   */
+  const [aiLayoutRec, setAiLayoutRec] = useState<{
+    templateId: string | null;
+    templateName: string | null;
+    fallbackName: string;
+  } | null>(null);
+  /** Set when a human applies a layout other than the AI's recommendation. */
+  const [layoutOverride, setLayoutOverride] = useState<{
+    aiRecommended: string;
+    designerSelected: string;
+  } | null>(null);
   /** Contract / direction the current recipe was built from — corrections may replace these. */
   const [recipeContract, setRecipeContract] = useState<DesignContract | null>(null);
   const [recipeDirection, setRecipeDirection] = useState<DesignDirection | null>(null);
@@ -256,6 +275,9 @@ export function Workspace({ projectId }: { projectId: string }) {
         setCritic(null);
         setReview(null);
         setBlueprint(null);
+        setLayoutTemplates(null);
+        setAiLayoutRec(null);
+        setLayoutOverride(null);
         setRecipeContract(null);
         setRecipeDirection(null);
         setRecipeError(null);
@@ -307,6 +329,9 @@ export function Workspace({ projectId }: { projectId: string }) {
     setCritic(null);
     setReview(null);
     setBlueprint(null);
+    setLayoutTemplates(null);
+    setAiLayoutRec(null);
+    setLayoutOverride(null);
     setRecipeContract(null);
     setRecipeDirection(null);
     setRecipeError(null);
@@ -328,6 +353,9 @@ export function Workspace({ projectId }: { projectId: string }) {
         setCritic(null);
         setReview(null);
         setBlueprint(null);
+        setLayoutTemplates(null);
+        setAiLayoutRec(null);
+        setLayoutOverride(null);
         setRecipeContract(null);
         setRecipeDirection(null);
         setRecipeError(null);
@@ -361,6 +389,13 @@ export function Workspace({ projectId }: { projectId: string }) {
       setCritic(data.critic);
       setReview(data.review);
       setBlueprint(data.blueprint);
+      setLayoutTemplates(data.layoutTemplates);
+      setAiLayoutRec({
+        templateId: data.layoutTemplates.recommendedTemplateId,
+        templateName: data.layoutTemplates.recommendedTemplateName,
+        fallbackName: data.layoutTemplates.currentLayoutName
+      });
+      setLayoutOverride(null);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
       clearGeneratedVisual();
@@ -377,6 +412,47 @@ export function Workspace({ projectId }: { projectId: string }) {
     }
     setRecipeLoading(false);
   }, [result, selectedConceptId, goToStage, clearGeneratedVisual, projectId]);
+
+  /**
+   * A human applied a visual layout template (P2.10). Re-derives recipe →
+   * blueprint → prompt with fresh hashes. It never generates: any existing
+   * visual is deliberately KEPT so the stale banner prompts a deliberate
+   * regeneration.
+   */
+  const handleLayoutApplied = useCallback(
+    (next: LayoutRetargetPayload) => {
+      setRecipe(next.recipe);
+      setBlueprint(next.blueprint);
+      setCritic(next.critic);
+      setReview(null);
+      setLayoutTemplates(next.layoutTemplates);
+      setRecipeContract(next.contract);
+      setRecipeDirection(next.direction);
+      setChangedPaths(next.changedPaths);
+      // "AI recommended vs designer selected" is measured against the AI's
+      // ORIGINAL recommendation, frozen at recipe-build time.
+      if (aiLayoutRec?.templateId && next.appliedTemplate.id !== aiLayoutRec.templateId) {
+        setLayoutOverride({
+          aiRecommended: aiLayoutRec.templateName ?? aiLayoutRec.fallbackName,
+          designerSelected: next.appliedTemplate.name
+        });
+      } else {
+        setLayoutOverride(null);
+      }
+      void recordArtifact(projectId, {
+        kind: "recipe",
+        hash: next.recipe.recipe_hash,
+        summary: { movement: next.recipe.movement.id, layout: next.blueprint.provenance.layout_id, via: "layout-template" }
+      });
+      void recordArtifact(projectId, {
+        kind: "blueprint",
+        hash: next.blueprint.blueprint_hash,
+        parent_hash: next.recipe.recipe_hash,
+        summary: { zones: next.blueprint.zones.length, layout: next.blueprint.provenance.layout_id }
+      });
+    },
+    [projectId, aiLayoutRec]
+  );
 
   const selectedConcept =
     result?.concepts.concepts.find((entry) => entry.id === selectedConceptId) ?? null;
@@ -533,6 +609,24 @@ export function Workspace({ projectId }: { projectId: string }) {
             blueprint={blueprint}
             recipeHash={recipe.recipe_hash}
             onNavigate={goToStage}
+            templates={
+              layoutTemplates && recipeContract && recipeDirection ? (
+                <LayoutTemplates
+                  overview={layoutTemplates}
+                  aiRecommendedTemplateId={aiLayoutRec?.templateId ?? null}
+                  aiRecommendedName={
+                    aiLayoutRec?.templateName ?? aiLayoutRec?.fallbackName ?? null
+                  }
+                  visualTypeName={recipeContract.visual_type.name}
+                  recipe={recipe}
+                  contract={recipeContract}
+                  direction={recipeDirection}
+                  concept={selectedConcept}
+                  hasGeneratedArtifact={generatedArtifact !== null}
+                  onApplied={handleLayoutApplied}
+                />
+              ) : null
+            }
           />
         );
 
@@ -677,7 +771,15 @@ export function Workspace({ projectId }: { projectId: string }) {
         states={railStates}
         active={activeStage}
         onNavigate={(id) => goToStage(id)}
-        ledger={recipe ? <DecisionLedger recipe={recipe} recentlyChanged={changedPaths} /> : null}
+        ledger={
+          recipe ? (
+            <DecisionLedger
+              recipe={recipe}
+              recentlyChanged={changedPaths}
+              layoutOverride={layoutOverride}
+            />
+          ) : null
+        }
         ledgerAvailable={recipe !== null}
         ledgerOpen={ledgerOpen}
         onLedgerOpenChange={setLedgerOpen}

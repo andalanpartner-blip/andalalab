@@ -59,7 +59,10 @@ afterEach(() => setStorageForTests(null));
 // --- AUTH (1–4) -------------------------------------------------
 
 describe("P2.20 — authentication", () => {
-  it("1/2 — unauthenticated API is denied (401)", async () => {
+  // First test in the file to dynamically import a route module — it pays the
+  // one-time cost of transforming + loading the whole engine + dataset graph,
+  // which can exceed the default 5s under a loaded worker pool.
+  it("1/2 — unauthenticated API is denied (401)", { timeout: 20_000 }, async () => {
     const { GET } = await import("../../app/api/projects/route");
     expect((await GET(getReq("/api/projects"))).status).toBe(401);
     const { POST } = await import("../../app/api/generate/route");

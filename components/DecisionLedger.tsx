@@ -478,10 +478,16 @@ function pathToSection(path: string): string | null {
 
 export function DecisionLedger({
   recipe,
-  recentlyChanged = []
+  recentlyChanged = [],
+  layoutOverride = null
 }: {
   recipe: DesignRecipe;
   recentlyChanged?: readonly string[];
+  /**
+   * P2.10 — recorded when a human applied a visual layout template other than
+   * the AI's recommendation. Shown in the ledger, not a new ledger system.
+   */
+  layoutOverride?: { aiRecommended: string; designerSelected: string } | null;
 }) {
   const [filter, setFilter] = useState<LedgerFilter>("all");
   const [query, setQuery] = useState("");
@@ -504,6 +510,22 @@ export function DecisionLedger({
       <p className={styles.lede}>
         Every value the AI set, with the country, movement or industry that produced it. Read-only.
       </p>
+
+      {layoutOverride ? (
+        <div className={styles.override} data-testid="layout-override">
+          <p className={styles.overrideTitle}>Layout — human decision</p>
+          <dl className={styles.overrideGrid}>
+            <div>
+              <dt>AI recommended</dt>
+              <dd>{layoutOverride.aiRecommended}</dd>
+            </div>
+            <div>
+              <dt>Designer selected</dt>
+              <dd>{layoutOverride.designerSelected}</dd>
+            </div>
+          </dl>
+        </div>
+      ) : null}
 
       <div className={styles.controls}>
         <div className={styles.filters} role="group" aria-label="Filter decisions">

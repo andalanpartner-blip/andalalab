@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { LayoutBlueprint as LayoutBlueprintType } from "../types/schemas/layout-blueprint.schema";
 import type { StageId } from "../lib/workspace";
 import {
@@ -28,9 +28,11 @@ export type LayoutBlueprintProps = {
   /** The hash of the recipe currently held by the page — for the stale check. */
   readonly recipeHash: string;
   readonly onNavigate: (stage: StageId) => void;
+  /** P2.10 additive — the nine visual layout templates explorer, slotted before the actions. */
+  readonly templates?: ReactNode;
 };
 
-export function LayoutBlueprint({ blueprint, recipeHash, onNavigate }: LayoutBlueprintProps) {
+export function LayoutBlueprint({ blueprint, recipeHash, onNavigate, templates }: LayoutBlueprintProps) {
   const [highlightZone, setHighlightZone] = useState<string | null>(null);
   const stale = isBlueprintStale(blueprint, recipeHash);
   const metrics = blueprintMetrics(blueprint);
@@ -145,6 +147,8 @@ export function LayoutBlueprint({ blueprint, recipeHash, onNavigate }: LayoutBlu
           ))}
         </ul>
       </div>
+
+      {templates}
 
       <div className={styles.actions}>
         <Button onClick={() => onNavigate("prompt")} trailing="→">

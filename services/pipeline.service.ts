@@ -34,6 +34,9 @@ import {
   reviewDesign,
   applyCorrection,
   resolveLayoutBlueprint,
+  retargetLayout,
+  layoutTemplateOverview,
+  type LayoutTemplateOverview,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
@@ -328,6 +331,13 @@ export type RecipeOkResult = {
    * critic or review, and it is computed after them.
    */
   readonly blueprint: LayoutBlueprint;
+  /**
+   * P2.10 additive — the nine visual layout templates with per-template
+   * availability for this design's visual type, and which one presents the
+   * layout the recipe currently holds. Purely presentational; changing the
+   * template re-derives the design through /api/layout.
+   */
+  readonly layoutTemplates: LayoutTemplateOverview;
 };
 export type RecipeFailureResult = { readonly status: "ERROR"; readonly message: string };
 export type RecipePipelineResult = RecipeOkResult | RecipeFailureResult;
@@ -423,7 +433,12 @@ export function runRecipePipeline(
     promptSet,
     critic,
     review,
-    blueprint: blueprintResult.value
+    blueprint: blueprintResult.value,
+    layoutTemplates: layoutTemplateOverview(
+      deps.datasets,
+      contractParsed.data.visual_type.id,
+      blueprintResult.value.provenance.layout_id
+    )
   };
 }
 
@@ -552,5 +567,123 @@ export function runCorrectionPipeline(
     promptSet,
     critic,
     blueprint: blueprintResult.value
+  };
+}
+
+// --- P2.10 additive: layout template retarget -------------------------
+
+export type LayoutRetargetInput = {
+  /** The design being retargeted (all round-trip from the client). */
+  readonly contract: unknown;
+  readonly direction: unknown;
+  readonly concept?: unknown;
+  readonly parentRecipe: unknown;
+  /** Canonical layout id chosen by the designer. */
+  readonly layoutId: unknown;
+  readonly promptLanguage?: PromptLanguage;
+};
+
+export type LayoutRetargetOkResult = {
+  readonly status: "OK";
+  /** The re-derived recipe — a new `recipe_hash`. The parent stays immutable. */
+  readonly recipe: DesignRecipe;
+  readonly contract: DesignContract;
+  readonly direction: DesignDirection;
+  readonly promptSet: PromptSet;
+  /** Deterministic Design Critic re-run on the new recipe (no model, no cost). */
+  readonly critic: DesignCriticReport;
+  /** A fresh Layout Blueprint from the new recipe — a new `blueprint_hash`. */
+  readonly blueprint: LayoutBlueprint;
+  /** The template picture for the retargeted design (recommendation now points at the chosen layout). */
+  readonly layoutTemplates: LayoutTemplateOverview;
+};
+export type LayoutRetargetResult = LayoutRetargetOkResult | RecipeFailureResult;
+
+/**
+ * Re-derive a design onto a different canonical layout (P2.10 additive).
+ *
+ * Composes the existing engine primitives exactly like `runCorrectionPipeline`:
+ * `retargetLayout` (pins movement + layout, rebuilds direction + recipe) →
+ * prompt compile → deterministic critic → fresh blueprint. It never calls the
+ * generation provider, the vision loop, the correction engine or an approval —
+ * it only changes design structure.
+ */
+export function runLayoutRetargetPipeline(
+  deps: Pick<EngineDeps, "datasets" | "ids" | "clock">,
+  input: LayoutRetargetInput
+): LayoutRetargetResult {
+  const contractParsed = DesignContractSchema.safeParse(input.contract);
+  const directionParsed = DesignDirectionSchema.safeParse(input.direction);
+  const parentParsed = DesignRecipeSchema.safeParse(input.parentRecipe);
+  const conceptParsed = input.concept == null ? null : CreativeConceptSchema.safeParse(input.concept);
+
+  if (
+    !contractParsed.success ||
+    !directionParsed.success ||
+    !parentParsed.success ||
+    (conceptParsed && !conceptParsed.success)
+  ) {
+    return { status: "ERROR", message: "That design couldn't be read. Please rebuild the recipe and try again." };
+  }
+  if (typeof input.layoutId !== "string" || input.layoutId.length === 0) {
+    return { status: "ERROR", message: "No layout was selected." };
+  }
+
+  const retargeted = retargetLayout({
+    contract: contractParsed.data,
+    direction: directionParsed.data,
+    concept: conceptParsed ? conceptParsed.data : null,
+    parentRecipe: parentParsed.data,
+    layoutId: input.layoutId,
+    datasets: deps.datasets,
+    ids: deps.ids,
+    clock: deps.clock
+  });
+  if (!retargeted.ok) {
+    return {
+      status: "ERROR",
+      message: `That layout couldn't be applied to this design (${retargeted.error.map((issue) => issue.code).join(", ")}).`
+    };
+  }
+
+  const { contract, direction, recipe } = retargeted.value;
+  const language = input.promptLanguage ?? "en";
+  const promptSet = compilePromptSet({
+    recipe,
+    concept: conceptParsed ? conceptParsed.data : null,
+    language
+  });
+  const critic = auditDesign({
+    contract,
+    direction,
+    recipe,
+    promptSet,
+    promptLanguage: language,
+    concept: conceptParsed ? conceptParsed.data : null
+  });
+
+  const blueprintResult = resolveLayoutBlueprint({ recipe, contract, direction, datasets: deps.datasets });
+  if (!blueprintResult.ok) {
+    return {
+      status: "ERROR",
+      message: `The layout blueprint couldn't be resolved for this layout (${blueprintResult.error
+        .map((issue) => issue.code)
+        .join(", ")}).`
+    };
+  }
+
+  return {
+    status: "OK",
+    recipe,
+    contract,
+    direction,
+    promptSet,
+    critic,
+    blueprint: blueprintResult.value,
+    layoutTemplates: layoutTemplateOverview(
+      deps.datasets,
+      contract.visual_type.id,
+      blueprintResult.value.provenance.layout_id
+    )
   };
 }
