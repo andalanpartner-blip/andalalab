@@ -131,6 +131,7 @@ function formatColor(blocks: PromptBlocks): string {
  */
 function formatImagery(blocks: PromptBlocks): string {
   const { subject, environment, camera, lighting, materiality } = blocks;
+  const nonPhotographic = !blocks.photographicCharacter.finish.isPhotographic;
   const realismPhrase =
     camera.realism >= 0.6 ? "rendering fotografis dengan realisme tinggi" : "rendering yang stilasi (illustrative)";
   const subjectParts = [
@@ -145,7 +146,9 @@ function formatImagery(blocks: PromptBlocks): string {
   const lines = [
     subjectParts.length > 0 ? `Imagery & subjek: ${subjectParts.join(", ")}.` : null,
     environment.visualWorld ? `Lingkungan: ${ensureSentence(environment.visualWorld)}` : null,
-    `Perlakuan kamera: ${realismPhrase} (tingkat realisme ${pct(camera.realism)}).`,
+    nonPhotographic
+      ? `Perlakuan rendering: rendering grafis non-fotografis yang stilasi (tingkat realisme ${pct(camera.realism)}).`
+      : `Perlakuan kamera: ${realismPhrase} (tingkat realisme ${pct(camera.realism)}).`,
     `Pencahayaan: kontras ${pct(lighting.contrast)}.`,
     `Materialitas: ${materiality.surfaces.join(", ")}, tingkat tekstur ${pct(materiality.texture)}.`
   ].filter((line): line is string => Boolean(line));
@@ -166,6 +169,13 @@ function formatPhotographicCharacter(blocks: PromptBlocks, opts: { detail: "full
     V.PHOTO_REALISM_TARGET[p.realismTarget as keyof typeof V.PHOTO_REALISM_TARGET]?.id ?? V.humanizeSlug(p.realismTarget);
   const imperfection =
     V.PHOTO_IMPERFECTION[p.imperfectionLevel as keyof typeof V.PHOTO_IMPERFECTION]?.id ?? p.imperfectionLevel;
+
+  // Medium non-fotografis (graphic-poster / illustration): tidak ada instruksi
+  // kamera, lensa, depth of field, atau kulit/optik — sama seperti aturan pada
+  // `formatPhotographicFinish`.
+  if (!p.finish.isPhotographic) {
+    return `Karakter rendering: ${style} — rendering grafis non-fotografis yang datar. Bentuk, tepi tegas, dan warna terkontrol yang membawa gambar; realisme optik fotografis tidak digunakan.`;
+  }
 
   if (opts.detail === "brief") {
     return (

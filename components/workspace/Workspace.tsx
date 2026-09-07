@@ -17,6 +17,7 @@ import { CorrectionPanel } from "../CorrectionPanel";
 import { PromptOutput } from "../PromptOutput";
 import { LayoutBlueprint, LayoutBackLink } from "../LayoutBlueprint";
 import { LayoutTemplates, type LayoutRetargetPayload } from "./LayoutTemplates";
+import { VisualDirectionStudio, type DirectionRetargetPayload } from "./VisualDirectionStudio";
 import { GenerateStage } from "./GenerateStage";
 import { ReviewStage } from "./ReviewStage";
 import { FinalStage } from "./FinalStage";
@@ -33,7 +34,8 @@ import type {
   DesignCriticReport,
   VisualReviewReport,
   LayoutBlueprint as LayoutBlueprintArtifact,
-  LayoutTemplateOverview
+  LayoutTemplateOverview,
+  VisualDirectionOverview
 } from "../../engine";
 import type { BriefPipelineResult, BriefReadyResult, RecipePipelineResult } from "../../services/pipeline.service";
 import type { DesignRecipe } from "../../types/schemas/recipe.schema";
@@ -170,6 +172,15 @@ export function Workspace({ projectId }: { projectId: string }) {
     aiRecommended: string;
     designerSelected: string;
   } | null>(null);
+  /** P2.10 — the Visual Direction Studio picture + the AI's frozen recommendation. */
+  const [visualDirections, setVisualDirections] = useState<VisualDirectionOverview | null>(null);
+  const [aiDirRec, setAiDirRec] = useState<{ id: string; name: string; why: string } | null>(null);
+  /** The direction the human has explicitly applied this session, if any. */
+  const [appliedDirectionId, setAppliedDirectionId] = useState<string | null>(null);
+  const [directionOverride, setDirectionOverride] = useState<{
+    aiRecommended: string;
+    designerSelected: string;
+  } | null>(null);
   /** Contract / direction the current recipe was built from — corrections may replace these. */
   const [recipeContract, setRecipeContract] = useState<DesignContract | null>(null);
   const [recipeDirection, setRecipeDirection] = useState<DesignDirection | null>(null);
@@ -277,6 +288,11 @@ export function Workspace({ projectId }: { projectId: string }) {
         setBlueprint(null);
         setLayoutTemplates(null);
         setAiLayoutRec(null);
+        setVisualDirections(null);
+        setAiDirRec(null);
+        setDirectionOverride(null);
+
+        setAppliedDirectionId(null);
         setLayoutOverride(null);
         setRecipeContract(null);
         setRecipeDirection(null);
@@ -331,6 +347,11 @@ export function Workspace({ projectId }: { projectId: string }) {
     setBlueprint(null);
     setLayoutTemplates(null);
     setAiLayoutRec(null);
+    setVisualDirections(null);
+    setAiDirRec(null);
+    setDirectionOverride(null);
+
+    setAppliedDirectionId(null);
     setLayoutOverride(null);
     setRecipeContract(null);
     setRecipeDirection(null);
@@ -355,6 +376,11 @@ export function Workspace({ projectId }: { projectId: string }) {
         setBlueprint(null);
         setLayoutTemplates(null);
         setAiLayoutRec(null);
+        setVisualDirections(null);
+        setAiDirRec(null);
+        setDirectionOverride(null);
+
+        setAppliedDirectionId(null);
         setLayoutOverride(null);
         setRecipeContract(null);
         setRecipeDirection(null);
@@ -396,6 +422,15 @@ export function Workspace({ projectId }: { projectId: string }) {
         fallbackName: data.layoutTemplates.currentLayoutName
       });
       setLayoutOverride(null);
+      setVisualDirections(data.visualDirections);
+      setAiDirRec({
+        id: data.visualDirections.recommendedDirectionId,
+        name: data.visualDirections.recommendedDirectionName,
+        why: data.visualDirections.why
+      });
+      setDirectionOverride(null);
+
+      setAppliedDirectionId(null);
       setRecipeContract(result.contract);
       setRecipeDirection(result.direction);
       clearGeneratedVisual();
@@ -452,6 +487,50 @@ export function Workspace({ projectId }: { projectId: string }) {
       });
     },
     [projectId, aiLayoutRec]
+  );
+
+  /**
+   * A human applied a visual direction (P2.10). Re-derives recipe → blueprint →
+   * prompt with fresh hashes via the direction's bias overrides. It never
+   * generates; an existing visual is KEPT and reads stale.
+   */
+  const handleDirectionApplied = useCallback(
+    (next: DirectionRetargetPayload) => {
+      setRecipe(next.recipe);
+      setBlueprint(next.blueprint);
+      setCritic(next.critic);
+      setReview(null);
+      setLayoutTemplates(next.layoutTemplates);
+      setVisualDirections(next.visualDirections);
+      setRecipeContract(next.contract);
+      setRecipeDirection(next.direction);
+      setChangedPaths(next.changedPaths);
+      setAppliedDirectionId(next.appliedDirection.id);
+      if (aiDirRec && next.appliedDirection.id !== aiDirRec.id) {
+        setDirectionOverride({ aiRecommended: aiDirRec.name, designerSelected: next.appliedDirection.name });
+      } else {
+        setDirectionOverride(null);
+
+        setAppliedDirectionId(null);
+      }
+      void recordArtifact(projectId, {
+        kind: "recipe",
+        hash: next.recipe.recipe_hash,
+        summary: {
+          movement: next.recipe.movement.id,
+          visual_direction: next.appliedDirection.id,
+          representation: next.visualDirections.currentAdapterId,
+          via: "visual-direction"
+        }
+      });
+      void recordArtifact(projectId, {
+        kind: "blueprint",
+        hash: next.blueprint.blueprint_hash,
+        parent_hash: next.recipe.recipe_hash,
+        summary: { zones: next.blueprint.zones.length }
+      });
+    },
+    [projectId, aiDirRec]
   );
 
   const selectedConcept =
@@ -591,6 +670,21 @@ export function Workspace({ projectId }: { projectId: string }) {
               </div>
             ) : null}
             <RecipeStageSummary recipe={recipe} onOpenLedger={() => setLedgerOpen(true)} />
+            {visualDirections && recipeContract && recipeDirection ? (
+              <VisualDirectionStudio
+                overview={visualDirections}
+                aiRecommendedDirectionId={aiDirRec?.id ?? null}
+                aiRecommendedName={aiDirRec?.name ?? null}
+                appliedDirectionId={appliedDirectionId}
+                why={aiDirRec?.why ?? visualDirections.why}
+                recipe={recipe}
+                contract={recipeContract}
+                direction={recipeDirection}
+                concept={selectedConcept}
+                hasGeneratedArtifact={generatedArtifact !== null}
+                onApplied={handleDirectionApplied}
+              />
+            ) : null}
             <div className={styles.stageActions}>
               <Button onClick={() => goToStage("layout")} trailing="→">
                 See the layout
@@ -777,6 +871,7 @@ export function Workspace({ projectId }: { projectId: string }) {
               recipe={recipe}
               recentlyChanged={changedPaths}
               layoutOverride={layoutOverride}
+              directionOverride={directionOverride}
             />
           ) : null
         }

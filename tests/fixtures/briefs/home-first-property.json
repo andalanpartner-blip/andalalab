@@ -1,0 +1,32 @@
+{
+  "brief_id": "brief_home_first_01",
+  "schema_version": "1.0.0",
+  "raw_input": "Rumah pertama yang terasa seperti tempat pulang.",
+  "objective": "awareness",
+  "core_message": "A first home that finally feels like the place you come back to.",
+  "audience": {
+    "description": "First-time buyers aged 28 to 42 in Greater Jakarta choosing between a house that is only an asset and a house that feels like coming home.",
+    "age_range": [28, 42],
+    "sophistication": 0.55,
+    "price_sensitivity": 0.5,
+    "attention_context": "scroll",
+    "cultural_context": ["Greater Jakarta", "first home", "family"]
+  },
+  "industry_id": "property",
+  "brand_id": null,
+  "visual_type_id": "social-feed",
+  "country": { "indonesia": 0.7, "japan": 0.3 },
+  "movement_id": "swiss-international",
+  "layout_id": "image-text-split",
+  "platform": {
+    "channel": "instagram-feed",
+    "aspect_ratio_id": "square",
+    "viewing_context": "thumb",
+    "localised_text": true
+  },
+  "deliverables": ["One 1:1 feed asset"],
+  "mandatories": [],
+  "prohibitions": [],
+  "confidence": { "objective": 0.8 },
+  "missing_fields": []
+}

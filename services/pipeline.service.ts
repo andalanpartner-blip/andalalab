@@ -36,7 +36,10 @@ import {
   resolveLayoutBlueprint,
   retargetLayout,
   layoutTemplateOverview,
+  retargetDirection,
+  visualDirectionOverview,
   type LayoutTemplateOverview,
+  type VisualDirectionOverview,
   type ClarificationQuestion,
   type ConceptGenerationOutcome,
   type PromptLanguage,
@@ -338,6 +341,13 @@ export type RecipeOkResult = {
    * template re-derives the design through /api/layout.
    */
   readonly layoutTemplates: LayoutTemplateOverview;
+  /**
+   * P2.10 additive — the nine user-facing visual directions, the AI's
+   * recommended one (read from the resolved recipe's generation adapter) and a
+   * short rationale. Purely presentational; changing it re-derives the design
+   * through /api/direction.
+   */
+  readonly visualDirections: VisualDirectionOverview;
 };
 export type RecipeFailureResult = { readonly status: "ERROR"; readonly message: string };
 export type RecipePipelineResult = RecipeOkResult | RecipeFailureResult;
@@ -438,7 +448,8 @@ export function runRecipePipeline(
       deps.datasets,
       contractParsed.data.visual_type.id,
       blueprintResult.value.provenance.layout_id
-    )
+    ),
+    visualDirections: visualDirectionOverview(deps.datasets, recipeResult.value, conceptParsed.data)
   };
 }
 
@@ -685,5 +696,120 @@ export function runLayoutRetargetPipeline(
       contract.visual_type.id,
       blueprintResult.value.provenance.layout_id
     )
+  };
+}
+
+// --- P2.10 additive: visual direction retarget ------------------------
+
+export type DirectionRetargetInput = {
+  readonly contract: unknown;
+  readonly direction: unknown;
+  readonly concept?: unknown;
+  readonly parentRecipe: unknown;
+  /** Visual direction id chosen by the designer. */
+  readonly directionId: unknown;
+  readonly promptLanguage?: PromptLanguage;
+};
+
+export type DirectionRetargetOkResult = {
+  readonly status: "OK";
+  readonly recipe: DesignRecipe;
+  readonly contract: DesignContract;
+  readonly direction: DesignDirection;
+  readonly promptSet: PromptSet;
+  readonly critic: DesignCriticReport;
+  readonly blueprint: LayoutBlueprint;
+  readonly layoutTemplates: LayoutTemplateOverview;
+  readonly visualDirections: VisualDirectionOverview;
+};
+export type DirectionRetargetResult = DirectionRetargetOkResult | RecipeFailureResult;
+
+/**
+ * Re-derive a design onto a different visual direction (P2.10 additive).
+ *
+ * Composes existing engine primitives exactly like `runLayoutRetargetPipeline`:
+ * `retargetDirection` (re-runs the recipe with the direction's bias overrides)
+ * → prompt compile → deterministic critic → fresh blueprint. It never calls the
+ * generation provider, the vision loop, the correction engine or an approval.
+ * The contract, direction, movement, concept, layout and core message are
+ * unchanged — only how the design is expressed.
+ */
+export function runDirectionRetargetPipeline(
+  deps: Pick<EngineDeps, "datasets" | "ids" | "clock">,
+  input: DirectionRetargetInput
+): DirectionRetargetResult {
+  const contractParsed = DesignContractSchema.safeParse(input.contract);
+  const directionParsed = DesignDirectionSchema.safeParse(input.direction);
+  const parentParsed = DesignRecipeSchema.safeParse(input.parentRecipe);
+  const conceptParsed = input.concept == null ? null : CreativeConceptSchema.safeParse(input.concept);
+
+  if (
+    !contractParsed.success ||
+    !directionParsed.success ||
+    !parentParsed.success ||
+    (conceptParsed && !conceptParsed.success)
+  ) {
+    return { status: "ERROR", message: "That design couldn't be read. Please rebuild the recipe and try again." };
+  }
+  if (typeof input.directionId !== "string" || input.directionId.length === 0) {
+    return { status: "ERROR", message: "No visual direction was selected." };
+  }
+
+  const concept = conceptParsed ? conceptParsed.data : null;
+  const retargeted = retargetDirection({
+    contract: contractParsed.data,
+    direction: directionParsed.data,
+    concept,
+    parentRecipe: parentParsed.data,
+    directionId: input.directionId,
+    datasets: deps.datasets,
+    ids: deps.ids,
+    clock: deps.clock
+  });
+  if (!retargeted.ok) {
+    return {
+      status: "ERROR",
+      message: `That visual direction couldn't be applied (${retargeted.error.map((issue) => issue.code).join(", ")}).`
+    };
+  }
+
+  const recipe = retargeted.value.recipe;
+  const contract = contractParsed.data;
+  const direction = directionParsed.data;
+  const language = input.promptLanguage ?? "en";
+  const promptSet = compilePromptSet({ recipe, concept, language });
+  const critic = auditDesign({
+    contract,
+    direction,
+    recipe,
+    promptSet,
+    promptLanguage: language,
+    concept
+  });
+
+  const blueprintResult = resolveLayoutBlueprint({ recipe, contract, direction, datasets: deps.datasets });
+  if (!blueprintResult.ok) {
+    return {
+      status: "ERROR",
+      message: `The layout blueprint couldn't be resolved for this direction (${blueprintResult.error
+        .map((issue) => issue.code)
+        .join(", ")}).`
+    };
+  }
+
+  return {
+    status: "OK",
+    recipe,
+    contract,
+    direction,
+    promptSet,
+    critic,
+    blueprint: blueprintResult.value,
+    layoutTemplates: layoutTemplateOverview(
+      deps.datasets,
+      contract.visual_type.id,
+      blueprintResult.value.provenance.layout_id
+    ),
+    visualDirections: visualDirectionOverview(deps.datasets, recipe, concept)
   };
 }

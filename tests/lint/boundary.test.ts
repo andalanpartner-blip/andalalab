@@ -81,7 +81,9 @@ describe("engine purity is enforced, not merely documented", () => {
 });
 
 describe("the real engine source obeys the rule", () => {
-  it("lints clean across every engine file", async () => {
+  // Lints every engine file — runs eslint over the whole tree, so it can exceed
+  // the default 5s on a loaded worker pool.
+  it("lints clean across every engine file", { timeout: 30_000 }, async () => {
     const results = await eslint.lintFiles([`${CWD}engine/**/*.ts`]);
     const errors = results.flatMap((result) =>
       result.messages.filter((message) => message.severity === 2).map((message) => `${result.filePath}: ${message.message}`)

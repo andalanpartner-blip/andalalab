@@ -17,11 +17,20 @@ const BLOCK_LABEL: Record<SchematicBlock, string> = {
   brand: "Brand",
   offer: "Offer",
   product: "Product",
-  scene: "Scene"
+  scene: "Scene",
+  caption: "Caption",
+  shape: "Shape",
+  silhouette: "Form",
+  material: "Material",
+  fragment: "Fragment",
+  void: ""
 };
 
 function Node({ node, depth }: { node: SchematicNode; depth: number }) {
   if ("block" in node) {
+    if (node.block === "void") {
+      return <div className={styles.void} style={{ flexGrow: node.grow } as CSSProperties} />;
+    }
     return (
       <div
         className={styles.block}

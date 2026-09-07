@@ -120,6 +120,7 @@ function formatColor(blocks: PromptBlocks): string {
 
 function formatImagery(blocks: PromptBlocks): string {
   const { subject, environment, camera, lighting, materiality } = blocks;
+  const nonPhotographic = !blocks.photographicCharacter.finish.isPhotographic;
   const realismPhrase = camera.realism >= 0.6 ? "photographic, high-realism rendering" : "stylised, illustrative rendering";
   const subjectExtra = [
     subject.strategy ? `rendered with ${V.SUBJECT_STRATEGY[subject.strategy as keyof typeof V.SUBJECT_STRATEGY]?.en ?? V.humanizeSlug(subject.strategy)}` : null,
@@ -131,7 +132,9 @@ function formatImagery(blocks: PromptBlocks): string {
   const lines = [
     `Imagery & subject: ${ensureSentence(subject.treatment)}${subjectExtraSentence}`,
     `Environment: ${ensureSentence(environment.framing)}${environment.visualWorld ? ` Setting: ${ensureSentence(environment.visualWorld)}` : ""}`,
-    `Camera treatment: ${realismPhrase} (realism ${pct(camera.realism)}).`,
+    nonPhotographic
+      ? `Rendering treatment: stylised, non-photographic graphic rendering (realism ${pct(camera.realism)}).`
+      : `Camera treatment: ${realismPhrase} (realism ${pct(camera.realism)}).`,
     `Lighting: ${ensureSentence(lighting.direction)} Lighting contrast ${pct(lighting.contrast)}.`,
     `Materiality: ${materiality.surfaces.join(", ")}, texture level ${pct(materiality.texture)}.`
   ];
@@ -150,6 +153,13 @@ function formatPhotographicCharacter(blocks: PromptBlocks, opts: { detail: "full
     V.PHOTO_REALISM_TARGET[p.realismTarget as keyof typeof V.PHOTO_REALISM_TARGET]?.en ?? V.humanizeSlug(p.realismTarget);
   const imperfection =
     V.PHOTO_IMPERFECTION[p.imperfectionLevel as keyof typeof V.PHOTO_IMPERFECTION]?.en ?? p.imperfectionLevel;
+
+  // A non-photographic recipe (graphic-poster / illustration, realism target
+  // `graphic-non-photographic`) must not emit camera, lens, depth-of-field or
+  // skin/optics instructions — the same rule `formatPhotographicFinish` follows.
+  if (!p.finish.isPhotographic) {
+    return `Rendering character: ${style} — a flat, non-photographic graphic rendering. Shapes, hard edges and controlled colour carry the image; photographic optical realism is not used.`;
+  }
 
   if (opts.detail === "brief") {
     return (

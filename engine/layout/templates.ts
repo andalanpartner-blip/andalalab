@@ -22,7 +22,14 @@ export type SchematicBlock =
   | "brand"
   | "offer"
   | "product"
-  | "scene";
+  | "scene"
+  // extra roles used by the visual-direction schematics (same renderer)
+  | "caption"
+  | "shape"
+  | "silhouette"
+  | "material"
+  | "fragment"
+  | "void";
 
 export type SchematicNode =
   | { readonly block: SchematicBlock; readonly grow: number; readonly label?: string }

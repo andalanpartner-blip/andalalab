@@ -53,6 +53,22 @@ export {
   type RetargetLayoutInput,
   type RetargetLayoutResult
 } from "./layout/retarget";
+export {
+  VISUAL_DIRECTIONS,
+  directionById,
+  recommendDirection,
+  adapterForRecipe,
+  visualDirectionOverview,
+  type VisualDirection,
+  type VisualDirectionOverview,
+  type RepresentationMode,
+  type DirectionOverrides
+} from "./direction/directions";
+export {
+  retargetDirection,
+  type RetargetDirectionInput,
+  type RetargetDirectionResult
+} from "./direction/retarget";
 
 // --- P1: deterministic design core ---------------------------------------
 export {

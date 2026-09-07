@@ -479,7 +479,8 @@ function pathToSection(path: string): string | null {
 export function DecisionLedger({
   recipe,
   recentlyChanged = [],
-  layoutOverride = null
+  layoutOverride = null,
+  directionOverride = null
 }: {
   recipe: DesignRecipe;
   recentlyChanged?: readonly string[];
@@ -488,6 +489,8 @@ export function DecisionLedger({
    * the AI's recommendation. Shown in the ledger, not a new ledger system.
    */
   layoutOverride?: { aiRecommended: string; designerSelected: string } | null;
+  /** P2.10 — recorded when a human chose a visual direction other than the AI's. */
+  directionOverride?: { aiRecommended: string; designerSelected: string } | null;
 }) {
   const [filter, setFilter] = useState<LedgerFilter>("all");
   const [query, setQuery] = useState("");
@@ -510,6 +513,22 @@ export function DecisionLedger({
       <p className={styles.lede}>
         Every value the AI set, with the country, movement or industry that produced it. Read-only.
       </p>
+
+      {directionOverride ? (
+        <div className={styles.override} data-testid="direction-override">
+          <p className={styles.overrideTitle}>Visual direction — human decision</p>
+          <dl className={styles.overrideGrid}>
+            <div>
+              <dt>AI recommended</dt>
+              <dd>{directionOverride.aiRecommended}</dd>
+            </div>
+            <div>
+              <dt>Designer selected</dt>
+              <dd>{directionOverride.designerSelected}</dd>
+            </div>
+          </dl>
+        </div>
+      ) : null}
 
       {layoutOverride ? (
         <div className={styles.override} data-testid="layout-override">

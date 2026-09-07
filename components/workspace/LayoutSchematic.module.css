@@ -46,16 +46,32 @@
 }
 .block[data-block="image"],
 .block[data-block="product"],
-.block[data-block="scene"] {
+.block[data-block="scene"],
+.block[data-block="material"],
+.block[data-block="fragment"] {
   background: color-mix(in srgb, var(--ink) 9%, var(--surface));
   border-color: color-mix(in srgb, var(--ink) 16%, var(--surface));
 }
-.block[data-block="headline"] {
+.block[data-block="headline"],
+.block[data-block="caption"] {
   background: color-mix(in srgb, var(--ink) 4%, var(--surface));
 }
 .block[data-block="cta"],
 .block[data-block="offer"] {
   background: color-mix(in srgb, var(--ink) 82%, var(--surface));
+}
+.block[data-block="shape"],
+.block[data-block="silhouette"] {
+  background: color-mix(in srgb, var(--ink) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--ink) 26%, var(--surface));
+}
+.block[data-block="fragment"] {
+  transform: rotate(-1.5deg);
+}
+
+.void {
+  min-width: 0;
+  min-height: 0;
 }
 
 .label {
