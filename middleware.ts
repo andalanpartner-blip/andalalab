@@ -13,8 +13,10 @@ import { SESSION_COOKIE } from "./lib/auth/cookie-name";
  * It never trusts the cookie's contents — only its presence.
  */
 
-const PUBLIC_PATHS = ["/login", "/api/auth/login"];
-const PUBLIC_PREFIXES = ["/_next/", "/favicon", "/api/auth/"];
+// `/` is the public marketing page; the private product lives at /dashboard,
+// /project/* and /login (all still guarded below).
+const PUBLIC_PATHS = ["/", "/login", "/api/auth/login"];
+const PUBLIC_PREFIXES = ["/_next/", "/favicon", "/api/auth/", "/opengraph-image", "/robots", "/sitemap"];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.includes(pathname) || PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));

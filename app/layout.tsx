@@ -13,7 +13,10 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning: the marketing page adds `m-js` to <html> via an
+    // inline pre-paint script so scroll-reveal motion is opt-in; that attribute
+    // legitimately differs between the server HTML and the first client render.
+    <html lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

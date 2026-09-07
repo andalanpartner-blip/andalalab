@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Andala marketing — motion primitives (global, non-module)
+
+   These rules are keyed on class names that JavaScript toggles at runtime
+   (`m-reveal`, `is-in`) and on the `m-js` flag the inline pre-paint script
+   sets on <html>. They live in a plain stylesheet on purpose: CSS Modules
+   would hash the class names and the runtime toggles would never match.
+
+   Progressive enhancement contract:
+     - JS off            → `.m-js` is absent → every `.m-reveal` is visible.
+     - JS on, pre-reveal → hidden, then transitions in when it enters view.
+     - reduced motion    → visible immediately, no transform, no transition.
+   ========================================================================== */
+
+.m-reveal {
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.m-js .m-reveal:not(.is-in) {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.m-js .m-reveal[data-reveal="up"]:not(.is-in) {
+  transform: translateY(22px);
+}
+.m-js .m-reveal[data-reveal="left"]:not(.is-in) {
+  transform: translateX(-26px);
+}
+.m-js .m-reveal[data-reveal="right"]:not(.is-in) {
+  transform: translateX(26px);
+}
+
+/* Staggered lists — direct children of a [data-stagger] cascade in once the
+   parent reveal lands. `--i` is set per child in the markup. */
+.m-js .m-reveal:not(.is-in) [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.m-reveal [data-stagger] > * {
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.m-reveal.is-in [data-stagger] > * {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-reveal,
+  .m-reveal [data-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
